@@ -17,46 +17,50 @@
     <div id="output"></div>
 
     <script>
-        const SHEETDB_API_URL = 'https://sheetdb.io/api/v1/vxo4hnejxx9sa'; // Replace with your SheetDB API URL (e.g., https://sheetdb.io/api/v1/abcdef123456)
+        const SHEETDB_API_URL = 'https://sheetdb.io/api/v1/vxo4hnejxx9sa';
 
         async function testConnection() {
             try {
                 const response = await fetch(`${SHEETDB_API_URL}/employees`, {
                     method: 'GET',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
                     mode: 'cors',
                     credentials: 'omit'
                 });
                 const result = await response.json();
-                document.getElementById('output').innerHTML = `<p class="success">SheetDB connection successful! Found ${result.length} employees.</p>`;
+                document.getElementById('output').innerHTML = '<p class="success">SheetDB connection successful! Found ' + result.length + ' employees.</p>';
             } catch (error) {
-                document.getElementById('output').innerHTML = `<p class="error">Connection failed: ${error.message}</p>`;
+                document.getElementById('output').innerHTML = '<p class="error">Connection failed: ' + error.message + '</p>';
             }
         }
 
         async function addSampleEmployee() {
             const employeeData = {
-                id: 'EMP004',
-                name: 'Alice Brown',
-                department: 'Marketing',
-                phone: '+1234567895',
-                email: 'alice@company.com',
-                password: 'password123',
-                created: new Date().toISOString()
+                ID: 'EMP004',
+                Name: 'Alice Brown',
+                Department: 'Marketing',
+                Phone: '+1234567895',
+                Email: 'alice@company.com',
+                Password: 'password123',
+                Created: new Date().toISOString()
             };
 
             try {
-                const response = await fetch(`${https://sheetdb.io/api/v1/vxo4hnejxx9sa}/employees`, {
+                const response = await fetch(`${SHEETDB_API_URL}/employees`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
                     mode: 'cors',
                     credentials: 'omit',
                     body: JSON.stringify([employeeData])
                 });
                 const result = await response.json();
-                document.getElementById('output').innerHTML = `<p class="success">Employee added successfully!</p>`;
+                document.getElementById('output').innerHTML = '<p class="success">Employee added successfully!</p>';
             } catch (error) {
-                document.getElementById('output').innerHTML = `<p class="error">Failed to add employee: ${error.message}</p>`;
+                document.getElementById('output').innerHTML = '<p class="error">Failed to add employee: ' + error.message + '</p>';
             }
         }
     </script>
