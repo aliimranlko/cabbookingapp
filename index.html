@@ -21,7 +21,8 @@
 
         async function testConnection() {
             try {
-                const response = await fetch(`${SHEETDB_API_URL}/employees`, {
+                // Test root API endpoint to verify SheetDB connection
+                const response = await fetch(SHEETDB_API_URL, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json'
@@ -29,8 +30,28 @@
                     mode: 'cors',
                     credentials: 'omit'
                 });
+                if (!response.ok) {
+                    const text = await response.text();
+                    throw new Error(`HTTP ${response.status}: ${text}`);
+                }
                 const result = await response.json();
-                document.getElementById('output').innerHTML = '<p class="success">SheetDB connection successful! Found ' + result.length + ' employees.</p>';
+                document.getElementById('output').innerHTML = '<p class="success">SheetDB connection successful! API response: ' + JSON.stringify(result) + '</p>';
+
+                // Test employees endpoint
+                const empResponse = await fetch(`${SHEETDB_API_URL}/employees`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    mode: 'cors',
+                    credentials: 'omit'
+                });
+                if (!empResponse.ok) {
+                    const text = await empResponse.text();
+                    throw new Error(`Employees endpoint HTTP ${empResponse.status}: ${text}`);
+                }
+                const empResult = await empResponse.json();
+                document.getElementById('output').innerHTML += '<p class="success">Found ' + empResult.length + ' employees.</p>';
             } catch (error) {
                 document.getElementById('output').innerHTML = '<p class="error">Connection failed: ' + error.message + '</p>';
             }
@@ -57,6 +78,10 @@
                     credentials: 'omit',
                     body: JSON.stringify([employeeData])
                 });
+                if (!response.ok) {
+                    const text = await response.text();
+                    throw new Error(`HTTP ${response.status}: ${text}`);
+                }
                 const result = await response.json();
                 document.getElementById('output').innerHTML = '<p class="success">Employee added successfully!</p>';
             } catch (error) {
