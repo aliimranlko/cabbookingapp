@@ -334,12 +334,8 @@
             <div class="login-container">
                 <h2 style="margin-bottom: 20px; color: #333;">Welcome! Please select your role to continue</h2>
                 <div class="login-buttons">
-                    <button class="btn" onclick="showEmployeeLogin()">
-                        👤 Employee Login
-                    </button>
-                    <button class="btn btn-secondary" onclick="showReceptionLogin()">
-                        🏢 Reception Login
-                    </button>
+                    <button class="btn" onclick="showEmployeeLogin()">👤 Employee Login</button>
+                    <button class="btn btn-secondary" onclick="showReceptionLogin()">🏢 Reception Login</button>
                 </div>
             </div>
         </div>
@@ -562,7 +558,7 @@
             <span class="close" onclick="closeModal('assignDriverModal')">&times;</span>
             <h3 style="margin-bottom: 20px; color: #1CABE2;">Assign Driver</h3>
             <form onsubmit="assignDriver(event)">
- TIRGGER            <input type="hidden" id="assignRequestId">
+                <input type="hidden" id="assignRequestId">
                 <div class="form-group">
                     <label>Select Cab</label>
                     <select id="assignCab" class="form-control" required>
@@ -587,9 +583,9 @@
 
     <script>
         // Configuration - Replace with your actual Google Apps Script URL
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwdtW9OwhOhCGKc4ggtfXSaTfrM4bfnsS8Me5TIdDEQKJyGYFsTerPvPx7P6tTJwD9j/exec';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwJi3A1wGJXAM7fP1jWXpv2Safe3nEgMslGWRv9hcx1tKbHE0gHqLGssLJ-JarnZA9rSA/exec';
 
-        // Sample data - Will be replaced by Google Sheets data
+        // Sample data for offline mode
         let employees = [
             {id: 'EMP001', name: 'John Doe', department: 'IT', phone: '+1234567890', email: 'john@company.com', password: 'password123'},
             {id: 'EMP002', name: 'Jane Smith', department: 'HR', phone: '+1234567891', email: 'jane@company.com', password: 'password123'},
@@ -624,17 +620,27 @@
             showPage('receptionLoginPage');
         }
 
+        // Utility function to sanitize input
+        function sanitizeInput(input) {
+            return input.replace(/[<>"'&]/g, '');
+        }
+
         // Authentication functions
         async function employeeLogin(event) {
             event.preventDefault();
-            const empId = document.getElementById('empId').value;
+            const empId = sanitizeInput(document.getElementById('empId').value.trim());
             const password = document.getElementById('empPassword').value;
             
+            if (!empId || !password) {
+                showNotification('Please fill in all fields', 'error');
+                return;
+            }
+
             showNotification('Logging in...', 'info');
             
             try {
                 const url = `${GOOGLE_SCRIPT_URL}?action=authenticate&userType=employee&id=${encodeURIComponent(empId)}&password=${encodeURIComponent(password)}`;
-                const response = await fetch(url);
+                const response = await fetch(url, { method: 'GET' });
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const result = await response.json();
                 
@@ -647,10 +653,10 @@
                     showPage('employeeDashboard');
                     showNotification('Login successful!');
                 } else {
-                    throw new Error('Authentication failed');
+                    throw new Error(result.message || 'Authentication failed');
                 }
             } catch (error) {
-                console.log('Online authentication failed, trying offline:', error);
+                console.error('Online authentication failed:', error);
                 const employee = employees.find(emp => emp.id === empId && emp.password === password);
                 
                 if (employee) {
@@ -661,21 +667,26 @@
                     showPage('employeeDashboard');
                     showNotification('Login successful! (Offline mode)');
                 } else {
-                    showNotification('Invalid credentials!', 'error');
+                    showNotification(error.message || 'Invalid credentials!', 'error');
                 }
             }
         }
 
         async function receptionLogin(event) {
             event.preventDefault();
-            const username = document.getElementById('recUsername').value;
+            const username = sanitizeInput(document.getElementById('recUsername').value.trim());
             const password = document.getElementById('recPassword').value;
             
+            if (!username || !password) {
+                showNotification('Please fill in all fields', 'error');
+                return;
+            }
+
             showNotification('Logging in...', 'info');
             
             try {
                 const url = `${GOOGLE_SCRIPT_URL}?action=authenticate&userType=reception&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
-                const response = await fetch(url);
+                const response = await fetch(url, { method: 'GET' });
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const result = await response.json();
                 
@@ -687,10 +698,10 @@
                     showPage('receptionDashboard');
                     showNotification('Login successful!');
                 } else {
-                    throw new Error('Authentication failed');
+                    throw new Error(result.message || 'Authentication failed');
                 }
             } catch (error) {
-                console.log('Online authentication failed, trying offline:', error);
+                console.error('Online authentication failed:', error);
                 if (username === 'reception' && password === 'admin123') {
                     currentUser = {name: 'Reception'};
                     currentRole = 'reception';
@@ -698,7 +709,7 @@
                     showPage('receptionDashboard');
                     showNotification('Login successful! (Offline mode)');
                 } else {
-                    showNotification('Invalid credentials!', 'error');
+                    showNotification(error.message || 'Invalid credentials!', 'error');
                 }
             }
         }
@@ -841,6 +852,7 @@
 
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
+            document.querySelector(`#${modalId} form`)?.reset();
         }
 
         function showNewBooking() {
@@ -883,18 +895,21 @@
                 employeeName: currentUser.name,
                 date: document.getElementById('bookingDate').value,
                 time: document.getElementById('bookingTime').value,
-                destination: document.getElementById('destination').value,
-                purpose: document.getElementById('purpose').value,
+                destination: sanitizeInput(document.getElementById('destination').value),
+                purpose: sanitizeInput(document.getElementById('purpose').value),
                 preferredCab: document.getElementById('preferredCab').value,
                 status: 'pending',
                 timestamp: new Date().toISOString(),
-                notes: document.getElementById('notes').value
+                notes: sanitizeInput(document.getElementById('notes').value || '')
             };
             
             showNotification('Submitting booking...', 'info');
             try {
-                const url = `${GOOGLE_SCRIPT_URL}?action=add&sheet=bookings&data=${encodeURIComponent(JSON.stringify(newBooking))}`;
-                const response = await fetch(url);
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'add', sheet: 'bookings', data: newBooking })
+                });
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const result = await response.json();
                 
@@ -903,24 +918,26 @@
                     closeModal('newBookingModal');
                     loadEmployeeDashboard();
                     showNotification(`Booking request ${newBooking.id} submitted successfully!`);
-                    document.querySelector('#newBookingModal form').reset();
                 } else {
                     throw new Error(result.message || 'Failed to submit booking');
                 }
             } catch (error) {
                 console.error('Error submitting booking:', error);
-                showNotification('Failed to submit booking. Please try again later.', 'error');
+                bookings.push(newBooking); // Fallback to local storage
+                closeModal('newBookingModal');
+                loadEmployeeDashboard();
+                showNotification(`Booking request ${newBooking.id} saved locally. Sync may be incomplete.`, 'error');
             }
         }
 
         async function addEmployee(event) {
             event.preventDefault();
             const newEmployee = {
-                id: document.getElementById('newEmpId').value,
-                name: document.getElementById('newEmpName').value,
-                department: document.getElementById('newEmpDept').value,
-                phone: document.getElementById('newEmpPhone').value,
-                email: document.getElementById('newEmpEmail').value,
+                id: sanitizeInput(document.getElementById('newEmpId').value.trim()),
+                name: sanitizeInput(document.getElementById('newEmpName').value.trim()),
+                department: sanitizeInput(document.getElementById('newEmpDept').value.trim()),
+                phone: sanitizeInput(document.getElementById('newEmpPhone').value.trim()),
+                email: sanitizeInput(document.getElementById('newEmpEmail').value.trim()),
                 password: document.getElementById('newEmpPassword').value
             };
             
@@ -931,8 +948,11 @@
             
             showNotification('Adding employee...', 'info');
             try {
-                const url = `${GOOGLE_SCRIPT_URL}?action=add&sheet=employees&data=${encodeURIComponent(JSON.stringify(newEmployee))}`;
-                const response = await fetch(url);
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'add', sheet: 'employees', data: newEmployee })
+                });
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const result = await response.json();
                 
@@ -940,24 +960,25 @@
                     employees.push(newEmployee);
                     closeModal('addEmployeeModal');
                     showNotification(`Employee ${newEmployee.name} added successfully!`);
-                    document.querySelector('#addEmployeeModal form').reset();
                 } else {
                     throw new Error(result.message || 'Failed to add employee');
                 }
             } catch (error) {
                 console.error('Error adding employee:', error);
-                showNotification('Failed to add employee. Please try again later.', 'error');
+                employees.push(newEmployee); // Fallback to local storage
+                closeModal('addEmployeeModal');
+                showNotification(`Employee ${newEmployee.name} added locally. Sync may be incomplete.`, 'error');
             }
         }
 
         async function addCab(event) {
             event.preventDefault();
             const newCab = {
-                id: document.getElementById('newCabNumber').value,
-                plate: document.getElementById('newCabPlate').value,
-                driver: document.getElementById('newDriverName').value,
-                phone: document.getElementById('newDriverPhone').value,
-                model: document.getElementById('newCarModel').value,
+                id: sanitizeInput(document.getElementById('newCabNumber').value.trim()),
+                plate: sanitizeInput(document.getElementById('newCabPlate').value.trim()),
+                driver: sanitizeInput(document.getElementById('newDriverName').value.trim()),
+                phone: sanitizeInput(document.getElementById('newDriverPhone').value.trim()),
+                model: sanitizeInput(document.getElementById('newCarModel').value.trim()),
                 available: true
             };
             
@@ -968,8 +989,11 @@
             
             showNotification('Adding cab...', 'info');
             try {
-                const url = `${GOOGLE_SCRIPT_URL}?action=add&sheet=cabs&data=${encodeURIComponent(JSON.stringify(newCab))}`;
-                const response = await fetch(url);
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'add', sheet: 'cabs', data: newCab })
+                });
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const result = await response.json();
                 
@@ -978,13 +1002,15 @@
                     closeModal('addCabModal');
                     loadReceptionDashboard();
                     showNotification(`Cab ${newCab.id} added successfully!`);
-                    document.querySelector('#addCabModal form').reset();
                 } else {
                     throw new Error(result.message || 'Failed to add cab');
                 }
             } catch (error) {
                 console.error('Error adding cab:', error);
-                showNotification('Failed to add cab. Please try again later.', 'error');
+                cabs.push(newCab); // Fallback to local storage
+                closeModal('addCabModal');
+                loadReceptionDashboard();
+                showNotification(`Cab ${newCab.id} added locally. Sync may be incomplete.`, 'error');
             }
         }
 
@@ -993,7 +1019,7 @@
             const requestId = document.getElementById('assignRequestId').value;
             const cabId = document.getElementById('assignCab').value;
             const pickupTime = document.getElementById('pickupTime').value;
-            const instructions = document.getElementById('driverInstructions').value;
+            const instructions = sanitizeInput(document.getElementById('driverInstructions').value || '');
             
             const booking = bookings.find(b => b.id === requestId);
             const cab = cabs.find(c => c.id === cabId);
@@ -1011,12 +1037,17 @@
                 
                 showNotification('Assigning driver...', 'info');
                 try {
-                    const bookingUrl = `${GOOGLE_SCRIPT_URL}?action=update&sheet=bookings&data=${encodeURIComponent(JSON.stringify(booking))}`;
-                    const cabUrl = `${GOOGLE_SCRIPT_URL}?action=update&sheet=cabs&data=${encodeURIComponent(JSON.stringify(cab))}`;
-                    
                     const [bookingResponse, cabResponse] = await Promise.all([
-                        fetch(bookingUrl),
-                        fetch(cabUrl)
+                        fetch(GOOGLE_SCRIPT_URL, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ action: 'update', sheet: 'bookings', data: booking })
+                        }),
+                        fetch(GOOGLE_SCRIPT_URL, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ action: 'update', sheet: 'cabs', data: cab })
+                        })
                     ]);
                     
                     if (!bookingResponse.ok || !cabResponse.ok) throw new Error('Failed to update Google Sheets');
@@ -1030,13 +1061,12 @@
                         closeModal('assignDriverModal');
                         loadReceptionDashboard();
                         showNotification(`Driver assigned to request ${requestId}!`);
-                        document.querySelector('#assignDriverModal form').reset();
                     } else {
-                        throw new Error('Failed to assign driver');
+                        throw new Error(bookingResult.message || cabResult.message || 'Failed to assign driver');
                     }
                 } catch (error) {
                     console.error('Error assigning driver:', error);
-                    showNotification('Failed to assign driver. Please try again later.', 'error');
+                    showNotification(error.message || 'Failed to assign driver. Please try again later.', 'error');
                 }
             }
         }
@@ -1048,8 +1078,11 @@
                     booking.status = 'rejected';
                     showNotification('Rejecting request...', 'info');
                     try {
-                        const url = `${GOOGLE_SCRIPT_URL}?action=update&sheet=bookings&data=${encodeURIComponent(JSON.stringify(booking))}`;
-                        const response = await fetch(url);
+                        const response = await fetch(GOOGLE_SCRIPT_URL, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ action: 'update', sheet: 'bookings', data: booking })
+                        });
                         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                         const result = await response.json();
                         
@@ -1061,7 +1094,8 @@
                         }
                     } catch (error) {
                         console.error('Error rejecting request:', error);
-                        showNotification('Failed to reject request. Please try again later.', 'error');
+                        loadReceptionDashboard();
+                        showNotification(error.message || 'Failed to reject request. Please try again later.', 'error');
                     }
                 }
             }
@@ -1077,27 +1111,35 @@
                 
                 showNotification('Marking as completed...', 'info');
                 try {
-                    const bookingUrl = `${GOOGLE_SCRIPT_URL}?action=update&sheet=bookings&data=${encodeURIComponent(JSON.stringify(booking))}`;
-                    const cabUrl = cab ? `${GOOGLE_SCRIPT_URL}?action=update&sheet=cabs&data=${encodeURIComponent(JSON.stringify(cab))}` : null;
+                    const promises = [
+                        fetch(GOOGLE_SCRIPT_URL, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ action: 'update', sheet: 'bookings', data: booking })
+                        })
+                    ];
+                    if (cab) {
+                        promises.push(fetch(GOOGLE_SCRIPT_URL, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ action: 'update', sheet: 'cabs', data: cab })
+                        }));
+                    }
                     
-                    const responses = await Promise.all([
-                        fetch(bookingUrl),
-                        cabUrl ? fetch(cabUrl) : Promise.resolve(null)
-                    ]);
+                    const responses = await Promise.all(promises);
+                    if (responses.some(r => !r.ok)) throw new Error('Failed to update Google Sheets');
                     
-                    if (!responses[0].ok || (cabUrl && !responses[1].ok)) throw new Error('Failed to update Google Sheets');
-                    
-                    const results = await Promise.all(responses.map(r => r ? r.json() : Promise.resolve({success: true})));
-                    
+                    const results = await Promise.all(responses.map(r => r.json()));
                     if (results.every(r => r.success)) {
                         loadReceptionDashboard();
                         showNotification(`Trip ${requestId} marked as completed!`);
                     } else {
-                        throw new Error('Failed to mark as completed');
+                        throw new Error(results.find(r => !r.success).message || 'Failed to mark as completed');
                     }
                 } catch (error) {
                     console.error('Error marking as completed:', error);
-                    showNotification('Failed to mark as completed. Please try again later.', 'error');
+                    loadReceptionDashboard();
+                    showNotification(error.message || 'Failed to mark as completed. Please try again later.', 'error');
                 }
             }
         }
@@ -1105,22 +1147,22 @@
         // Google Sheets integration functions
         async function loadFromGoogleSheets() {
             try {
-                const url = `${GOOGLE_SCRIPT_URL}?action=load`;
-                const response = await fetch(url);
+                const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=load`, { method: 'GET' });
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const result = await response.json();
                 
                 if (result.success) {
-                    if (result.data.employees) employees = result.data.employees;
-                    if (result.data.cabs) cabs = result.data.cabs;
-                    if (result.data.bookings) bookings = result.data.bookings;
+                    employees = result.data.employees || employees;
+                    cabs = result.data.cabs || cabs;
+                    bookings = result.data.bookings || bookings;
                     if (currentUser && currentRole === 'employee') loadEmployeeDashboard();
                     else if (currentUser && currentRole === 'reception') loadReceptionDashboard();
                 } else {
-                    console.error('Failed to load data:', result.message);
+                    throw new Error(result.message || 'Failed to load data');
                 }
             } catch (error) {
                 console.error('Error loading from Google Sheets:', error);
+                showNotification('Using offline data. Some features may be limited.', 'error');
             }
         }
 
