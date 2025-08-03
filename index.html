@@ -17,49 +17,46 @@
     <div id="output"></div>
 
     <script>
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbztj24EfHRceFJSIQ9u5FEVxEAivzdtynefGxlPKHi9whl_qwEO3RuaJR0qRT6si_2R9w/exec'; // Replace with your Google Apps Script Web App URL
+        const SHEETDB_API_URL = 'YOUR_SHEETDB_API_URL'; // Replace with your SheetDB API URL (e.g., https://sheetdb.io/api/v1/abcdef123456)
 
         async function testConnection() {
             try {
-                const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=test`, {
+                const response = await fetch(`${SHEETDB_API_URL}/employees`, {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
                     mode: 'cors',
                     credentials: 'omit'
                 });
                 const result = await response.json();
-                document.getElementById('output').innerHTML = `<p class="${result.success ? 'success' : 'error'}">${result.message}</p>`;
+                document.getElementById('output').innerHTML = `<p class="success">SheetDB connection successful! Found ${result.length} employees.</p>`;
             } catch (error) {
-                document.getElementById('output').innerHTML = `<p class="error">Failed to fetch: ${error.message}</p>`;
+                document.getElementById('output').innerHTML = `<p class="error">Connection failed: ${error.message}</p>`;
             }
         }
 
         async function addSampleEmployee() {
             const employeeData = {
-                action: 'add',
-                sheet: 'employees',
-                data: {
-                    id: 'EMP004',
-                    name: 'Alice Brown',
-                    department: 'Marketing',
-                    phone: '+1234567895',
-                    email: 'alice@company.com',
-                    password: 'password123'
-                }
+                id: 'EMP004',
+                name: 'Alice Brown',
+                department: 'Marketing',
+                phone: '+1234567895',
+                email: 'alice@company.com',
+                password: 'password123',
+                created: new Date().toISOString()
             };
 
             try {
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                const response = await fetch(`${https://sheetdb.io/api/v1/vxo4hnejxx9sa}/employees`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     mode: 'cors',
                     credentials: 'omit',
-                    body: JSON.stringify(employeeData)
+                    body: JSON.stringify([employeeData])
                 });
                 const result = await response.json();
-                document.getElementById('output').innerHTML = `<p class="${result.success ? 'success' : 'error'}">${result.message}</p>`;
+                document.getElementById('output').innerHTML = `<p class="success">Employee added successfully!</p>`;
             } catch (error) {
-                document.getElementById('output').innerHTML = `<p class="error">Failed to fetch: ${error.message}</p>`;
+                document.getElementById('output').innerHTML = `<p class="error">Failed to add employee: ${error.message}</p>`;
             }
         }
     </script>
