@@ -487,7 +487,7 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal('addEmployeeModal')">&times;</span>
             <h3 style="margin-bottom: 20px; color: #1CABE2;">Add New Employee</h3>
-            <form onsubmit="addEmployee(event)">
+            <form id="addEmployeeForm" onsubmit="addEmployee(event)">
                 <div class="form-row">
                     <div class="form-group">
                         <label>Employee ID</label>
@@ -526,7 +526,7 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal('addCabModal')">&times;</span>
             <h3 style="margin-bottom: 20px; color: #1CABE2;">Add New Cab</h3>
-            <form onsubmit="addCab(event)">
+            <form id="addCabForm" onsubmit="addCab(event)">
                 <div class="form-row">
                     <div class="form-group">
                         <label>Cab Number</label>
@@ -562,7 +562,7 @@
             <span class="close" onclick="closeModal('assignDriverModal')">&times;</span>
             <h3 style="margin-bottom: 20px; color: #1CABE2;">Assign Driver</h3>
             <form onsubmit="assignDriver(event)">
-                <input type="hidden" id="assignRequestId">
+ TIRGGER            <input type="hidden" id="assignRequestId">
                 <div class="form-group">
                     <label>Select Cab</label>
                     <select id="assignCab" class="form-control" required>
@@ -587,7 +587,7 @@
 
     <script>
         // Configuration - Replace with your actual Google Apps Script URL
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzL2MpUSR19r81OJH27W0phVyfj_DWZl4SfVWReHaNG-TfOkuNuI6HcPwTLl0ohfkvL/exec';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxjldg3O2AVqamh3GwWzusqia7nd8Y-PVJ-tJ_pSwJZ3PI2SPea4KH6hgNZhES9sDCp/exec';
 
         // Sample data - Will be replaced by Google Sheets data
         let employees = [
@@ -608,9 +608,7 @@
 
         // Navigation functions
         function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
-            });
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
         }
 
@@ -635,23 +633,24 @@
             showNotification('Logging in...', 'info');
             
             try {
-                // Try online authentication first
-                const result = await authenticateWithGoogle('employee', {id: empId, password: password});
+                const url = `${GOOGLE_SCRIPT_URL}?action=authenticate&userType=employee&id=${encodeURIComponent(empId)}&password=${encodeURIComponent(password)}`;
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const result = await response.json();
                 
                 if (result.success) {
                     currentUser = result.data;
                     currentRole = 'employee';
                     document.getElementById('empName').textContent = currentUser.name;
-                    await loadFromGoogleSheets(); // Load fresh data
+                    await loadFromGoogleSheets();
                     loadEmployeeDashboard();
                     showPage('employeeDashboard');
                     showNotification('Login successful!');
                 } else {
-                    throw new Error('Online authentication failed');
+                    throw new Error('Authentication failed');
                 }
             } catch (error) {
                 console.log('Online authentication failed, trying offline:', error);
-                // Fallback to offline authentication
                 const employee = employees.find(emp => emp.id === empId && emp.password === password);
                 
                 if (employee) {
@@ -675,22 +674,23 @@
             showNotification('Logging in...', 'info');
             
             try {
-                // Try online authentication first
-                const result = await authenticateWithGoogle('reception', {username: username, password: password});
+                const url = `${GOOGLE_SCRIPT_URL}?action=authenticate&userType=reception&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const result = await response.json();
                 
                 if (result.success) {
                     currentUser = result.data;
                     currentRole = 'reception';
-                    await loadFromGoogleSheets(); // Load fresh data
+                    await loadFromGoogleSheets();
                     loadReceptionDashboard();
                     showPage('receptionDashboard');
                     showNotification('Login successful!');
                 } else {
-                    throw new Error('Online authentication failed');
+                    throw new Error('Authentication failed');
                 }
             } catch (error) {
                 console.log('Online authentication failed, trying offline:', error);
-                // Fallback to offline authentication
                 if (username === 'reception' && password === 'admin123') {
                     currentUser = {name: 'Reception'};
                     currentRole = 'reception';
@@ -713,19 +713,14 @@
         // Dashboard loading functions
         function loadEmployeeDashboard() {
             const userBookings = bookings.filter(booking => booking.employeeId === currentUser.id);
-            
-            // Update stats
             document.getElementById('totalBookings').textContent = userBookings.length;
             document.getElementById('pendingBookings').textContent = userBookings.filter(b => b.status === 'pending').length;
             document.getElementById('completedBookings').textContent = userBookings.filter(b => b.status === 'completed').length;
             
-            // Load bookings
             const bookingsContainer = document.getElementById('employeeBookings');
             bookingsContainer.innerHTML = '';
-            
-            userBookings.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(booking => {
-                bookingsContainer.appendChild(createBookingCard(booking));
-            });
+            userBookings.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+                .forEach(booking => bookingsContainer.appendChild(createBookingCard(booking)));
             
             if (userBookings.length === 0) {
                 bookingsContainer.innerHTML = '<p style="text-align: center; color: #6c757d; padding: 40px;">No bookings yet. Click "New Booking" to get started!</p>';
@@ -733,18 +728,14 @@
         }
 
         function loadReceptionDashboard() {
-            // Update stats
             document.getElementById('totalRequests').textContent = bookings.length;
             document.getElementById('pendingRequests').textContent = bookings.filter(b => b.status === 'pending').length;
             document.getElementById('availableCabs').textContent = cabs.filter(c => c.available).length;
             
-            // Load requests
             const requestsContainer = document.getElementById('cabRequests');
             requestsContainer.innerHTML = '';
-            
-            bookings.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(booking => {
-                requestsContainer.appendChild(createRequestCard(booking));
-            });
+            bookings.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+                .forEach(booking => requestsContainer.appendChild(createRequestCard(booking)));
             
             if (bookings.length === 0) {
                 requestsContainer.innerHTML = '<p style="text-align: center; color: #6c757d; padding: 40px;">No requests yet.</p>';
@@ -755,7 +746,6 @@
         function createBookingCard(booking) {
             const card = document.createElement('div');
             card.className = 'request-card';
-            
             const statusClass = `status-${booking.status}`;
             const statusText = booking.status.charAt(0).toUpperCase() + booking.status.slice(1);
             
@@ -794,14 +784,12 @@
                 </div>
                 ${booking.notes ? `<div style="margin-top: 10px; font-style: italic; color: #6c757d;">Notes: ${booking.notes}</div>` : ''}
             `;
-            
             return card;
         }
 
         function createRequestCard(booking) {
             const card = document.createElement('div');
             card.className = 'request-card';
-            
             const statusClass = `status-${booking.status}`;
             const statusText = booking.status.charAt(0).toUpperCase() + booking.status.slice(1);
             
@@ -843,7 +831,6 @@
                     ` : ''}
                 </div>
             `;
-            
             return card;
         }
 
@@ -857,12 +844,9 @@
         }
 
         function showNewBooking() {
-            // Set minimum date to today
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('bookingDate').value = today;
             document.getElementById('bookingDate').min = today;
-            
-            // Load available cabs
             loadAvailableCabs();
             showModal('newBookingModal');
         }
@@ -878,30 +862,21 @@
         function showAssignDriver(requestId) {
             document.getElementById('assignRequestId').value = requestId;
             const booking = bookings.find(b => b.id === requestId);
-            
-            // Load available cabs for assignment
             const cabSelect = document.getElementById('assignCab');
             cabSelect.innerHTML = '<option value="">Select available cab...</option>';
-            
             cabs.filter(cab => cab.available).forEach(cab => {
                 const option = document.createElement('option');
                 option.value = cab.id;
                 option.textContent = `${cab.id} - ${cab.model} (${cab.driver})`;
                 cabSelect.appendChild(option);
             });
-            
-            // Set default pickup time
-            if (booking) {
-                document.getElementById('pickupTime').value = booking.time;
-            }
-            
+            if (booking) document.getElementById('pickupTime').value = booking.time;
             showModal('assignDriverModal');
         }
 
         // Form submission functions
         async function submitBooking(event) {
             event.preventDefault();
-            
             const newBooking = {
                 id: generateRequestId(),
                 employeeId: currentUser.id,
@@ -917,10 +892,11 @@
             };
             
             showNotification('Submitting booking...', 'info');
-            
             try {
-                // Save to Google Sheets
-                const result = await saveToGoogleSheets('bookings', newBooking);
+                const url = `${GOOGLE_SCRIPT_URL}?action=add&sheet=bookings&data=${encodeURIComponent(JSON.stringify(newBooking))}`;
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const result = await response.json();
                 
                 if (result.success) {
                     bookings.push(newBooking);
@@ -939,7 +915,6 @@
 
         async function addEmployee(event) {
             event.preventDefault();
-            
             const newEmployee = {
                 id: document.getElementById('newEmpId').value,
                 name: document.getElementById('newEmpName').value,
@@ -949,17 +924,17 @@
                 password: document.getElementById('newEmpPassword').value
             };
             
-            // Check if employee ID already exists
             if (employees.find(emp => emp.id === newEmployee.id)) {
                 showNotification('Employee ID already exists!', 'error');
                 return;
             }
             
             showNotification('Adding employee...', 'info');
-            
             try {
-                // Save to Google Sheets
-                const result = await saveToGoogleSheets('employees', newEmployee);
+                const url = `${GOOGLE_SCRIPT_URL}?action=add&sheet=employees&data=${encodeURIComponent(JSON.stringify(newEmployee))}`;
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const result = await response.json();
                 
                 if (result.success) {
                     employees.push(newEmployee);
@@ -977,7 +952,6 @@
 
         async function addCab(event) {
             event.preventDefault();
-            
             const newCab = {
                 id: document.getElementById('newCabNumber').value,
                 plate: document.getElementById('newCabPlate').value,
@@ -987,17 +961,17 @@
                 available: true
             };
             
-            // Check if cab number already exists
             if (cabs.find(cab => cab.id === newCab.id)) {
                 showNotification('Cab number already exists!', 'error');
                 return;
             }
             
             showNotification('Adding cab...', 'info');
-            
             try {
-                // Save to Google Sheets
-                const result = await saveToGoogleSheets('cabs', newCab);
+                const url = `${GOOGLE_SCRIPT_URL}?action=add&sheet=cabs&data=${encodeURIComponent(JSON.stringify(newCab))}`;
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const result = await response.json();
                 
                 if (result.success) {
                     cabs.push(newCab);
@@ -1016,7 +990,6 @@
 
         async function assignDriver(event) {
             event.preventDefault();
-            
             const requestId = document.getElementById('assignRequestId').value;
             const cabId = document.getElementById('assignCab').value;
             const pickupTime = document.getElementById('pickupTime').value;
@@ -1026,7 +999,6 @@
             const cab = cabs.find(c => c.id === cabId);
             
             if (booking && cab) {
-                // Update booking
                 booking.status = 'approved';
                 booking.assignedCab = cab.id;
                 booking.driverName = cab.driver;
@@ -1035,20 +1007,32 @@
                 booking.carPlate = cab.plate;
                 booking.pickupTime = pickupTime;
                 booking.driverInstructions = instructions;
+                cab.available = false;
                 
                 showNotification('Assigning driver...', 'info');
-                
                 try {
-                    // Update in Google Sheets
-                    const result = await updateGoogleSheets('bookings', booking);
+                    const bookingUrl = `${GOOGLE_SCRIPT_URL}?action=update&sheet=bookings&data=${encodeURIComponent(JSON.stringify(booking))}`;
+                    const cabUrl = `${GOOGLE_SCRIPT_URL}?action=update&sheet=cabs&data=${encodeURIComponent(JSON.stringify(cab))}`;
                     
-                    if (result.success) {
+                    const [bookingResponse, cabResponse] = await Promise.all([
+                        fetch(bookingUrl),
+                        fetch(cabUrl)
+                    ]);
+                    
+                    if (!bookingResponse.ok || !cabResponse.ok) throw new Error('Failed to update Google Sheets');
+                    
+                    const [bookingResult, cabResult] = await Promise.all([
+                        bookingResponse.json(),
+                        cabResponse.json()
+                    ]);
+                    
+                    if (bookingResult.success && cabResult.success) {
                         closeModal('assignDriverModal');
                         loadReceptionDashboard();
                         showNotification(`Driver assigned to request ${requestId}!`);
                         document.querySelector('#assignDriverModal form').reset();
                     } else {
-                        throw new Error(result.message || 'Failed to assign driver');
+                        throw new Error('Failed to assign driver');
                     }
                 } catch (error) {
                     console.error('Error assigning driver:', error);
@@ -1062,12 +1046,12 @@
                 const booking = bookings.find(b => b.id === requestId);
                 if (booking) {
                     booking.status = 'rejected';
-                    
                     showNotification('Rejecting request...', 'info');
-                    
                     try {
-                        // Update in Google Sheets
-                        const result = await updateGoogleSheets('bookings', booking);
+                        const url = `${GOOGLE_SCRIPT_URL}?action=update&sheet=bookings&data=${encodeURIComponent(JSON.stringify(booking))}`;
+                        const response = await fetch(url);
+                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                        const result = await response.json();
                         
                         if (result.success) {
                             loadReceptionDashboard();
@@ -1088,24 +1072,28 @@
             if (booking) {
                 booking.status = 'completed';
                 booking.completedAt = new Date().toISOString();
-                
-                // Make cab available again
                 const cab = cabs.find(c => c.id === booking.assignedCab);
-                if (cab) {
-                    cab.available = true;
-                }
+                if (cab) cab.available = true;
                 
                 showNotification('Marking as completed...', 'info');
-                
                 try {
-                    // Update in Google Sheets
-                    const result = await updateGoogleSheets('bookings', booking);
+                    const bookingUrl = `${GOOGLE_SCRIPT_URL}?action=update&sheet=bookings&data=${encodeURIComponent(JSON.stringify(booking))}`;
+                    const cabUrl = cab ? `${GOOGLE_SCRIPT_URL}?action=update&sheet=cabs&data=${encodeURIComponent(JSON.stringify(cab))}` : null;
                     
-                    if (result.success) {
+                    const responses = await Promise.all([
+                        fetch(bookingUrl),
+                        cabUrl ? fetch(cabUrl) : Promise.resolve(null)
+                    ]);
+                    
+                    if (!responses[0].ok || (cabUrl && !responses[1].ok)) throw new Error('Failed to update Google Sheets');
+                    
+                    const results = await Promise.all(responses.map(r => r ? r.json() : Promise.resolve({success: true})));
+                    
+                    if (results.every(r => r.success)) {
                         loadReceptionDashboard();
                         showNotification(`Trip ${requestId} marked as completed!`);
                     } else {
-                        throw new Error(result.message || 'Failed to mark as completed');
+                        throw new Error('Failed to mark as completed');
                     }
                 } catch (error) {
                     console.error('Error marking as completed:', error);
@@ -1115,73 +1103,19 @@
         }
 
         // Google Sheets integration functions
-        async function saveToGoogleSheets(sheetName, data) {
-            try {
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({action: 'add', sheet: sheetName, data: data})
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const result = await response.json();
-                return result;
-            } catch (error) {
-                console.error('Error saving to Google Sheets:', error);
-                return {success: false, message: error.message};
-            }
-        }
-
-        async function updateGoogleSheets(sheetName, data) {
-            try {
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({action: 'update', sheet: sheetName, data: data})
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const result = await response.json();
-                return result;
-            } catch (error) {
-                console.error('Error updating Google Sheets:', error);
-                return {success: false, message: error.message};
-            }
-        }
-
         async function loadFromGoogleSheets() {
             try {
-                const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=load`);
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
+                const url = `${GOOGLE_SCRIPT_URL}?action=load`;
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const result = await response.json();
                 
                 if (result.success) {
                     if (result.data.employees) employees = result.data.employees;
                     if (result.data.cabs) cabs = result.data.cabs;
                     if (result.data.bookings) bookings = result.data.bookings;
-                    
-                    console.log('Data loaded successfully:', result.data);
-                    
-                    // Update dashboard if user is logged in
-                    if (currentUser && currentRole === 'employee') {
-                        loadEmployeeDashboard();
-                    } else if (currentUser && currentRole === 'reception') {
-                        loadReceptionDashboard();
-                    }
+                    if (currentUser && currentRole === 'employee') loadEmployeeDashboard();
+                    else if (currentUser && currentRole === 'reception') loadReceptionDashboard();
                 } else {
                     console.error('Failed to load data:', result.message);
                 }
@@ -1190,38 +1124,11 @@
             }
         }
 
-        async function authenticateWithGoogle(userType, credentials) {
-            try {
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        action: 'authenticate', 
-                        userType: userType, 
-                        credentials: credentials
-                    })
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const result = await response.json();
-                return result;
-            } catch (error) {
-                console.error('Error authenticating:', error);
-                return {success: false, message: 'Authentication server error'};
-            }
-        }
-
         // Utility functions
         function loadAvailableCabs() {
             const cabSelect = document.getElementById('preferredCab');
             cabSelect.innerHTML = '<option value="">Select available cab...</option>';
-            
-            cabs.forEach(cab => {
+            cabs.filter(cab => cab.available).forEach(cab => {
                 const option = document.createElement('option');
                 option.value = cab.id;
                 option.textContent = `${cab.id} - ${cab.model} (${cab.driver})`;
@@ -1248,41 +1155,21 @@
         function showNotification(message, type = 'success') {
             const notification = document.getElementById('notification');
             notification.textContent = message;
-            
-            // Set notification color based on type
-            if (type === 'error') {
-                notification.style.background = '#dc3545';
-            } else if (type === 'info') {
-                notification.style.background = '#17a2b8';
-            } else {
-                notification.style.background = '#28a745';
-            }
-            
+            notification.style.background = type === 'error' ? '#dc3545' : type === 'info' ? '#17a2b8' : '#28a745';
             notification.style.display = 'block';
-            
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 3000);
+            setTimeout(() => notification.style.display = 'none', 3000);
         }
 
         // Load data on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            // Load data from Google Sheets when page loads
+        document.addEventListener('DOMContentLoaded', () => {
             loadFromGoogleSheets();
-            
-            // Close modals when clicking outside
             document.querySelectorAll('.modal').forEach(modal => {
-                modal.addEventListener('click', function(e) {
-                    if (e.target === modal) {
-                        modal.style.display = 'none';
-                    }
+                modal.addEventListener('click', e => {
+                    if (e.target === modal) modal.style.display = 'none';
                 });
             });
-
-            // Update available cabs when date/time changes
             const bookingDate = document.getElementById('bookingDate');
             const bookingTime = document.getElementById('bookingTime');
-            
             if (bookingDate) bookingDate.addEventListener('change', loadAvailableCabs);
             if (bookingTime) bookingTime.addEventListener('change', loadAvailableCabs);
         });
