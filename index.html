@@ -384,6 +384,28 @@
             margin-bottom: 30px;
         }
 
+        /* Connection Status */
+        .connection-status {
+            position: fixed;
+            top: 60px;
+            right: 20px;
+            z-index: 999;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .connection-status.connected {
+            background: var(--unicef-green);
+            color: white;
+        }
+
+        .connection-status.disconnected {
+            background: var(--unicef-red);
+            color: white;
+        }
+
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .theme-toggle {
@@ -391,6 +413,11 @@
                 right: 10px;
                 padding: 8px 12px;
                 font-size: 12px;
+            }
+            
+            .connection-status {
+                top: 50px;
+                right: 10px;
             }
             
             .main-container {
@@ -460,6 +487,11 @@
     <div class="theme-toggle" onclick="toggleTheme()">
         <i class="fas fa-sun" id="theme-icon"></i>
         <span id="theme-text">Light Mode</span>
+    </div>
+
+    <!-- Connection Status -->
+    <div class="connection-status disconnected" id="connectionStatus">
+        <i class="fas fa-circle"></i> Connecting...
     </div>
 
     <!-- Loading Overlay -->
@@ -649,17 +681,17 @@
                     <form id="loginForm">
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="username" value="admin" required>
+                            <input type="text" class="form-control" id="username" placeholder="Enter username" required>
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" value="admin123" required>
+                            <input type="password" class="form-control" id="password" placeholder="Enter password" required>
                         </div>
                         <button type="button" class="btn btn-primary w-100" onclick="handleReceptionLogin()">
                             <i class="fas fa-sign-in-alt"></i> Login
                         </button>
                         <div class="text-center mt-3">
-                            <small class="text-muted">Demo: admin / admin123</small>
+                            <small class="text-muted">Use your assigned credentials</small>
                         </div>
                         <div class="text-center mt-2">
                             <button type="button" class="btn btn-outline-secondary" onclick="goBackToPortalSelection()">
@@ -895,74 +927,92 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Theme Toggle Functionality
-        function toggleTheme() {
-            const body = document.body;
-            const themeIcon = document.getElementById('theme-icon');
-            const themeText = document.getElementById('theme-text');
-            
-            if (body.getAttribute('data-theme') === 'dark') {
-                body.removeAttribute('data-theme');
-                themeIcon.className = 'fas fa-sun';
-                themeText.textContent = 'Light Mode';
-                localStorage.setItem('theme', 'light');
-            } else {
-                body.setAttribute('data-theme', 'dark');
-                themeIcon.className = 'fas fa-moon';
-                themeText.textContent = 'Dark Mode';
-                localStorage.setItem('theme', 'dark');
-            }
-        }
-
-        // Initialize theme on page load
-        function initializeTheme() {
-            const savedTheme = localStorage.getItem('theme');
-            const body = document.body;
-            const themeIcon = document.getElementById('theme-icon');
-            const themeText = document.getElementById('theme-text');
-            
-            if (savedTheme === 'dark') {
-                body.setAttribute('data-theme', 'dark');
-                themeIcon.className = 'fas fa-moon';
-                themeText.textContent = 'Dark Mode';
-            } else {
-                body.removeAttribute('data-theme');
-                themeIcon.className = 'fas fa-sun';
-                themeText.textContent = 'Light Mode';
-            }
-        }
-
-        // API Configuration and Functions
+        // API Configuration and Connection Status
         class CabBookingAPI {
             constructor() {
-                this.baseURL = 'https://script.google.com/macros/s/AKfycbxDkKwwefSzeRAZQtNsZ6SzsEIAg3YBPurUipP2h9w0YvuctkbDlnNkmlbxFCzQU6LE4g/exec';
+                this.baseURL = 'https://script.google.com/macros/s/AKfycbw93_W0GYkOwT0SgOxBFCMI7sMP7GeZoqid9pGHmzW7I10Dwb3RXH-8q2UFExtm0a2jgw/exec';
+                this.isConnected = false;
+                this.testConnection();
+            }
+
+            async testConnection() {
+                try {
+                    showLoading('Testing connection...');
+                    const response = await this.makeRequest('GET', 'test');
+                    if (response.success) {
+                        this.isConnected = true;
+                        updateConnectionStatus(true);
+                        showAlert('Connected to server successfully!', 'success');
+                    } else {
+                        throw new Error('API test failed');
+                    }
+                } catch (error) {
+                    this.isConnected = false;
+                    updateConnectionStatus(false);
+                    showAlert('Failed to connect to server: ' + error.message, 'error');
+                    console.error('Connection test failed:', error);
+                } finally {
+                    hideLoading();
+                }
             }
 
             async makeRequest(method, action, data = null) {
-                const url = method === 'GET' ? 
-                    `${this.baseURL}?action=${action}${data ? '&' + new URLSearchParams(data).toString() : ''}` : 
-                    this.baseURL;
+                const maxRetries = 3;
+                let retryCount = 0;
 
-                const options = {
-                    method: method,
-                    headers: {
-                        'Content-Type': 'application/json',
+                while (retryCount < maxRetries) {
+                    try {
+                        let url, options;
+
+                        if (method === 'GET') {
+                            const params = data ? '&' + new URLSearchParams(data).toString() : '';
+                            url = `${this.baseURL}?action=${action}${params}`;
+                            options = {
+                                method: 'GET',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                }
+                            };
+                        } else {
+                            url = this.baseURL;
+                            options = {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ action, ...data })
+                            };
+                        }
+
+                        console.log('Making request:', method, action, data);
+
+                        const response = await fetch(url, options);
+                        
+                        if (!response.ok) {
+                            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                        }
+
+                        const result = await response.json();
+                        console.log('API Response:', result);
+
+                        this.isConnected = true;
+                        updateConnectionStatus(true);
+                        
+                        return result;
+
+                    } catch (error) {
+                        retryCount++;
+                        console.error(`API request failed (attempt ${retryCount}):`, error);
+                        
+                        if (retryCount >= maxRetries) {
+                            this.isConnected = false;
+                            updateConnectionStatus(false);
+                            throw new Error(`API request failed after ${maxRetries} attempts: ${error.message}`);
+                        }
+                        
+                        // Wait before retry
+                        await new Promise(resolve => setTimeout(resolve, 1000 * retryCount));
                     }
-                };
-
-                if (method === 'POST' && data) {
-                    options.body = JSON.stringify({ action, ...data });
-                }
-
-                try {
-                    const response = await fetch(url, options);
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return await response.json();
-                } catch (error) {
-                    console.error('API request failed:', error);
-                    throw error;
                 }
             }
 
@@ -1020,6 +1070,55 @@
         // Initialize API instance
         const api = new CabBookingAPI();
 
+        // Connection Status Management
+        function updateConnectionStatus(connected) {
+            const statusEl = document.getElementById('connectionStatus');
+            if (connected) {
+                statusEl.className = 'connection-status connected';
+                statusEl.innerHTML = '<i class="fas fa-circle"></i> Connected';
+            } else {
+                statusEl.className = 'connection-status disconnected';
+                statusEl.innerHTML = '<i class="fas fa-circle"></i> Disconnected';
+            }
+        }
+
+        // Theme Toggle Functionality
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                themeIcon.className = 'fas fa-sun';
+                themeText.textContent = 'Light Mode';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fas fa-moon';
+                themeText.textContent = 'Dark Mode';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Initialize theme on page load
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            if (savedTheme === 'dark') {
+                body.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fas fa-moon';
+                themeText.textContent = 'Dark Mode';
+            } else {
+                body.removeAttribute('data-theme');
+                themeIcon.className = 'fas fa-sun';
+                themeText.textContent = 'Light Mode';
+            }
+        }
+
         // Portal Navigation Functions
         function showEmployeePortal() {
             document.getElementById('portalSelection').style.display = 'none';
@@ -1042,12 +1141,9 @@
 
         // Employee Portal Functions
         function showEmployeeSection(section) {
-            // Hide all sections
             document.querySelectorAll('#employeePortal .content-section').forEach(el => el.style.display = 'none');
-            // Show selected section
             document.getElementById('employee' + section.charAt(0).toUpperCase() + section.slice(1)).style.display = 'block';
             
-            // Update active nav
             document.querySelectorAll('#employeePortal .sidebar-nav a').forEach(el => el.classList.remove('active'));
             event.target.classList.add('active');
 
@@ -1080,6 +1176,10 @@
                         option.textContent = `${cab['Car Model']} - ${cab['License Plate']} (Driver: ${cab['Driver Name']})`;
                         cabSelect.appendChild(option);
                     });
+                    
+                    if (response.data.length === 0) {
+                        cabSelect.innerHTML = '<option value="">No cabs available for this time</option>';
+                    }
                 } else {
                     showAlert('Error loading cabs: ' + response.message, 'error');
                 }
@@ -1104,7 +1204,6 @@
                 preferredCab: formData.get('cabSelect')
             };
 
-            // Validate required fields
             if (!bookingData.employeeName || !bookingData.date || !bookingData.time || 
                 !bookingData.destination || !bookingData.preferredCab) {
                 showAlert('Please fill in all required fields', 'error');
@@ -1160,7 +1259,6 @@
             document.getElementById('empApprovedBookings').textContent = approved;
             document.getElementById('empRejectedBookings').textContent = rejected;
 
-            // Update table
             const tbody = document.getElementById('employeeBookingsTable');
             tbody.innerHTML = '';
 
@@ -1186,14 +1284,17 @@
             const ctx = document.getElementById('employeeChart');
             if (!ctx) return;
 
-            // Group bookings by month
             const monthlyData = {};
             bookings.forEach(booking => {
-                const month = new Date(booking.Date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-                monthlyData[month] = (monthlyData[month] || 0) + 1;
+                try {
+                    const month = new Date(booking.Date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+                    monthlyData[month] = (monthlyData[month] || 0) + 1;
+                } catch (e) {
+                    console.warn('Invalid date:', booking.Date);
+                }
             });
 
-            const labels = Object.keys(monthlyData).slice(-6); // Last 6 months
+            const labels = Object.keys(monthlyData).slice(-6);
             const data = labels.map(label => monthlyData[label] || 0);
 
             new Chart(ctx, {
@@ -1242,20 +1343,16 @@
         }
 
         function loadEmployeeAnalytics() {
-            // This will be called when analytics section is shown
             setTimeout(() => {
-                loadEmployeeDashboard(); // Reload data for charts
+                loadEmployeeDashboard();
             }, 100);
         }
 
         // Reception Portal Functions
         function showReceptionSection(section) {
-            // Hide all sections
             document.querySelectorAll('#receptionDashboard .content-section').forEach(el => el.style.display = 'none');
-            // Show selected section
             document.getElementById('reception' + section.charAt(0).toUpperCase() + section.slice(1) + (section === 'dashboard' ? 'Content' : '')).style.display = 'block';
             
-            // Update active nav
             document.querySelectorAll('#receptionDashboard .sidebar-nav a').forEach(el => el.classList.remove('active'));
             event.target.classList.add('active');
 
@@ -1289,6 +1386,7 @@
                     document.getElementById('loginSection').style.display = 'none';
                     document.getElementById('receptionDashboard').style.display = 'block';
                     loadReceptionDashboard();
+                    showAlert('Login successful!', 'success');
                 } else {
                     showAlert('Invalid credentials', 'error');
                 }
@@ -1337,11 +1435,14 @@
             const ctx = document.getElementById('receptionChart');
             if (!ctx) return;
 
-            // Group bookings by month
             const monthlyData = {};
             bookings.forEach(booking => {
-                const month = new Date(booking.Date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-                monthlyData[month] = (monthlyData[month] || 0) + 1;
+                try {
+                    const month = new Date(booking.Date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+                    monthlyData[month] = (monthlyData[month] || 0) + 1;
+                } catch (e) {
+                    console.warn('Invalid date:', booking.Date);
+                }
             });
 
             const labels = Object.keys(monthlyData).slice(-6);
@@ -1451,17 +1552,12 @@
                     return;
                 }
 
-                const availableCabs = cabsResponse.data.filter(cab => cab.Available === true || cab.Available === 'TRUE');
+                const availableCabs = cabsResponse.data.filter(cab => cab.Available === true || cab.Available === 'TRUE' || cab.Available === 'true');
                 
                 if (availableCabs.length === 0) {
                     showAlert('No cabs available for assignment', 'error');
                     return;
                 }
-
-                let cabOptions = '';
-                availableCabs.forEach(cab => {
-                    cabOptions += `<option value="${cab.ID}">${cab['Car Model']} - ${cab['License Plate']} (${cab['Driver Name']})</option>`;
-                });
 
                 const cabId = prompt(`Select a cab for approval:\n${availableCabs.map(cab => `${cab.ID}: ${cab['Car Model']} - ${cab['License Plate']}`).join('\n')}\n\nEnter Cab ID:`);
                 
@@ -1697,8 +1793,8 @@
         function logoutReception() {
             document.getElementById('loginSection').style.display = 'flex';
             document.getElementById('receptionDashboard').style.display = 'none';
-            document.getElementById('username').value = 'admin';
-            document.getElementById('password').value = 'admin123';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
         }
 
         // Utility Functions
@@ -1723,7 +1819,6 @@
         }
 
         function showAlert(message, type = 'info') {
-            // Create alert element
             const alertDiv = document.createElement('div');
             alertDiv.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show`;
             alertDiv.style.position = 'fixed';
@@ -1739,7 +1834,6 @@
             
             document.body.appendChild(alertDiv);
             
-            // Auto-remove after 5 seconds
             setTimeout(() => {
                 if (alertDiv.parentNode) {
                     alertDiv.parentNode.removeChild(alertDiv);
@@ -1761,10 +1855,8 @@
 
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize theme
             initializeTheme();
             
-            // Set up date/time change listeners
             const dateInput = document.getElementById('bookingDate');
             const timeInput = document.getElementById('bookingTime');
             
@@ -1772,7 +1864,6 @@
                 dateInput.addEventListener('change', loadAvailableCabs);
                 timeInput.addEventListener('change', loadAvailableCabs);
                 
-                // Set minimum date to today
                 const today = new Date().toISOString().split('T')[0];
                 dateInput.min = today;
             }
