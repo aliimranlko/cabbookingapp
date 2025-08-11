@@ -31,11 +31,34 @@
       --bg-primary: #1a1a1a;
       --bg-secondary: #2d2d2d;
       --text-primary: #ffffff;
-      --text-secondary: #b0b0b0;
+      --text-secondary: #e0e0e0;
       --border-color: #404040;
       --card-bg: #2d2d2d;
       --input-bg: #404040;
       --shadow: rgba(0, 0, 0, 0.3);
+    }
+
+    /* Enhanced dark mode font fixes */
+    [data-theme="dark"] body,
+    [data-theme="dark"] .form-label,
+    [data-theme="dark"] .table,
+    [data-theme="dark"] .stats-card h3,
+    [data-theme="dark"] .stats-card p,
+    [data-theme="dark"] .portal-card h3,
+    [data-theme="dark"] .sidebar-brand h4 {
+      color: var(--text-primary) !important;
+    }
+
+    [data-theme="dark"] .form-control {
+      background: var(--input-bg) !important;
+      border-color: var(--border-color) !important;
+      color: var(--text-primary) !important;
+    }
+
+    [data-theme="dark"] .table th,
+    [data-theme="dark"] .table td {
+      color: var(--text-primary) !important;
+      border-color: var(--border-color) !important;
     }
 
     * {
@@ -73,13 +96,40 @@
     .theme-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--shadow); }
     .theme-toggle i { font-size: 16px; color: var(--unicef-orange); }
 
+    /* Connection Status Badge */
+    .connection-status {
+      position: fixed;
+      top: 60px;
+      right: 20px;
+      z-index: 999;
+      padding: 8px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .connection-status.connected {
+      background: var(--unicef-green);
+      color: white;
+    }
+    .connection-status.disconnected {
+      background: var(--unicef-red);
+      color: white;
+    }
+    .connection-status.testing {
+      background: var(--unicef-orange);
+      color: white;
+    }
+
     .main-container {
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
-      padding-top: 80px;
+      padding-top: 100px;
     }
 
     .portal-selection {
@@ -122,7 +172,7 @@
     .portal-card h3 { font-size: 1.5rem; font-weight: 600; margin-bottom: 10px; color: var(--text-primary); }
     .portal-card p { color: var(--text-secondary); margin-bottom: 0; }
 
-    .dashboard { display: none; background: var(--bg-primary); min-height: 100vh; padding-top: 80px; }
+    .dashboard { display: none; background: var(--bg-primary); min-height: 100vh; padding-top: 100px; }
     .sidebar {
       background: var(--card-bg);
       border-right: 1px solid var(--border-color);
@@ -219,9 +269,50 @@
 
     .hidden-form { display: none; }
 
+    /* Calendar styles */
+    .calendar-container { 
+      background: var(--card-bg); 
+      border-radius: 15px; 
+      padding: 20px; 
+      margin-top: 20px;
+    }
+    
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+    }
+    
+    .calendar-day {
+      padding: 10px;
+      text-align: center;
+      border: 1px solid var(--border-color);
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .calendar-day:hover {
+      background: var(--unicef-cyan);
+      color: white;
+    }
+    
+    .calendar-day.has-booking {
+      background: var(--unicef-orange);
+      color: white;
+    }
+
     @media (max-width: 768px) {
       .theme-toggle { top: 10px; right: 10px; padding: 8px 12px; font-size: 12px; }
-      .main-container { padding: 10px; padding-top: 70px; }
+      .connection-status { top: 50px; right: 10px; }
+      .main-container { padding: 10px; padding-top: 90px; }
       .portal-header h1 { font-size: 2rem; }
       .portal-options { padding: 20px; }
       .portal-card { padding: 20px; }
@@ -243,6 +334,11 @@
   <div class="theme-toggle" onclick="toggleTheme()">
     <i class="fas fa-sun" id="theme-icon"></i>
     <span id="theme-text">Light Mode</span>
+  </div>
+
+  <!-- Connection Status Badge -->
+  <div class="connection-status testing" id="connectionStatus">
+    <i class="fas fa-circle"></i> Connecting...
   </div>
 
   <!-- Loading Overlay -->
@@ -380,7 +476,7 @@
               <div class="form-section">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                   <h4>My Booking History</h4>
-                  <button class="btn btn-outline-primary" onclick="showCalendar('employee')"><i class="fas fa-calendar-alt"></i> Calendar View</button>
+                  <button class="btn btn-outline-primary" onclick="showEmployeeCalendar()"><i class="fas fa-calendar-alt"></i> Calendar View</button>
                 </div>
                 <div class="table-responsive">
                   <table class="table table-striped">
@@ -396,6 +492,19 @@
                     </thead>
                     <tbody id="employeeBookingsTable"></tbody>
                   </table>
+                </div>
+                
+                <!-- Employee Calendar -->
+                <div id="employeeCalendarContainer" class="calendar-container" style="display:none;">
+                  <div class="calendar-header">
+                    <button class="btn btn-outline-primary" onclick="hideEmployeeCalendar()">Hide Calendar</button>
+                    <h4 id="calendarMonth">Calendar</h4>
+                    <div>
+                      <button class="btn btn-sm btn-outline-secondary" onclick="previousMonth()">&lt;</button>
+                      <button class="btn btn-sm btn-outline-secondary" onclick="nextMonth()">&gt;</button>
+                    </div>
+                  </div>
+                  <div class="calendar-grid" id="employeeCalendarGrid"></div>
                 </div>
               </div>
             </div>
@@ -486,8 +595,8 @@
                 <h2><i class="fas fa-list"></i> Manage Bookings</h2>
                 <div class="form-section">
                   <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4>Pending Approvals</h4>
-                    <button class="btn btn-outline-primary" onclick="showCalendar('reception')"><i class="fas fa-calendar-alt"></i> Calendar View</button>
+                    <h4>Booking Management</h4>
+                    <button class="btn btn-outline-primary" onclick="showReceptionCalendar()"><i class="fas fa-calendar-alt"></i> Calendar View</button>
                   </div>
                   <div class="table-responsive">
                     <table class="table table-striped">
@@ -505,6 +614,19 @@
                       <tbody id="bookingsTable"></tbody>
                     </table>
                   </div>
+                  
+                  <!-- Reception Calendar -->
+                  <div id="receptionCalendarContainer" class="calendar-container" style="display:none;">
+                    <div class="calendar-header">
+                      <button class="btn btn-outline-primary" onclick="hideReceptionCalendar()">Hide Calendar</button>
+                      <h4 id="receptionCalendarMonth">Calendar</h4>
+                      <div>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="previousReceptionMonth()">&lt;</button>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="nextReceptionMonth()">&gt;</button>
+                      </div>
+                    </div>
+                    <div class="calendar-grid" id="receptionCalendarGrid"></div>
+                  </div>
                 </div>
               </div>
 
@@ -515,6 +637,10 @@
                     <div class="form-section">
                       <h4>Add New Employee</h4>
                       <form id="addEmployeeForm">
+                        <div class="mb-3">
+                          <label class="form-label">Employee ID *</label>
+                          <input type="text" class="form-control" name="employeeId" placeholder="e.g., EMP005" required>
+                        </div>
                         <div class="mb-3"><label class="form-label">Name *</label><input type="text" class="form-control" name="name" required></div>
                         <div class="mb-3">
                           <label class="form-label">Department *</label>
@@ -529,6 +655,7 @@
                         </div>
                         <div class="mb-3"><label class="form-label">Phone *</label><input type="tel" class="form-control" name="phone" required></div>
                         <div class="mb-3"><label class="form-label">Email *</label><input type="email" class="form-control" name="email" required></div>
+                        <div class="mb-3"><label class="form-label">Password</label><input type="password" class="form-control" name="password" placeholder="Default: default123"></div>
                         <button type="button" class="btn btn-primary" onclick="addEmployee()"><i class="fas fa-plus"></i> Add Employee</button>
                       </form>
                     </div>
@@ -557,6 +684,7 @@
                         <div class="mb-3"><label class="form-label">License Plate *</label><input type="text" class="form-control" name="licensePlate" required></div>
                         <div class="mb-3"><label class="form-label">Driver Name *</label><input type="text" class="form-control" name="driverName" required></div>
                         <div class="mb-3"><label class="form-label">Driver Phone *</label><input type="tel" class="form-control" name="driverPhone" required></div>
+                        <div class="mb-3"><label class="form-label">Driver Email *</label><input type="email" class="form-control" name="driverEmail" required></div>
                         <div class="mb-3"><label class="form-label">Car Model *</label><input type="text" class="form-control" name="carModel" required></div>
                         <div class="mb-3"><label class="form-label"><input type="checkbox" name="available" checked> Available</label></div>
                         <button type="button" class="btn btn-primary" onclick="addCab()"><i class="fas fa-plus"></i> Add Cab</button>
@@ -568,7 +696,7 @@
                       <h4>Fleet Status</h4>
                       <div class="table-responsive">
                         <table class="table table-sm">
-                          <thead><tr><th>Plate</th><th>Model</th><th>Driver</th><th>Status</th><th>Actions</th></tr></thead>
+                          <thead><tr><th>Plate</th><th>Model</th><th>Driver</th><th>Email</th><th>Status</th><th>Actions</th></tr></thead>
                           <tbody id="cabsTable"></tbody>
                         </table>
                       </div>
@@ -579,9 +707,34 @@
 
               <div id="receptionAnalytics" class="content-section" style="display:none;">
                 <h2><i class="fas fa-chart-bar"></i> Analytics & Reports</h2>
+                <div class="row mb-4">
+                  <div class="col-md-3"><div class="stats-card total"><h3 id="analyticsTotal">0</h3><p>Total Bookings</p></div></div>
+                  <div class="col-md-3"><div class="stats-card approved"><h3 id="analyticsApproved">0</h3><p>Completed</p></div></div>
+                  <div class="col-md-3"><div class="stats-card pending"><h3 id="analyticsPending">0</h3><p>Active</p></div></div>
+                  <div class="col-md-3"><div class="stats-card rejected"><h3 id="analyticsRejected">0</h3><p>Cancelled</p></div></div>
+                </div>
                 <div class="chart-container">
                   <h4>Monthly Booking Analytics</h4>
                   <canvas id="receptionAnalyticsChart" height="100"></canvas>
+                </div>
+                <div class="form-section">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4>Analytics Calendar</h4>
+                    <button class="btn btn-outline-primary" onclick="showAnalyticsCalendar()"><i class="fas fa-calendar-alt"></i> Calendar View</button>
+                  </div>
+                  
+                  <!-- Analytics Calendar -->
+                  <div id="analyticsCalendarContainer" class="calendar-container" style="display:none;">
+                    <div class="calendar-header">
+                      <button class="btn btn-outline-primary" onclick="hideAnalyticsCalendar()">Hide Calendar</button>
+                      <h4 id="analyticsCalendarMonth">Analytics Calendar</h4>
+                      <div>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="previousAnalyticsMonth()">&lt;</button>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="nextAnalyticsMonth()">&gt;</button>
+                      </div>
+                    </div>
+                    <div class="calendar-grid" id="analyticsCalendarGrid"></div>
+                  </div>
                 </div>
               </div>
 
@@ -598,7 +751,7 @@
       <div class="modal-content">
         <div class="modal-header"><h5 class="modal-title">Employee Login</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
         <div class="modal-body">
-          <div class="mb-3"><label class="form-label">Employee ID</label><input type="text" id="empLoginId" class="form-control" placeholder="e.g., EMP001"></div>
+          <div class="mb-3"><label class="form-label">Employee ID</label><input type="text" id="empLoginId" class="form-control" placeholder="e.g., EMP004"></div>
           <div class="mb-3"><label class="form-label">Password</label><input type="password" id="empLoginPassword" class="form-control" placeholder="Your password"></div>
         </div>
         <div class="modal-footer">
@@ -608,16 +761,106 @@
     </div>
   </div>
 
+  <!-- Cab Assignment Modal -->
+  <div class="modal fade" id="cabAssignmentModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Assign Cab</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div id="assignmentRequestInfo" class="alert alert-info mb-3"></div>
+          <div class="mb-3">
+            <label class="form-label">Available Cabs</label>
+            <select class="form-control" id="assignCabSelect" required>
+              <option value="">Loading available cabs...</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Pickup Time</label>
+            <input type="time" class="form-control" id="assignPickupTime" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Notes (Optional)</label>
+            <textarea class="form-control" id="assignNotes" rows="3" placeholder="Additional instructions for the driver..."></textarea>
+          </div>
+          <div id="conflictWarning" class="alert alert-warning" style="display:none;"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-success" onclick="confirmCabAssignment()">Approve & Assign</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Booking Modal -->
+  <div class="modal fade" id="editBookingModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Booking</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Date</label>
+            <input type="date" class="form-control" id="editDate">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Time</label>
+            <input type="time" class="form-control" id="editTime">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Destination</label>
+            <input type="text" class="form-control" id="editDestination">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Purpose</label>
+            <textarea class="form-control" id="editPurpose" rows="3"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" onclick="saveBookingEdit()">Save Changes</button>
+          <button type="button" class="btn btn-danger" onclick="deleteBookingConfirm()">Delete Booking</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    const GAS_BASE = 'https://script.google.com/macros/s/AKfycbzGzL2C1C1Gskcv667OsF-VqIrTOCQh5L-El_H5eBGDhWQbCD2SkQlR3IBbHRs_JjneeQ/exec';
+    const GAS_BASE = 'https://script.google.com/macros/s/AKfycbzdXOTDxGP_4tPi_6kzI4geV7nwi9PCDbkzR0_Yhmtdc9JBxvPC3EvkYlZnz-LBWflkdQ/exec';
     let currentEmployee = null;
     let employeeChartInstance = null;
     let receptionChartInstance = null;
+    let receptionAnalyticsChartInstance = null;
+    let currentBookingForAssignment = null;
+    let currentBookingForEdit = null;
+    let currentCalendarDate = new Date();
 
     class CORSFreeAPI {
       constructor() {
         this.baseURL = GAS_BASE;
+        this.testConnection();
+      }
+
+      async testConnection() {
+        try {
+          updateConnectionStatus('testing', 'Testing Connection');
+          const response = await this.makeJSONPRequest('test');
+          if (response.success) {
+            updateConnectionStatus('connected', 'Connected');
+            showAlert('Connected to server successfully!', 'success');
+          } else {
+            throw new Error('Connection test failed');
+          }
+        } catch (error) {
+          updateConnectionStatus('disconnected', 'Connection Failed');
+          console.error('Connection test failed:', error);
+        }
       }
 
       makeJSONPRequest(action, params = {}) {
@@ -702,9 +945,32 @@
       addCab(cabData) { return this.makeFormRequest('addCab', cabData); }
       updateEmployee(employeeData) { return this.makeFormRequest('updateEmployee', employeeData); }
       updateCab(cabData) { return this.makeFormRequest('updateCab', cabData); }
+      deleteBooking(requestId) { return this.makeFormRequest('deleteBooking', { requestId }); }
     }
 
     const api = new CORSFreeAPI();
+
+    function updateConnectionStatus(status, details = '') {
+      const statusEl = document.getElementById('connectionStatus');
+      
+      switch (status) {
+        case 'connected':
+          statusEl.className = 'connection-status connected';
+          statusEl.innerHTML = `<i class="fas fa-check-circle"></i> ${details || 'Connected'}`;
+          break;
+        case 'disconnected':
+          statusEl.className = 'connection-status disconnected';
+          statusEl.innerHTML = `<i class="fas fa-times-circle"></i> ${details || 'Disconnected'}`;
+          break;
+        case 'testing':
+          statusEl.className = 'connection-status testing';
+          statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${details || 'Testing...'}`;
+          break;
+        default:
+          statusEl.className = 'connection-status disconnected';
+          statusEl.innerHTML = `<i class="fas fa-circle"></i> ${details || 'Unknown'}`;
+      }
+    }
 
     function toggleTheme() {
       const body = document.body;
@@ -754,6 +1020,7 @@
           currentEmployee = res.employee;
           bootstrap.Modal.getInstance(document.getElementById('employeeLoginModal')).hide();
           showEmployeePortal();
+          showAlert(`Welcome ${res.employee.name}!`, 'success');
         } else {
           showAlert('Invalid credentials', 'error');
         }
@@ -849,7 +1116,7 @@
       try {
         showLoading('Submitting booking request...');
         await api.createBooking(bookingData);
-        showAlert('Booking submitted successfully!', 'success');
+        showAlert('Booking submitted successfully! You will receive an email confirmation.', 'success');
         form.reset();
         loadEmployeeDashboard();
       } catch (error) {
@@ -933,6 +1200,135 @@
 
     function loadEmployeeAnalytics() {
       setTimeout(() => { loadEmployeeDashboard(); }, 100);
+    }
+
+    // Calendar functions
+    function showEmployeeCalendar() {
+      document.getElementById('employeeCalendarContainer').style.display = 'block';
+      loadEmployeeCalendar();
+    }
+
+    function hideEmployeeCalendar() {
+      document.getElementById('employeeCalendarContainer').style.display = 'none';
+    }
+
+    function showReceptionCalendar() {
+      document.getElementById('receptionCalendarContainer').style.display = 'block';
+      loadReceptionCalendar();
+    }
+
+    function hideReceptionCalendar() {
+      document.getElementById('receptionCalendarContainer').style.display = 'none';
+    }
+
+    function showAnalyticsCalendar() {
+      document.getElementById('analyticsCalendarContainer').style.display = 'block';
+      loadAnalyticsCalendar();
+    }
+
+    function hideAnalyticsCalendar() {
+      document.getElementById('analyticsCalendarContainer').style.display = 'none';
+    }
+
+    async function loadEmployeeCalendar() {
+      const bookings = await api.getEmployeeBookings(currentEmployee.id);
+      if (bookings.success) {
+        renderCalendar('employeeCalendarGrid', 'calendarMonth', bookings.data);
+      }
+    }
+
+    async function loadReceptionCalendar() {
+      const bookings = await api.getAllBookings();
+      if (bookings.success) {
+        renderCalendar('receptionCalendarGrid', 'receptionCalendarMonth', bookings.data);
+      }
+    }
+
+    async function loadAnalyticsCalendar() {
+      const bookings = await api.getAllBookings();
+      if (bookings.success) {
+        renderCalendar('analyticsCalendarGrid', 'analyticsCalendarMonth', bookings.data);
+      }
+    }
+
+    function renderCalendar(gridId, monthId, bookings) {
+      const grid = document.getElementById(gridId);
+      const monthEl = document.getElementById(monthId);
+      
+      const year = currentCalendarDate.getFullYear();
+      const month = currentCalendarDate.getMonth();
+      
+      monthEl.textContent = currentCalendarDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+      
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      
+      grid.innerHTML = '';
+      
+      // Day headers
+      const dayHeaders = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      dayHeaders.forEach(day => {
+        const dayEl = document.createElement('div');
+        dayEl.className = 'calendar-day';
+        dayEl.style.fontWeight = 'bold';
+        dayEl.textContent = day;
+        grid.appendChild(dayEl);
+      });
+      
+      // Empty cells for days before month starts
+      for (let i = 0; i < firstDay; i++) {
+        const emptyEl = document.createElement('div');
+        emptyEl.className = 'calendar-day';
+        grid.appendChild(emptyEl);
+      }
+      
+      // Days of the month
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dayEl = document.createElement('div');
+        dayEl.className = 'calendar-day';
+        dayEl.textContent = day;
+        
+        // Check if this day has bookings
+        const dateStr = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+        const dayBookings = bookings.filter(b => b.Date === dateStr);
+        
+        if (dayBookings.length > 0) {
+          dayEl.classList.add('has-booking');
+          dayEl.title = `${dayBookings.length} booking(s) on this day`;
+        }
+        
+        grid.appendChild(dayEl);
+      }
+    }
+
+    function previousMonth() {
+      currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
+      loadEmployeeCalendar();
+    }
+
+    function nextMonth() {
+      currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
+      loadEmployeeCalendar();
+    }
+
+    function previousReceptionMonth() {
+      currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
+      loadReceptionCalendar();
+    }
+
+    function nextReceptionMonth() {
+      currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
+      loadReceptionCalendar();
+    }
+
+    function previousAnalyticsMonth() {
+      currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
+      loadAnalyticsCalendar();
+    }
+
+    function nextAnalyticsMonth() {
+      currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
+      loadAnalyticsCalendar();
     }
 
     function showReceptionSection(section) {
@@ -1051,12 +1447,18 @@
         let actions = '';
         if (booking.Status === 'Pending') {
           actions = `
-            <button class="btn btn-success btn-sm me-1" onclick="showApprovalPrompt('${booking['Request ID']}')"><i class="fas fa-check"></i></button>
+            <button class="btn btn-success btn-sm me-1" onclick="showApprovalModal('${booking['Request ID']}', '${booking.Date}', '${booking.Time}')"><i class="fas fa-check"></i></button>
             <button class="btn btn-danger btn-sm" onclick="rejectBooking('${booking['Request ID']}')"><i class="fas fa-times"></i></button>
+          `;
+        } else if (booking.Status === 'Approved') {
+          actions = `
+            <button class="btn btn-outline-primary btn-sm me-1" onclick="editBooking('${booking['Request ID']}')"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-outline-danger btn-sm" onclick="deleteBookingConfirm('${booking['Request ID']}')"><i class="fas fa-trash"></i></button>
           `;
         } else {
           actions = '<span class="text-muted">-</span>';
         }
+
         row.innerHTML = `
           <td>${booking['Request ID']}</td>
           <td>${booking['Employee Name']}</td>
@@ -1070,44 +1472,167 @@
       });
     }
 
-    async function showApprovalPrompt(requestId) {
+    async function showApprovalModal(requestId, bookingDate, bookingTime) {
+      currentBookingForAssignment = requestId;
+      
+      // Show assignment modal
+      const modal = new bootstrap.Modal(document.getElementById('cabAssignmentModal'));
+      document.getElementById('assignmentRequestInfo').innerHTML = `
+        <strong>Request ID:</strong> ${requestId}<br>
+        <strong>Date:</strong> ${bookingDate}<br>
+        <strong>Time:</strong> ${bookingTime}
+      `;
+      
+      // Set default pickup time
+      document.getElementById('assignPickupTime').value = bookingTime;
+      
       try {
-        const cabsResponse = await api.getCabs();
-        if (!cabsResponse.success) { showAlert('Failed to load cabs', 'error'); return; }
-        const availableCabs = cabsResponse.data.filter(cab => cab.Available === true || cab.Available === 'TRUE' || cab.Available === 'true');
-        if (availableCabs.length === 0) { showAlert('No cabs available for assignment', 'error'); return; }
-
-        const cabId = prompt(`Select a cab for approval:\n${availableCabs.map(cab => `${cab.ID}: ${cab['Car Model']} - ${cab['License Plate']}`).join('\n')}\n\nEnter Cab ID:`);
-        if (!cabId) return;
-        const selectedCab = availableCabs.find(c => c.ID === cabId);
-        if (!selectedCab) { showAlert('Selected cab not found', 'error'); return; }
-
-        await approveBooking(requestId, selectedCab);
-      } catch (e) {
-        showAlert('Failed to prepare approval: ' + e.message, 'error');
+        const response = await api.getAvailableCabs(bookingDate, bookingTime);
+        const cabSelect = document.getElementById('assignCabSelect');
+        
+        if (response.success) {
+          cabSelect.innerHTML = '<option value="">Select a cab</option>';
+          
+          response.data.forEach(cab => {
+            const option = document.createElement('option');
+            option.value = cab.ID;
+            option.textContent = `${cab['Car Model']} - ${cab['License Plate']} (Driver: ${cab['Driver Name']})`;
+            cabSelect.appendChild(option);
+          });
+          
+          // Show unavailable cabs with conflict info
+          if (response.unavailable && response.unavailable.length > 0) {
+            const conflictWarning = document.getElementById('conflictWarning');
+            let conflictText = 'Already assigned cabs:\n';
+            response.unavailable.forEach(cab => {
+              if (cab.conflictInfo) {
+                conflictText += `${cab['Car Model']} - ${cab['License Plate']} (assigned to ${cab.conflictInfo.employeeName} at ${cab.conflictInfo.time})\n`;
+              }
+            });
+            conflictWarning.textContent = conflictText;
+            conflictWarning.style.display = 'block';
+          }
+          
+          if (response.data.length === 0) {
+            cabSelect.innerHTML = '<option value="">No cabs available for this time</option>';
+          }
+        } else {
+          showAlert('Failed to load available cabs', 'error');
+        }
+      } catch (error) {
+        showAlert('Failed to load cabs: ' + error.message, 'error');
       }
+      
+      modal.show();
     }
 
-    async function approveBooking(requestId, selectedCab) {
+    async function confirmCabAssignment() {
+      const cabId = document.getElementById('assignCabSelect').value;
+      const pickupTime = document.getElementById('assignPickupTime').value;
+      const notes = document.getElementById('assignNotes').value;
+      
+      if (!cabId) {
+        showAlert('Please select a cab', 'error');
+        return;
+      }
+      
       try {
-        showLoading('Approving booking...');
+        const cabsResponse = await api.getCabs();
+        if (!cabsResponse.success) {
+          showAlert('Failed to get cab details', 'error');
+          return;
+        }
+        
+        const selectedCab = cabsResponse.data.find(cab => cab.ID === cabId);
+        if (!selectedCab) {
+          showAlert('Selected cab not found', 'error');
+          return;
+        }
+
         const updateData = {
-          requestId: requestId,
+          requestId: currentBookingForAssignment,
           status: 'Approved',
-          assignedCab: selectedCab.ID,
+          assignedCab: cabId,
           driverName: selectedCab['Driver Name'],
           driverPhone: selectedCab['Driver Phone'],
           carDetails: selectedCab['Car Model'],
           carPlate: selectedCab['License Plate'],
-          pickupTime: prompt('Enter pickup time:') || 'As scheduled',
-          notes: 'Approved by reception'
+          pickupTime: pickupTime,
+          notes: notes || 'Approved by reception'
         };
+
+        showLoading('Approving booking...');
         await api.updateBookingStatus(updateData);
-        showAlert('Booking approved successfully!', 'success');
+        
+        showAlert('Booking approved successfully! Email notifications sent.', 'success');
+        bootstrap.Modal.getInstance(document.getElementById('cabAssignmentModal')).hide();
         loadReceptionBookings();
       } catch (error) {
         showAlert('Failed to approve booking: ' + error.message, 'error');
-      } finally { hideLoading(); }
+      } finally {
+        hideLoading();
+      }
+    }
+
+    async function editBooking(requestId) {
+      currentBookingForEdit = requestId;
+      
+      try {
+        const response = await api.getAllBookings();
+        if (response.success) {
+          const booking = response.data.find(b => b['Request ID'] === requestId);
+          if (booking) {
+            document.getElementById('editDate').value = booking.Date;
+            document.getElementById('editTime').value = booking.Time;
+            document.getElementById('editDestination').value = booking.Destination;
+            document.getElementById('editPurpose').value = booking.Purpose;
+            
+            const modal = new bootstrap.Modal(document.getElementById('editBookingModal'));
+            modal.show();
+          } else {
+            showAlert('Booking not found', 'error');
+          }
+        }
+      } catch (error) {
+        showAlert('Failed to load booking details: ' + error.message, 'error');
+      }
+    }
+
+    async function saveBookingEdit() {
+      const editDate = document.getElementById('editDate').value;
+      const editTime = document.getElementById('editTime').value;
+      const editDestination = document.getElementById('editDestination').value;
+      const editPurpose = document.getElementById('editPurpose').value;
+      
+      try {
+        showLoading('Updating booking...');
+        // Implementation would require additional API endpoint
+        showAlert('Booking edit functionality will be implemented', 'info');
+        bootstrap.Modal.getInstance(document.getElementById('editBookingModal')).hide();
+      } catch (error) {
+        showAlert('Failed to update booking: ' + error.message, 'error');
+      } finally {
+        hideLoading();
+      }
+    }
+
+    async function deleteBookingConfirm(requestId) {
+      if (confirm('Are you sure you want to delete this booking? This action cannot be undone.')) {
+        await deleteBooking(requestId);
+      }
+    }
+
+    async function deleteBooking(requestId) {
+      try {
+        showLoading('Deleting booking...');
+        await api.deleteBooking(requestId);
+        showAlert('Booking deleted successfully', 'success');
+        loadReceptionBookings();
+      } catch (error) {
+        showAlert('Failed to delete booking: ' + error.message, 'error');
+      } finally {
+        hideLoading();
+      }
     }
 
     async function rejectBooking(requestId) {
@@ -1116,7 +1641,7 @@
       try {
         showLoading('Rejecting booking...');
         await api.updateBookingStatus({ requestId, status: 'Rejected', notes: reason });
-        showAlert('Booking rejected', 'success');
+        showAlert('Booking rejected. Email notification sent.', 'success');
         loadReceptionBookings();
       } catch (error) {
         showAlert('Failed to reject booking: ' + error.message, 'error');
@@ -1136,7 +1661,7 @@
               <td>${emp.ID}</td>
               <td>${emp.Name}</td>
               <td>${emp.Department}</td>
-              <td><button class="btn btn-outline-primary btn-sm" onclick="showAlert('Edit employee coming soon','info')"><i class="fas fa-edit"></i></button></td>
+              <td><button class="btn btn-outline-primary btn-sm" onclick="editEmployee('${emp.ID}')"><i class="fas fa-edit"></i></button></td>
             `;
             tbody.appendChild(row);
           });
@@ -1150,14 +1675,18 @@
       const form = document.getElementById('addEmployeeForm');
       const fd = new FormData(form);
       const employeeData = {
+        employeeId: fd.get('employeeId'),
         name: fd.get('name'),
         department: fd.get('department'),
         phone: fd.get('phone'),
-        email: fd.get('email')
+        email: fd.get('email'),
+        password: fd.get('password') || 'default123'
       };
-      if (!employeeData.name || !employeeData.department || !employeeData.phone || !employeeData.email) {
+      
+      if (!employeeData.employeeId || !employeeData.name || !employeeData.department || !employeeData.phone || !employeeData.email) {
         showAlert('Please fill in all required fields', 'error'); return;
       }
+      
       try {
         showLoading('Adding employee...');
         await api.addEmployee(employeeData);
@@ -1185,8 +1714,9 @@
               <td>${cab['License Plate']}</td>
               <td>${cab['Car Model']}</td>
               <td>${cab['Driver Name']}</td>
+              <td>${cab['Driver Email'] || '-'}</td>
               <td>${statusBadge}</td>
-              <td><button class="btn btn-outline-primary btn-sm" onclick="showAlert('Edit cab coming soon','info')"><i class="fas fa-edit"></i></button></td>
+              <td><button class="btn btn-outline-primary btn-sm" onclick="editCab('${cab.ID}')"><i class="fas fa-edit"></i></button></td>
             `;
             tbody.appendChild(row);
           });
@@ -1203,12 +1733,15 @@
         licensePlate: fd.get('licensePlate'),
         driverName: fd.get('driverName'),
         driverPhone: fd.get('driverPhone'),
+        driverEmail: fd.get('driverEmail'),
         carModel: fd.get('carModel'),
         available: fd.get('available') === 'on'
       };
-      if (!cabData.licensePlate || !cabData.driverName || !cabData.driverPhone || !cabData.carModel) {
+      
+      if (!cabData.licensePlate || !cabData.driverName || !cabData.driverPhone || !cabData.driverEmail || !cabData.carModel) {
         showAlert('Please fill in all required fields', 'error'); return;
       }
+      
       try {
         showLoading('Adding cab...');
         await api.addCab(cabData);
@@ -1220,8 +1753,72 @@
       } finally { hideLoading(); }
     }
 
-    function loadReceptionAnalytics() {
-      setTimeout(() => { loadReceptionDashboard(); }, 100);
+    async function loadReceptionAnalytics() {
+      try {
+        showLoading('Loading analytics...');
+        const response = await api.getAllBookings();
+        if (response.success) {
+          updateAnalyticsData(response.data);
+          updateAnalyticsCharts(response.data);
+        } else {
+          showAlert('Failed to load analytics: ' + response.message, 'error');
+        }
+      } catch (error) {
+        showAlert('Failed to load analytics: ' + error.message, 'error');
+      } finally { hideLoading(); }
+    }
+
+    function updateAnalyticsData(bookings) {
+      const total = bookings.length;
+      const approved = bookings.filter(b => b.Status === 'Approved').length;
+      const pending = bookings.filter(b => b.Status === 'Pending').length;
+      const rejected = bookings.filter(b => b.Status === 'Rejected').length;
+
+      document.getElementById('analyticsTotal').textContent = total;
+      document.getElementById('analyticsApproved').textContent = approved;
+      document.getElementById('analyticsPending').textContent = pending;
+      document.getElementById('analyticsRejected').textContent = rejected;
+    }
+
+    function updateAnalyticsCharts(bookings) {
+      const ctx = document.getElementById('receptionAnalyticsChart');
+      if (!ctx) return;
+      if (receptionAnalyticsChartInstance) { receptionAnalyticsChartInstance.destroy(); receptionAnalyticsChartInstance = null; }
+
+      const monthlyData = {};
+      bookings.forEach(b => {
+        try {
+          const key = new Date(b.Date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+          monthlyData[key] = (monthlyData[key] || 0) + 1;
+        } catch (e) {}
+      });
+      const labels = Object.keys(monthlyData).slice(-6);
+      const data = labels.map(l => monthlyData[l] || 0);
+
+      receptionAnalyticsChartInstance = new Chart(ctx, {
+        type: 'doughnut',
+        data: { 
+          labels: ['Approved', 'Pending', 'Rejected'],
+          datasets: [{ 
+            data: [
+              bookings.filter(b => b.Status === 'Approved').length,
+              bookings.filter(b => b.Status === 'Pending').length,
+              bookings.filter(b => b.Status === 'Rejected').length
+            ],
+            backgroundColor: ['#00A554', '#FFC20E', '#E2231A'],
+            borderWidth: 2,
+            borderColor: '#ffffff'
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { 
+            legend: { 
+              labels: { color: 'var(--text-primary)' } 
+            }
+          }
+        }
+      });
     }
 
     function logoutReception() {
@@ -1256,7 +1853,8 @@
       setTimeout(() => { if (alertDiv.parentNode) alertDiv.parentNode.removeChild(alertDiv); }, 5000);
     }
 
-    function showCalendar() { showAlert('Calendar functionality will be implemented in future updates', 'info'); }
+    function editEmployee(employeeId) { showAlert('Edit employee functionality will be implemented', 'info'); }
+    function editCab(cabId) { showAlert('Edit cab functionality will be implemented', 'info'); }
 
     document.addEventListener('DOMContentLoaded', function() {
       initializeTheme();
