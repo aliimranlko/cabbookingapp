@@ -935,7 +935,7 @@
     </div>
   </div>
 
-  <!-- Driver Portal -->
+  <!-- ENHANCED: Driver Portal with full sidebar like Employee -->
   <div class="dashboard" id="driverPortal">
     <div id="driverLoginSection" class="main-container">
       <div class="portal-selection" style="max-width: 400px;">
@@ -965,28 +965,144 @@
         </div>
       </div>
     </div>
+
+    <!-- ENHANCED: Driver Dashboard with full interface -->
     <div id="driverDashboard" style="display:none;">
       <div class="container-fluid">
-        <div class="content-area">
-          <h2><i class="fas fa-car-side"></i> Driver Dashboard</h2>
-          <div class="form-section">
-            <h4>Welcome, <span id="driverName">Driver</span>!</h4>
-            <p>Your assigned trips and updates will appear here.</p>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="stats-card total">
-                  <h3>0</h3>
-                  <p>Today's Trips</p>
+        <div class="row">
+          <div class="col-md-3 col-lg-2 px-0">
+            <div class="sidebar" id="driverSidebar">
+              <div class="sidebar-brand">
+                <h4><i class="fas fa-car-side"></i> Driver</h4>
+              </div>
+              <ul class="sidebar-nav">
+                <li><a href="#" class="active" onclick="showDriverSection('dashboard')"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="#" onclick="showDriverSection('bookings')"><i class="fas fa-list"></i> My Bookings</a></li>
+                <li><a href="#" onclick="showDriverSection('today')"><i class="fas fa-calendar-day"></i> Today's Trips</a></li>
+                <li><a href="#" onclick="showDriverSection('completed')"><i class="fas fa-check-circle"></i> Completed Trips</a></li>
+                <li><a href="#" onclick="showDriverSection('analytics')"><i class="fas fa-chart-line"></i> Analytics</a></li>
+                <li><a href="#" onclick="logoutDriver()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                <li><a href="#" onclick="goBackToPortalSelection()"><i class="fas fa-arrow-left"></i> Back to Portal</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-9 col-lg-10">
+            <div class="content-area">
+              <!-- Driver Dashboard -->
+              <div id="driverDashboardContent" class="content-section">
+                <h2><i class="fas fa-car-side"></i> Driver Dashboard</h2>
+                <div class="form-section">
+                  <h4>Welcome, <span id="driverName">Driver</span>!</h4>
+                  <div class="row mb-4">
+                    <div class="col-md-3">
+                      <div class="stats-card total">
+                        <h3 id="driverTotalTrips">0</h3>
+                        <p>Total Trips</p>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="stats-card pending">
+                        <h3 id="driverTodayTrips">0</h3>
+                        <p>Today's Trips</p>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="stats-card approved">
+                        <h3 id="driverCompletedTrips">0</h3>
+                        <p>Completed Trips</p>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="stats-card rejected">
+                        <h3 id="driverPendingTrips">0</h3>
+                        <p>Pending Trips</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="col-md-6">
-                <div class="stats-card approved">
-                  <h3>0</h3>
-                  <p>Completed Trips</p>
+
+              <!-- Driver My Bookings -->
+              <div id="driverBookings" class="content-section" style="display:none;">
+                <h2><i class="fas fa-list"></i> My Assigned Bookings</h2>
+                <div class="form-section">
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>Request ID</th>
+                          <th>Employee Name</th>
+                          <th>Date</th>
+                          <th>Time</th>
+                          <th>Destination</th>
+                          <th>Status</th>
+                          <th>Pickup Time</th>
+                        </tr>
+                      </thead>
+                      <tbody id="driverBookingsTable"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Driver Today's Trips -->
+              <div id="driverToday" class="content-section" style="display:none;">
+                <h2><i class="fas fa-calendar-day"></i> Today's Trips</h2>
+                <div class="form-section">
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>Request ID</th>
+                          <th>Employee Name</th>
+                          <th>Time</th>
+                          <th>Destination</th>
+                          <th>Pickup Time</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody id="driverTodayTable"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Driver Completed Trips -->
+              <div id="driverCompleted" class="content-section" style="display:none;">
+                <h2><i class="fas fa-check-circle"></i> Completed Trips</h2>
+                <div class="form-section">
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>Request ID</th>
+                          <th>Employee Name</th>
+                          <th>Date</th>
+                          <th>Time</th>
+                          <th>Destination</th>
+                          <th>Completed At</th>
+                        </tr>
+                      </thead>
+                      <tbody id="driverCompletedTable"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Driver Analytics -->
+              <div id="driverAnalytics" class="content-section" style="display:none;">
+                <h2><i class="fas fa-chart-line"></i> My Trip Analytics</h2>
+                <div class="analytics-chart-container">
+                  <div class="chart-controls">
+                    <button class="chart-toggle-btn active" onclick="toggleDriverChart('line')">Line</button>
+                    <button class="chart-toggle-btn" onclick="toggleDriverChart('bar')">Bar</button>
+                    <button class="chart-toggle-btn" onclick="toggleDriverChart('doughnut')">Pie</button>
+                  </div>
+                  <h4>Daily Trip Trends</h4>
+                  <canvas id="driverChart" height="100"></canvas>
                 </div>
               </div>
             </div>
-            <button class="btn btn-secondary" onclick="logoutDriver()">Logout</button>
           </div>
         </div>
       </div>
@@ -1146,12 +1262,13 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    const GAS_BASE = 'https://script.google.com/macros/s/AKfycbzBkbYEvziwKyM0cSwRxCR3xvwcRsUnZ6IddmG_Bnzg3-knCPnI7lnAMYd8mjPI5vlszw/exec';
+    const GAS_BASE = 'https://script.google.com/macros/s/AKfycbyEVZtyg3CklCu2TO1aH96B7pIEcS45MF3TdgFDR-OYGY5Q6VDeSXV8W7HT1zy6M7mCaQ/exec';
     let currentEmployee = null;
     let currentDriver = null;
     let employeeChartInstance = null;
     let receptionChartInstance = null;
     let receptionAnalyticsChartInstance = null;
+    let driverChartInstance = null; // Added for driver analytics
     let currentBookingForAssignment = null;
     let currentBookingForEdit = null;
     let currentEmployeeForEdit = null;
@@ -1162,9 +1279,10 @@
     let currentEmployeeChartType = 'line';
     let currentReceptionChartType = 'bar';
     let currentAnalyticsChartType = 'doughnut';
+    let currentDriverChartType = 'line'; // Added for driver analytics
     let loginSequence = {employee: false, driver: false, reception: false};
 
-    // FIXED: Login sequence enforcement
+    // FIXED: Login sequence enforcement - removed driver prerequisite for reception
     function updateLoginSequence() {
       const driverCard = document.getElementById('driverCard');
       const receptionCard = document.getElementById('receptionCard');
@@ -1172,9 +1290,38 @@
       if (loginSequence.employee) {
         driverCard.classList.remove('disabled');
       }
-      if (loginSequence.driver) {
-        receptionCard.classList.remove('disabled');
+      // FIXED: Reception portal can be accessed without driver login
+      receptionCard.classList.remove('disabled');
+    }
+
+    // FIXED: Time formatting function to show HH:MM:SS in 24-hour IST format
+    function formatTimeIST(timeValue) {
+      if (!timeValue) return '';
+      
+      // Handle different time formats
+      if (typeof timeValue === 'string') {
+        // If it's a string like "1899-12-29T19:28:50.000Z"
+        if (timeValue.includes('T')) {
+          const date = new Date(timeValue);
+          // Convert to IST (UTC+5:30)
+          const istOffset = 5.5 * 60 * 60 * 1000;
+          const istDate = new Date(date.getTime() + istOffset);
+          return istDate.toTimeString().split(' ')[0]; // Returns HH:MM:SS
+        }
+        // If it's already in HH:MM or HH:MM:SS format
+        if (timeValue.includes(':')) {
+          return timeValue.length === 5 ? timeValue + ':00' : timeValue; // Add seconds if missing
+        }
       }
+      
+      // If it's a Date object
+      if (timeValue instanceof Date) {
+        const istOffset = 5.5 * 60 * 60 * 1000;
+        const istDate = new Date(timeValue.getTime() + istOffset);
+        return istDate.toTimeString().split(' ')[0];
+      }
+      
+      return timeValue.toString();
     }
 
     // Date formatting functions for DD/MM/YYYY format
@@ -1297,6 +1444,7 @@
       getCabs() { return this.makeJSONPRequest('getCabs'); }
       getFilteredBookings(date) { return this.makeJSONPRequest('getFilteredBookings', { date }); }
       getDailyAnalytics() { return this.makeJSONPRequest('getDailyAnalytics'); }
+      getDriverBookings(cabId) { return this.makeJSONPRequest('getDriverBookings', { cabId }); }
 
       // POST (form) methods
       createBooking(bookingData) { return this.makeFormRequest('createBooking', bookingData); }
@@ -1370,12 +1518,16 @@
     function toggleSidebar() {
       const employeeSidebar = document.getElementById('employeeSidebar');
       const receptionSidebar = document.getElementById('receptionSidebar');
+      const driverSidebar = document.getElementById('driverSidebar');
       
       if (employeeSidebar && employeeSidebar.offsetParent !== null) {
         employeeSidebar.classList.toggle('show');
       }
       if (receptionSidebar && receptionSidebar.offsetParent !== null) {
         receptionSidebar.classList.toggle('show');
+      }
+      if (driverSidebar && driverSidebar.offsetParent !== null) {
+        driverSidebar.classList.toggle('show');
       }
     }
 
@@ -1461,6 +1613,7 @@
           document.getElementById('driverLoginSection').style.display = 'none';
           document.getElementById('driverDashboard').style.display = 'block';
           document.getElementById('driverName').textContent = res.driver.name;
+          loadDriverDashboard();
           showAlert(`Welcome ${res.driver.name}!`, 'success');
         } else {
           showAlert('Invalid credentials', 'error');
@@ -1482,12 +1635,205 @@
       document.getElementById('driverPassword').value = '';
     }
 
+    // ENHANCED: Driver Portal Functions
+    function showDriverSection(section) {
+      document.querySelectorAll('#driverDashboard .content-section').forEach(el => el.style.display = 'none');
+      const id = 'driver' + section.charAt(0).toUpperCase() + section.slice(1) + (section === 'dashboard' ? 'Content' : '');
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'block';
+
+      document.querySelectorAll('#driverDashboard .sidebar-nav a').forEach(elm => elm.classList.remove('active'));
+      event.target.classList.add('active');
+
+      if (section === 'dashboard') loadDriverDashboard();
+      else if (section === 'bookings') loadDriverBookings();
+      else if (section === 'today') loadDriverTodayTrips();
+      else if (section === 'completed') loadDriverCompletedTrips();
+      else if (section === 'analytics') loadDriverAnalytics();
+    }
+
+    async function loadDriverDashboard() {
+      if (!currentDriver?.cabId) return;
+      try {
+        showLoading('Loading driver dashboard...');
+        const response = await api.getAllBookings();
+        if (response.success) {
+          const driverBookings = response.data.filter(booking => booking['Assigned Cab'] === currentDriver.cabId);
+          updateDriverDashboard(driverBookings);
+        }
+      } catch (error) {
+        showAlert('Failed to load driver dashboard: ' + error.message, 'error');
+      } finally { hideLoading(); }
+    }
+
+    function updateDriverDashboard(bookings) {
+      const today = new Date().toISOString().split('T')[0];
+      const total = bookings.length;
+      const todayTrips = bookings.filter(b => b.Date === today).length;
+      const completed = bookings.filter(b => b.Status === 'Completed').length;
+      const pending = bookings.filter(b => b.Status === 'Approved' && b.Date >= today).length;
+
+      document.getElementById('driverTotalTrips').textContent = total;
+      document.getElementById('driverTodayTrips').textContent = todayTrips;
+      document.getElementById('driverCompletedTrips').textContent = completed;
+      document.getElementById('driverPendingTrips').textContent = pending;
+    }
+
+    async function loadDriverBookings() {
+      if (!currentDriver?.cabId) return;
+      try {
+        showLoading('Loading assigned bookings...');
+        const response = await api.getAllBookings();
+        if (response.success) {
+          const driverBookings = response.data.filter(booking => booking['Assigned Cab'] === currentDriver.cabId);
+          const tbody = document.getElementById('driverBookingsTable');
+          tbody.innerHTML = '';
+          driverBookings.forEach(booking => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${booking['Request ID']}</td>
+              <td>${booking['Employee Name']}</td>
+              <td>${formatDateIST(booking.Date)}</td>
+              <td>${formatTimeIST(booking.Time)}</td>
+              <td>${booking.Destination}</td>
+              <td>${getStatusBadge(booking.Status)}</td>
+              <td>${formatTimeIST(booking['Pickup Time'])}</td>
+            `;
+            tbody.appendChild(row);
+          });
+        }
+      } catch (error) {
+        showAlert('Failed to load bookings: ' + error.message, 'error');
+      } finally { hideLoading(); }
+    }
+
+    async function loadDriverTodayTrips() {
+      if (!currentDriver?.cabId) return;
+      try {
+        showLoading('Loading today\'s trips...');
+        const response = await api.getAllBookings();
+        if (response.success) {
+          const today = new Date().toISOString().split('T')[0];
+          const todayTrips = response.data.filter(booking => 
+            booking['Assigned Cab'] === currentDriver.cabId && booking.Date === today
+          );
+          const tbody = document.getElementById('driverTodayTable');
+          tbody.innerHTML = '';
+          todayTrips.forEach(booking => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${booking['Request ID']}</td>
+              <td>${booking['Employee Name']}</td>
+              <td>${formatTimeIST(booking.Time)}</td>
+              <td>${booking.Destination}</td>
+              <td>${formatTimeIST(booking['Pickup Time'])}</td>
+              <td>${getStatusBadge(booking.Status)}</td>
+            `;
+            tbody.appendChild(row);
+          });
+        }
+      } catch (error) {
+        showAlert('Failed to load today\'s trips: ' + error.message, 'error');
+      } finally { hideLoading(); }
+    }
+
+    async function loadDriverCompletedTrips() {
+      if (!currentDriver?.cabId) return;
+      try {
+        showLoading('Loading completed trips...');
+        const response = await api.getAllBookings();
+        if (response.success) {
+          const completedTrips = response.data.filter(booking => 
+            booking['Assigned Cab'] === currentDriver.cabId && booking.Status === 'Completed'
+          );
+          const tbody = document.getElementById('driverCompletedTable');
+          tbody.innerHTML = '';
+          completedTrips.forEach(booking => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${booking['Request ID']}</td>
+              <td>${booking['Employee Name']}</td>
+              <td>${formatDateIST(booking.Date)}</td>
+              <td>${formatTimeIST(booking.Time)}</td>
+              <td>${booking.Destination}</td>
+              <td>${formatDateTimeIST(booking['Completed At'])}</td>
+            `;
+            tbody.appendChild(row);
+          });
+        }
+      } catch (error) {
+        showAlert('Failed to load completed trips: ' + error.message, 'error');
+      } finally { hideLoading(); }
+    }
+
+    function toggleDriverChart(type) {
+      currentDriverChartType = type;
+      document.querySelectorAll('#driverAnalytics .chart-toggle-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      loadDriverAnalytics();
+    }
+
+    async function loadDriverAnalytics() {
+      if (!currentDriver?.cabId) return;
+      try {
+        const response = await api.getAllBookings();
+        if (response.success) {
+          const driverBookings = response.data.filter(booking => booking['Assigned Cab'] === currentDriver.cabId);
+          updateDriverCharts(driverBookings);
+        }
+      } catch (error) {
+        showAlert('Failed to load analytics: ' + error.message, 'error');
+      }
+    }
+
+    function updateDriverCharts(bookings) {
+      const ctx = document.getElementById('driverChart');
+      if (!ctx) return;
+      if (driverChartInstance) { driverChartInstance.destroy(); driverChartInstance = null; }
+
+      // Daily data by default
+      const dailyData = {};
+      bookings.forEach(b => {
+        try {
+          const date = b.Date;
+          dailyData[date] = (dailyData[date] || 0) + 1;
+        } catch (e) {}
+      });
+      
+      let labels = Object.keys(dailyData).sort().slice(-7); // Last 7 days
+      let data = labels.map(l => dailyData[l] || 0);
+
+      let chartConfig = {
+        type: currentDriverChartType,
+        data: {
+          labels,
+          datasets: [{
+            label: 'Daily Trips',
+            data,
+            borderColor: '#009DE0',
+            backgroundColor: currentDriverChartType === 'doughnut' ? 
+              ['#009DE0', '#1CABE2', '#FFC20E', '#00A554', '#E2231A', '#9B9B9B'] :
+              'rgba(0,157,224,0.1)',
+            borderWidth: 3,
+            fill: currentDriverChartType === 'line'
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { labels: { color: 'var(--text-primary)' } } },
+          scales: currentDriverChartType === 'doughnut' ? {} : {
+            y: { beginAtZero: true, ticks: { color: 'var(--text-secondary)' }, grid: { color: 'var(--border-color)' } },
+            x: { ticks: { color: 'var(--text-secondary)' }, grid: { color: 'var(--border-color)' } }
+          }
+        }
+      };
+
+      driverChartInstance = new Chart(ctx, chartConfig);
+    }
+
     // Reception Portal Functions
     function showReceptionPortal() {
-      if (!loginSequence.driver) {
-        showAlert('Please login to Driver Portal first', 'warning');
-        return;
-      }
+      // FIXED: Remove driver login prerequisite
       document.getElementById('portalSelection').style.display = 'none';
       document.getElementById('employeePortal').style.display = 'none';
       document.getElementById('receptionPortal').style.display = 'block';
@@ -1627,7 +1973,7 @@
         row.innerHTML = `
           <td>${booking['Request ID']}</td>
           <td>${formatDateIST(booking.Date)}</td>
-          <td>${booking.Time}</td>
+          <td>${formatTimeIST(booking.Time)}</td>
           <td>${booking.Destination}</td>
           <td>${statusBadge}</td>
           <td>${requestedOn}</td>
@@ -1943,6 +2289,7 @@
     // Initialize the application
     document.addEventListener('DOMContentLoaded', function() {
       initializeTheme();
+      updateLoginSequence(); // Initialize login sequence
 
       // Set up date and time input handlers
       const dateInput = document.getElementById('bookingDate');
