@@ -44,7 +44,6 @@
         --shadow: rgba(0, 0, 0, 0.3);
       }
 
-      /* Dark mode improvements */
       [data-theme="dark"] .form-section h4,
       [data-theme="dark"] .form-section h3,
       [data-theme="dark"] .content-section h2,
@@ -62,44 +61,40 @@
         color: var(--text-primary) !important;
       }
 
-      /* Dark mode modal styling */
+      [data-theme="dark"] .mt-3 small {
+        color: #ffffff !important;
+      }
+
       [data-theme="dark"] .modal-content {
         background-color: #2d2d2d !important;
         color: #ffffff !important;
       }
-
       [data-theme="dark"] .modal-header,
       [data-theme="dark"] .modal-body,
       [data-theme="dark"] .modal-footer {
         border-color: #404040 !important;
       }
-
       [data-theme="dark"] .modal-title {
         color: #ffffff !important;
       }
-
       [data-theme="dark"] .modal .form-label {
         color: #ffffff !important;
       }
-
       [data-theme="dark"] .modal .form-control {
         background: #404040 !important;
         border-color: #404040 !important;
         color: #ffffff !important;
       }
-
       [data-theme="dark"] .modal .form-control:focus {
         background: #404040 !important;
         border-color: var(--unicef-cyan) !important;
         color: #ffffff !important;
       }
 
-      /* Dark mode table styling */
       [data-theme="dark"] .table {
         background-color: #1e1e1e !important;
         color: #ffffff !important;
       }
-
       [data-theme="dark"] .table th,
       [data-theme="dark"] .table td {
         background-color: #1e1e1e !important;
@@ -113,33 +108,38 @@
         color: var(--text-primary) !important;
       }
 
-      /* FIXED: Mobile burger menu - reset with higher specificity and always visible */
       .sidebar-toggle {
         display: none !important;
         position: fixed !important;
         top: 15px !important;
         left: 15px !important;
         z-index: 10000 !important;
-        background: var(--unicef-cyan) !important;
-        color: white !important;
-        border: none !important;
-        border-radius: 5px !important;
-        padding: 8px 12px !important;
-        font-size: 18px !important;
+        background: var(--bg-primary) !important;
+        color: var(--text-primary) !important;
+        border: 1px solid var(--border-color) !important;
+        border-radius: 50% !important;
+        padding: 12px !important;
+        font-size: 16px !important;
         cursor: pointer !important;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
-        width: 50px !important;
-        height: 50px !important;
+        box-shadow: 0 2px 8px var(--shadow) !important;
+        width: 44px !important;
+        height: 44px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        transition: all 0.2s ease !important;
+      }
+      .sidebar-toggle:hover {
+        background: var(--bg-secondary) !important;
+        box-shadow: 0 4px 12px var(--shadow) !important;
       }
 
-      /* FIXED: Show burger menu in mobile view with highest priority */
       @media (max-width: 768px) {
         .dashboard .sidebar-toggle {
-          display: block !important;
+          display: flex !important;
           visibility: visible !important;
           opacity: 1 !important;
         }
-
         .sidebar {
           display: none;
           position: fixed;
@@ -153,60 +153,48 @@
           transform: translateX(-100%);
           transition: transform 0.3s ease;
         }
-
         .sidebar.show {
           display: block;
           transform: translateX(0);
         }
-
         .content-area {
           padding-top: 70px !important;
         }
-
-        /* Responsive theme toggle and connection status */
         .theme-toggle {
           font-size: 12px !important;
           padding: 6px 10px !important;
           top: 10px !important;
           right: 10px !important;
         }
-
         .connection-status {
           font-size: 10px !important;
           padding: 4px 8px !important;
           top: 50px !important;
           right: 10px !important;
         }
-
-        /* Responsive calendar grid */
         .calendar-grid {
           gap: 5px !important;
           font-size: 12px !important;
         }
-
         .calendar-day {
           padding: 8px 4px !important;
         }
-
         .calendar-header {
           flex-direction: column !important;
           gap: 10px !important;
           align-items: center !important;
         }
-
         .calendar-header > div {
           gap: 10px !important;
         }
       }
 
-      /* Chart toggle buttons styling */
       .chart-controls {
         display: flex;
         justify-content: center;
         gap: 10px;
         margin-bottom: 15px;
       }
-
       .chart-toggle-btn {
         padding: 5px 12px;
         border: 1px solid var(--unicef-cyan);
@@ -216,25 +204,21 @@
         cursor: pointer;
         font-size: 12px;
       }
-
       .chart-toggle-btn.active {
         background: var(--unicef-cyan);
         color: white;
       }
-
       .chart-toggle-btn:hover {
         background: var(--unicef-cyan);
         color: white;
       }
 
-      /* Calendar filter styles */
       .calendar-filter {
         display: flex;
         align-items: center;
         gap: 10px;
         margin-bottom: 15px;
       }
-
       .calendar-filter input[type="date"] {
         padding: 5px 10px;
         border: 1px solid var(--border-color);
@@ -262,7 +246,6 @@
         color: var(--text-primary);
       }
 
-      /* Responsive theme toggle */
       .theme-toggle {
         position: fixed;
         top: 20px;
@@ -290,7 +273,6 @@
         color: var(--unicef-orange);
       }
 
-      /* Responsive connection Status Badge */
       .connection-status {
         position: fixed;
         top: 60px;
@@ -325,7 +307,6 @@
         padding: 20px;
         padding-top: 100px;
       }
-
       .portal-selection {
         background: var(--card-bg);
         border-radius: 20px;
@@ -334,7 +315,6 @@
         max-width: 900px;
         width: 100%;
       }
-
       .portal-header {
         background: linear-gradient(
           135deg,
@@ -355,37 +335,31 @@
         opacity: 0.9;
       }
 
-      /* Portal selection backgrounds - white in light mode, dark in dark mode */
       .portal-options {
         padding: 40px;
         background: #ffffff !important;
         color: #2e2e2e !important;
       }
-
       [data-theme="dark"] .portal-options {
         background: #2d2d2d !important;
         color: #ffffff !important;
       }
 
-      /* Login interface backgrounds - white in light, dark in dark mode */
       .login-portal-options {
         padding: 40px;
         background: #ffffff !important;
         color: #2e2e2e !important;
       }
-
       [data-theme="dark"] .login-portal-options {
         background: #2d2d2d !important;
         color: #ffffff !important;
       }
 
-      /* Login form labels - visible in both modes */
       .portal-options .form-label,
       .login-portal-options .form-label {
         color: #2e2e2e !important;
         font-weight: 500;
       }
-
       [data-theme="dark"] .portal-options .form-label,
       [data-theme="dark"] .login-portal-options .form-label {
         color: #ffffff !important;
@@ -397,7 +371,6 @@
         border: 1px solid #dee2e6 !important;
         color: #2e2e2e !important;
       }
-
       [data-theme="dark"] .portal-options .form-control,
       [data-theme="dark"] .login-portal-options .form-control {
         background: #404040 !important;
@@ -412,7 +385,6 @@
         color: #2e2e2e !important;
         box-shadow: 0 0 0 0.2rem rgba(0, 157, 224, 0.25);
       }
-
       [data-theme="dark"] .portal-options .form-control:focus,
       [data-theme="dark"] .login-portal-options .form-control:focus {
         background: #404040 !important;
@@ -424,17 +396,14 @@
       .login-portal-options .text-muted {
         color: #6c757d !important;
       }
-
       [data-theme="dark"] .portal-options .text-muted,
       [data-theme="dark"] .login-portal-options .text-muted {
         color: #e0e0e0 !important;
       }
 
-      /* Password toggle styling */
       .password-field-container {
         position: relative;
       }
-
       .password-toggle {
         position: absolute;
         right: 12px;
@@ -446,7 +415,6 @@
         color: var(--text-secondary);
         z-index: 10;
       }
-
       [data-theme="dark"] .password-toggle {
         color: #e0e0e0;
       }
@@ -570,7 +538,6 @@
         border: 1px solid var(--border-color);
         margin-bottom: 30px;
       }
-
       .form-control {
         background: var(--input-bg);
         border: 1px solid var(--border-color);
@@ -674,7 +641,6 @@
         margin-bottom: 30px;
         width: 100%;
       }
-
       .analytics-chart-container {
         background: var(--card-bg);
         border-radius: 15px;
@@ -691,7 +657,6 @@
         display: none;
       }
 
-      /* Calendar styles */
       .calendar-container {
         background: var(--card-bg);
         border-radius: 15px;
@@ -699,20 +664,17 @@
         margin-top: 20px;
         display: none;
       }
-
       .calendar-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 20px;
       }
-
       .calendar-grid {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
         gap: 10px;
       }
-
       .calendar-day {
         padding: 10px;
         text-align: center;
@@ -721,23 +683,19 @@
         cursor: pointer;
         transition: all 0.3s ease;
       }
-
       .calendar-day:hover {
         background: var(--unicef-cyan);
         color: white;
       }
-
       .calendar-day.has-booking {
         background: var(--unicef-orange);
         color: white;
       }
-
       .calendar-day.selected {
         background: var(--unicef-green);
         color: white;
       }
 
-      /* Calendar filtered table styles */
       .calendar-filtered-table {
         margin-top: 20px;
         padding: 20px;
@@ -753,7 +711,6 @@
         color: var(--text-secondary);
         font-style: italic;
       }
-
       [data-theme="dark"] .no-data-message {
         color: #e0e0e0 !important;
       }
@@ -793,7 +750,6 @@
         font-size: 0.875rem;
         margin-top: 5px;
       }
-
       .email-error {
         border-color: var(--unicef-red) !important;
       }
@@ -805,23 +761,19 @@
     </style>
   </head>
   <body>
-    <!-- Theme Toggle -->
     <div class="theme-toggle" onclick="toggleTheme()">
       <i class="fas fa-sun" id="theme-icon"></i>
       <span id="theme-text">Light Mode</span>
     </div>
 
-    <!-- Connection Status Badge -->
     <div class="connection-status testing" id="connectionStatus">
       <i class="fas fa-circle"></i> Connecting...
     </div>
 
-    <!-- Mobile Burger Menu Toggle -->
     <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">
       <i class="fas fa-bars"></i>
     </button>
 
-    <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
       <div class="loading-spinner">
         <div class="spinner-border" role="status">
@@ -831,7 +783,6 @@
       </div>
     </div>
 
-    <!-- Hidden Iframe for POST -->
     <div class="hidden-form">
       <iframe
         id="hiddenFrame"
@@ -949,7 +900,7 @@
       </div>
     </div>
 
-    <!-- Driver Login -->
+    <!-- Driver Portal -->
     <div class="dashboard" id="driverPortal">
       <div id="driverLoginSection" class="main-container">
         <div class="portal-selection" style="max-width: 400px">
@@ -1009,7 +960,6 @@
         </div>
       </div>
 
-      <!-- Driver Dashboard -->
       <div id="driverDashboard" style="display: none">
         <div class="container-fluid">
           <div class="row">
@@ -1029,7 +979,7 @@
                   </li>
                   <li>
                     <a href="#" onclick="showDriverSection('today')"
-                      ><i class="fas fa-calendar-day"></i> Today's Trips</a
+                      ><i class="fas fa-calendar-day"></i> Assigned Trips</a
                     >
                   </li>
                   <li>
@@ -1052,7 +1002,6 @@
             </div>
             <div class="col-md-9 col-lg-10">
               <div class="content-area">
-                <!-- Driver Dashboard Content -->
                 <div id="driverDashboardContent" class="content-section">
                   <h2>
                     <i class="fas fa-tachometer-alt"></i> Driver Dashboard
@@ -1084,7 +1033,30 @@
                     </div>
                   </div>
 
-                  <!-- FIXED: Added graph section and date filter for driver -->
+                  <div class="form-section">
+                    <h4>Welcome, <span id="driverName">Driver</span>!</h4>
+                    <p>
+                      Here's your driving dashboard with all assigned bookings
+                      and trip information.
+                    </p>
+                    <div class="table-responsive">
+                      <table class="table table-striped">
+                        <thead>
+                          <tr>
+                            <th>Request ID</th>
+                            <th>Employee</th>
+                            <th>Pickup Date</th>
+                            <th>Pickup Time (HH:MM IST)</th>
+                            <th>Destination</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody id="driverBookingsTable"></tbody>
+                      </table>
+                    </div>
+                  </div>
+
                   <div class="chart-container">
                     <div
                       class="d-flex justify-content-between align-items-center mb-3"
@@ -1138,39 +1110,14 @@
                     </div>
                     <canvas id="driverChart" height="100"></canvas>
                   </div>
-
-                  <div class="form-section">
-                    <h4>Welcome, <span id="driverName">Driver</span>!</h4>
-                    <p>
-                      Here's your driving dashboard with all assigned bookings
-                      and trip information.
-                    </p>
-                    <div class="table-responsive">
-                      <table class="table table-striped">
-                        <thead>
-                          <tr>
-                            <th>Request ID</th>
-                            <th>Employee</th>
-                            <th>Date (DD/MM/YYYY)</th>
-                            <th>Time (HH:MM IST)</th>
-                            <th>Destination</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody id="driverBookingsTable"></tbody>
-                      </table>
-                    </div>
-                  </div>
                 </div>
 
-                <!-- Today's Trips Section -->
                 <div
                   id="driverTodaySection"
                   class="content-section"
                   style="display: none"
                 >
-                  <h2><i class="fas fa-calendar-day"></i> Today's Trips</h2>
+                  <h2><i class="fas fa-calendar-day"></i> Assigned Trips</h2>
                   <div class="form-section">
                     <h4>Trips Scheduled for Today</h4>
                     <div class="table-responsive">
@@ -1179,7 +1126,7 @@
                           <tr>
                             <th>Request ID</th>
                             <th>Employee</th>
-                            <th>Time (HH:MM IST)</th>
+                            <th>Pickup Date</th>
                             <th>Pickup Time (HH:MM IST)</th>
                             <th>Destination</th>
                             <th>Status</th>
@@ -1192,7 +1139,6 @@
                   </div>
                 </div>
 
-                <!-- FIXED: Trip History with date filter -->
                 <div
                   id="driverCompletedSection"
                   class="content-section"
@@ -1224,8 +1170,8 @@
                           <tr>
                             <th>Request ID</th>
                             <th>Employee</th>
-                            <th>Date (DD/MM/YYYY)</th>
-                            <th>Time (HH:MM IST)</th>
+                            <th>Pickup Date</th>
+                            <th>Pickup Time (HH:MM IST)</th>
                             <th>Destination</th>
                             <th>Status</th>
                             <th>Completed At</th>
@@ -1348,7 +1294,6 @@
             </div>
             <div class="col-md-9 col-lg-10">
               <div class="content-area">
-                <!-- Reception Dashboard -->
                 <div id="receptionDashboardContent" class="content-section">
                   <h2>
                     <i class="fas fa-tachometer-alt"></i> Reception Dashboard
@@ -1434,7 +1379,6 @@
                   </div>
                 </div>
 
-                <!-- Reception Bookings -->
                 <div
                   id="receptionBookings"
                   class="content-section"
@@ -1472,7 +1416,6 @@
                       </table>
                     </div>
 
-                    <!-- Booking Calendar -->
                     <div
                       id="bookingCalendarContainer"
                       class="calendar-container"
@@ -1502,7 +1445,7 @@
                       </div>
                       <div class="calendar-grid" id="bookingCalendarGrid"></div>
                       <div class="mt-3">
-                        <small class="text-muted"
+                        <small style="color: var(--text-primary)"
                           >Click on a date to view bookings for that day</small
                         >
                       </div>
@@ -1534,7 +1477,6 @@
                   </div>
                 </div>
 
-                <!-- Reception Employees -->
                 <div
                   id="receptionEmployees"
                   class="content-section"
@@ -1619,12 +1561,25 @@
                           </div>
                           <div class="mb-3">
                             <label class="form-label">Password</label>
-                            <input
-                              type="password"
-                              class="form-control"
-                              name="password"
-                              placeholder="Default: default123"
-                            />
+                            <div class="password-field-container">
+                              <input
+                                type="password"
+                                class="form-control"
+                                name="password"
+                                id="addEmpPassword"
+                                placeholder="Default: default123"
+                              />
+                              <button
+                                type="button"
+                                class="password-toggle"
+                                onclick="togglePassword('addEmpPassword')"
+                              >
+                                <i
+                                  class="fas fa-eye"
+                                  id="addEmpPassword-icon"
+                                ></i>
+                              </button>
+                            </div>
                           </div>
                           <button
                             type="button"
@@ -1659,7 +1614,6 @@
                   </div>
                 </div>
 
-                <!-- Reception Cabs -->
                 <div
                   id="receptionCabs"
                   class="content-section"
@@ -1737,12 +1691,25 @@
                           </div>
                           <div class="mb-3">
                             <label class="form-label">Driver Password</label>
-                            <input
-                              type="password"
-                              class="form-control"
-                              name="password"
-                              placeholder="Default: driver123"
-                            />
+                            <div class="password-field-container">
+                              <input
+                                type="password"
+                                class="form-control"
+                                name="password"
+                                id="addCabPassword"
+                                placeholder="Default: driver123"
+                              />
+                              <button
+                                type="button"
+                                class="password-toggle"
+                                onclick="togglePassword('addCabPassword')"
+                              >
+                                <i
+                                  class="fas fa-eye"
+                                  id="addCabPassword-icon"
+                                ></i>
+                              </button>
+                            </div>
                           </div>
                           <div class="mb-3">
                             <label class="form-label">
@@ -1827,7 +1794,6 @@
           </div>
           <div class="col-md-9 col-lg-10">
             <div class="content-area">
-              <!-- New Booking Section -->
               <div id="employeeBookingSection" class="content-section">
                 <h2><i class="fas fa-plus-circle"></i> New Booking Request</h2>
                 <div class="form-section">
@@ -1880,10 +1846,9 @@
                     <div class="mb-3">
                       <label class="form-label">Preferred Cab (Optional)</label>
                       <select class="form-control" id="preferredCab">
-                        <option value="">No preference</option>
-                        <option value="Sedan">Sedan</option>
-                        <option value="SUV">SUV</option>
-                        <option value="Hatchback">Hatchback</option>
+                        <option value="">
+                          No preference - Loading available cabs...
+                        </option>
                       </select>
                     </div>
                     <button
@@ -1897,7 +1862,6 @@
                 </div>
               </div>
 
-              <!-- FIXED: My Bookings Dashboard with graph and date filter -->
               <div
                 id="employeeDashboardSection"
                 class="content-section"
@@ -1931,7 +1895,6 @@
                   </div>
                 </div>
 
-                <!-- FIXED: Added graph section and date filter for employee -->
                 <div class="chart-container">
                   <div
                     class="d-flex justify-content-between align-items-center mb-3"
@@ -2073,6 +2036,51 @@
       </div>
     </div>
 
+    <!-- Cancel Booking Modal -->
+    <div class="modal fade" id="cancelBookingModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Cancel Booking</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to cancel this booking?</p>
+            <div class="mb-3">
+              <label class="form-label">Reason for Cancellation *</label>
+              <textarea
+                class="form-control"
+                id="cancelReason"
+                rows="3"
+                placeholder="Please provide a reason for cancelling this booking..."
+                required
+              ></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              onclick="confirmCancelBooking()"
+            >
+              Cancel Booking
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Edit Employee Modal -->
     <div class="modal fade" id="editEmployeeModal" tabindex="-1">
       <div class="modal-dialog">
@@ -2208,69 +2216,10 @@
       </div>
     </div>
 
-    <!-- Cab Assignment Modal -->
-    <div class="modal fade" id="cabAssignmentModal" tabindex="-1">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Assign Cab</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <div id="assignmentRequestInfo" class="alert alert-info mb-3"></div>
-            <div class="mb-3">
-              <label class="form-label">Available Cabs</label>
-              <select class="form-control" id="assignCabSelect" required>
-                <option value="">Loading available cabs...</option>
-              </select>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Pickup Time (HH:MM IST)</label>
-              <input
-                type="time"
-                class="form-control"
-                id="assignPickupTime"
-                required
-              />
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Notes (Optional)</label>
-              <textarea
-                class="form-control"
-                id="assignNotes"
-                rows="3"
-                placeholder="Additional instructions for the driver..."
-              ></textarea>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              class="btn btn-success"
-              onclick="confirmCabAssignment()"
-            >
-              Approve & Assign
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
       const GAS_BASE =
-        "https://script.google.com/macros/s/AKfycbzGV_rSbcg6T_KNUl9LRU4rhAKJgDRKJu6JyDT2rkH_8U5me_wyF8WSYs6Kyb_UomAe/exec";
+        "https://script.google.com/macros/s/AKfycbzYgozslrOFGv4vno3wKRlNN2EmLp11HbdMw9UlgfWIA80D6G8SxrmR3YVH0EwbSSRLRw/exec";
       let currentEmployee = null;
       let currentDriver = null;
       let employeeChartInstance = null;
@@ -2287,22 +2236,21 @@
       let currentCabForEdit = null;
       let currentEmployeeForEdit = null;
       let currentBookingForAssignment = null;
+      let currentBookingForCancel = null;
       let selectedCalendarDate = null;
       let employeeBookings = [];
       let driverBookings = [];
       let allDriverBookings = [];
 
-      // Password toggle functionality
       function togglePassword(inputId) {
         const input = document.getElementById(inputId);
         const icon = document.getElementById(inputId + "-icon");
-
         if (input.type === "password") {
           input.type = "text";
-          icon.className = "fas fa-eye-slash";
+          if (icon) icon.className = "fas fa-eye-slash";
         } else {
           input.type = "password";
-          icon.className = "fas fa-eye";
+          if (icon) icon.className = "fas fa-eye";
         }
       }
 
@@ -2512,8 +2460,6 @@
           themeText.textContent = "Dark Mode";
           localStorage.setItem("theme", "dark");
         }
-
-        // Update existing charts with new theme colors
         updateAllCharts();
       }
 
@@ -2533,37 +2479,29 @@
         }
       }
 
-      // FIXED: Mobile sidebar toggle with higher priority
       function toggleSidebar() {
-        console.log("Toggling sidebar...");
         const employeeSidebar = document.getElementById("employeeSidebar");
         const receptionSidebar = document.getElementById("receptionSidebar");
         const driverSidebar = document.getElementById("driverSidebar");
-
-        // Check which portal is currently active and toggle the correct sidebar
         if (
           document.getElementById("employeePortal").style.display === "block" &&
           employeeSidebar
         ) {
           employeeSidebar.classList.toggle("show");
-          console.log("Employee sidebar toggled");
         } else if (
           document.getElementById("receptionPortal").style.display ===
             "block" &&
           receptionSidebar
         ) {
           receptionSidebar.classList.toggle("show");
-          console.log("Reception sidebar toggled");
         } else if (
           document.getElementById("driverPortal").style.display === "block" &&
           driverSidebar
         ) {
           driverSidebar.classList.toggle("show");
-          console.log("Driver sidebar toggled");
         }
       }
 
-      // Auto-close sidebar on selection
       function closeSidebar() {
         const sidebars = [
           "employeeSidebar",
@@ -2578,7 +2516,6 @@
         });
       }
 
-      // Login functions
       function showEmployeeLogin() {
         document.getElementById("portalSelection").style.display = "none";
         document.getElementById("employeeLoginSection").style.display = "flex";
@@ -2606,7 +2543,6 @@
         document.getElementById("driverPortal").style.display = "none";
       }
 
-      // Employee login
       async function handleEmployeeLogin() {
         const id = document.getElementById("empLoginId").value.trim();
         const pw = document.getElementById("empLoginPassword").value;
@@ -2614,7 +2550,6 @@
           showAlert("Enter Employee ID and Password", "error");
           return;
         }
-
         try {
           showLoading("Authenticating...");
           const res = await api.empLogin(id, pw);
@@ -2632,16 +2567,13 @@
         }
       }
 
-      // Driver login
       async function handleDriverLogin() {
         const cabId = document.getElementById("cabId").value.trim();
         const password = document.getElementById("driverPassword").value;
-
         if (!cabId || !password) {
           showAlert("Please enter both Cab ID and Password", "error");
           return;
         }
-
         try {
           showLoading("Authenticating driver...");
           const res = await api.driverLogin(cabId, password);
@@ -2663,7 +2595,6 @@
         }
       }
 
-      // Reception login
       async function handleReceptionLogin() {
         const username = document.getElementById("username").value;
         const password = document.getElementById("password").value;
@@ -2671,7 +2602,6 @@
           showAlert("Please enter both username and password", "error");
           return;
         }
-
         try {
           showLoading("Authenticating...");
           const response = await api.login(username, password);
@@ -2691,7 +2621,6 @@
         }
       }
 
-      // Logout functions
       function logoutReception() {
         document.getElementById("loginSection").style.display = "flex";
         document.getElementById("receptionDashboard").style.display = "none";
@@ -2725,26 +2654,47 @@
         document.getElementById("employeeLoginSection").style.display = "none";
         document.getElementById("employeePortal").style.display = "block";
         loadEmployeeDashboard();
+        loadAvailableCabsForBooking();
       }
 
-      // FIXED: Employee section navigation (removed history tab)
+      async function loadAvailableCabsForBooking() {
+        try {
+          const response = await api.getCabs();
+          if (response.success) {
+            const availableCabs = response.data.filter((cab) => cab.Available);
+            const selectElement = document.getElementById("preferredCab");
+            selectElement.innerHTML = '<option value="">No preference</option>';
+            availableCabs.forEach((cab) => {
+              const option = document.createElement("option");
+              option.value = cab.ID;
+              option.textContent = `${cab["Car Model"]} - ${cab["License Plate"]} (${cab["Driver Name"]})`;
+              selectElement.appendChild(option);
+            });
+            if (availableCabs.length === 0) {
+              selectElement.innerHTML =
+                '<option value="">No cabs available at the moment</option>';
+            }
+          }
+        } catch (error) {
+          console.error("Failed to load available cabs:", error);
+          document.getElementById("preferredCab").innerHTML =
+            '<option value="">Error loading cabs</option>';
+        }
+      }
+
       function showEmployeeSection(section) {
         document
           .querySelectorAll("#employeePortal .content-section")
           .forEach((el) => (el.style.display = "none"));
-
-        // Auto-close sidebar after selection
         closeSidebar();
-
-        // Update active nav item
         document
           .querySelectorAll("#employeePortal .sidebar-nav a")
           .forEach((elm) => elm.classList.remove("active"));
         if (event && event.target) event.target.classList.add("active");
-
         if (section === "booking") {
           document.getElementById("employeeBookingSection").style.display =
             "block";
+          loadAvailableCabsForBooking();
         } else if (section === "dashboard") {
           document.getElementById("employeeDashboardSection").style.display =
             "block";
@@ -2752,16 +2702,11 @@
         }
       }
 
-      // FIXED: Driver section navigation (removed my bookings tab)
       function showDriverSection(section) {
         document
           .querySelectorAll("#driverDashboard .content-section")
           .forEach((el) => (el.style.display = "none"));
-
-        // Auto-close sidebar after selection
         closeSidebar();
-
-        // Update active nav item
         document
           .querySelectorAll("#driverDashboard .sidebar-nav a")
           .forEach((elm) => elm.classList.remove("active"));
@@ -2777,11 +2722,10 @@
         } else if (section === "completed") {
           document.getElementById("driverCompletedSection").style.display =
             "block";
-          loadAllDriverBookings(); // Load all trips for history
+          loadAllDriverBookings();
         }
       }
 
-      // FIXED: Reception section navigation (removed analytics tab)
       function showReceptionSection(section) {
         document
           .querySelectorAll("#receptionDashboard .content-section")
@@ -2793,13 +2737,10 @@
           (section === "dashboard" ? "Content" : "");
         const el = document.getElementById(id);
         if (el) el.style.display = "block";
-
         document
           .querySelectorAll("#receptionDashboard .sidebar-nav a")
           .forEach((elm) => elm.classList.remove("active"));
         if (event && event.target) event.target.classList.add("active");
-
-        // Auto-close sidebar after selection
         closeSidebar();
 
         if (section === "dashboard") loadReceptionDashboard();
@@ -2808,17 +2749,13 @@
         else if (section === "cabs") loadCabs();
       }
 
-      // Load driver dashboard
       async function loadDriverDashboard() {
         if (!currentDriver) return;
-
         try {
           showLoading("Loading driver dashboard...");
           const response = await api.getDriverBookings(currentDriver.cabId);
           if (response.success) {
             driverBookings = response.data;
-
-            // Update stats
             const total = driverBookings.length;
             const pending = driverBookings.filter(
               (b) => b.Status === "Approved" && new Date(b.Date) >= new Date()
@@ -2839,7 +2776,6 @@
             document.getElementById("driverCompletedBookings").textContent =
               completed;
 
-            // Display recent bookings
             displayDriverBookings(
               driverBookings.slice(0, 10),
               "driverBookingsTable"
@@ -2853,10 +2789,8 @@
         }
       }
 
-      // Load all driver bookings for history
       async function loadAllDriverBookings() {
         if (!currentDriver) return;
-
         try {
           showLoading("Loading trip history...");
           const response = await api.getDriverBookings(currentDriver.cabId);
@@ -2871,10 +2805,8 @@
         }
       }
 
-      // Load today's driver bookings
       async function loadTodayDriverBookings() {
         if (!currentDriver) return;
-
         try {
           showLoading("Loading today's trips...");
           const response = await api.getDriverBookings(currentDriver.cabId);
@@ -2887,7 +2819,7 @@
             displayDriverBookings(
               todayBookings,
               "todayDriverBookingsTable",
-              false,
+              true,
               true
             );
           }
@@ -2898,20 +2830,17 @@
         }
       }
 
-      // Display driver bookings
       function displayDriverBookings(
         bookings,
         tableId,
-        showPickup = false,
+        showPickupDate = false,
         isToday = false
       ) {
         const tbody = document.getElementById(tableId);
         tbody.innerHTML = "";
-
         bookings.forEach((booking) => {
           const row = document.createElement("tr");
           const statusBadge = getStatusBadge(booking.Status);
-
           const bookingDate = formatDateIST(booking.Date);
           const bookingTime = formatTimeOnly(booking.Time);
           const pickupTime = formatTimeOnly(booking["Pickup Time"]);
@@ -2919,10 +2848,10 @@
           let rowHtml = `
           <td>${booking["Request ID"]}</td>
           <td>${booking["Employee Name"]}</td>
-          ${!isToday ? `<td>${bookingDate}</td>` : ""}
-          <td>${bookingTime}</td>
-          ${showPickup ? `<td>${pickupTime}</td>` : ""}
-          ${isToday ? `<td>${pickupTime}</td>` : ""}
+        `;
+          rowHtml += `<td>${bookingDate}</td>`;
+          rowHtml += `
+          <td>${pickupTime || bookingTime}</td>
           <td>${booking.Destination}</td>
           <td>${statusBadge}</td>
           <td>
@@ -2935,29 +2864,27 @@
             }
           </td>
         `;
-
           row.innerHTML = rowHtml;
           tbody.appendChild(row);
         });
       }
 
-      // FIXED: Display trip history with date filter capability
       function displayTripHistory(bookings) {
         const tbody = document.getElementById("completedDriverBookingsTable");
         tbody.innerHTML = "";
-
         bookings.forEach((booking) => {
           const row = document.createElement("tr");
           const bookingDate = formatDateIST(booking.Date);
-          const bookingTime = formatTimeOnly(booking.Time);
+          const pickupTime =
+            formatTimeOnly(booking["Pickup Time"]) ||
+            formatTimeOnly(booking.Time);
           const completedAt = formatDateTimeIST(booking["Completed At"]);
           const statusBadge = getStatusBadge(booking.Status);
-
           row.innerHTML = `
           <td>${booking["Request ID"]}</td>
           <td>${booking["Employee Name"]}</td>
           <td>${bookingDate}</td>
-          <td>${bookingTime}</td>
+          <td>${pickupTime}</td>
           <td>${booking.Destination}</td>
           <td>${statusBadge}</td>
           <td>${completedAt}</td>
@@ -2966,7 +2893,6 @@
         });
       }
 
-      // Mark booking as completed
       async function markCompleted(requestId) {
         try {
           showLoading("Marking trip as completed...");
@@ -2975,7 +2901,6 @@
             status: "Completed",
             completedAt: new Date().toISOString(),
           });
-
           if (result.success) {
             showAlert("Trip marked as completed!", "success");
             loadDriverDashboard();
@@ -2989,17 +2914,13 @@
         }
       }
 
-      // Load employee dashboard
       async function loadEmployeeDashboard() {
         if (!currentEmployee) return;
-
         try {
           showLoading("Loading employee dashboard...");
           const response = await api.getBookings(currentEmployee.id);
           if (response.success) {
             employeeBookings = response.data;
-
-            // Update stats
             const total = employeeBookings.length;
             const pending = employeeBookings.filter(
               (b) => b.Status === "Pending"
@@ -3018,7 +2939,6 @@
             document.getElementById("empRejectedBookings").textContent =
               rejected;
 
-            // Display recent bookings
             displayEmployeeBookings(employeeBookings, "empBookingsTable");
             updateEmployeeCharts(employeeBookings);
           }
@@ -3029,20 +2949,25 @@
         }
       }
 
-      // FIXED: Display employee bookings with Requested On and Approved On columns
       function displayEmployeeBookings(bookings, tableId) {
         const tbody = document.getElementById(tableId);
         tbody.innerHTML = "";
-
         bookings.forEach((booking) => {
           const row = document.createElement("tr");
           const statusBadge = getStatusBadge(booking.Status);
-
           const bookingDate = formatDateIST(booking.Date);
           const bookingTime = formatTimeOnly(booking.Time);
-          const requestedOn = formatDateTimeIST(booking["Requested DateTime"]);
-          const approvedOn = formatDateTimeIST(booking["Approved DateTime"]);
-
+          let requestedOn = "-";
+          if (booking["Requested DateTime"]) {
+            requestedOn = formatDateTimeIST(booking["Requested DateTime"]);
+          } else if (booking["Created Date"]) {
+            requestedOn = formatDateTimeIST(booking["Created Date"]);
+          } else {
+            requestedOn = formatDateTimeIST(new Date());
+          }
+          const approvedOn = booking["Approved DateTime"]
+            ? formatDateTimeIST(booking["Approved DateTime"])
+            : "-";
           row.innerHTML = `
           <td>${booking["Request ID"]}</td>
           <td>${bookingDate}</td>
@@ -3054,7 +2979,7 @@
           <td>
             ${
               booking.Status === "Pending"
-                ? '<button class="btn btn-sm btn-danger" onclick="cancelBooking(\'' +
+                ? '<button class="btn btn-sm btn-danger" onclick="showCancelBookingModal(\'' +
                   booking["Request ID"] +
                   "')\">Cancel</button>"
                 : "-"
@@ -3065,10 +2990,8 @@
         });
       }
 
-      // Submit new booking request
       async function submitBookingRequest() {
         if (!currentEmployee) return;
-
         const date = document.getElementById("bookingDate").value;
         const time = document.getElementById("bookingTime").value;
         const destination = document
@@ -3082,11 +3005,9 @@
           return;
         }
 
-        // Check if date is not in the past
         const selectedDate = new Date(date);
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-
         if (selectedDate < today) {
           showAlert("Cannot book for past dates", "error");
           return;
@@ -3109,6 +3030,7 @@
             showAlert("Booking request submitted successfully!", "success");
             document.getElementById("newBookingForm").reset();
             loadEmployeeDashboard();
+            loadAvailableCabsForBooking();
           } else {
             showAlert("Failed to submit booking request", "error");
           }
@@ -3122,20 +3044,36 @@
         }
       }
 
-      // FIXED: Cancel booking function that properly updates status in Google Sheet
-      async function cancelBooking(requestId) {
-        if (!confirm("Are you sure you want to cancel this booking?")) return;
+      function showCancelBookingModal(requestId) {
+        currentBookingForCancel = requestId;
+        document.getElementById("cancelReason").value = "";
+        const modal = new bootstrap.Modal(
+          document.getElementById("cancelBookingModal")
+        );
+        modal.show();
+      }
 
+      async function confirmCancelBooking() {
+        if (!currentBookingForCancel) return;
+        const reason = document.getElementById("cancelReason").value.trim();
+        if (!reason) {
+          showAlert("Please provide a reason for cancellation", "error");
+          return;
+        }
         try {
           showLoading("Cancelling booking...");
           const result = await api.updateBookingStatus({
-            requestId: requestId,
+            requestId: currentBookingForCancel,
             status: "Cancelled",
+            notes: `Cancelled by employee: ${reason}`,
           });
-
           if (result.success) {
             showAlert("Booking cancelled successfully!", "success");
-            loadEmployeeDashboard(); // Reload to show updated status
+            loadEmployeeDashboard();
+            const modal = bootstrap.Modal.getInstance(
+              document.getElementById("cancelBookingModal")
+            );
+            modal.hide();
           } else {
             showAlert("Failed to cancel booking: " + result.message, "error");
           }
@@ -3179,7 +3117,6 @@
         document.getElementById("rejectedBookings").textContent = rejected;
       }
 
-      // Load reception bookings
       async function loadReceptionBookings() {
         try {
           showLoading("Loading bookings...");
@@ -3197,22 +3134,20 @@
         }
       }
 
-      // Display bookings with proper date/time format after edit
       function displayBookings(bookings) {
         const tbody = document.getElementById("bookingsTable");
         tbody.innerHTML = "";
-
         bookings.forEach((booking) => {
           const row = document.createElement("tr");
           const statusBadge = getStatusBadge(booking.Status);
-
-          // Format dates and times properly with DD/MM/YYYY and HH:MM IST
           const bookingDate = formatDateIST(booking.Date);
           const bookingTime = formatTimeOnly(booking.Time);
-          // FIXED: Auto-fill Requested On and Approved On with proper timestamps
-          const requestedOn = booking["Requested DateTime"]
-            ? formatDateTimeIST(booking["Requested DateTime"])
-            : formatDateTimeIST(new Date()); // Auto-fill current time if empty
+          let requestedOn = "-";
+          if (booking["Requested DateTime"]) {
+            requestedOn = formatDateTimeIST(booking["Requested DateTime"]);
+          } else if (booking["Created Date"]) {
+            requestedOn = formatDateTimeIST(booking["Created Date"]);
+          }
           const approvedOn = booking["Approved DateTime"]
             ? formatDateTimeIST(booking["Approved DateTime"])
             : "-";
@@ -3240,7 +3175,6 @@
         });
       }
 
-      // Load employees
       async function loadEmployees() {
         try {
           showLoading("Loading employees...");
@@ -3249,7 +3183,6 @@
             allEmployees = response.data;
             const tbody = document.getElementById("employeesTable");
             tbody.innerHTML = "";
-
             response.data.forEach((employee) => {
               const row = document.createElement("tr");
               row.innerHTML = `
@@ -3275,7 +3208,6 @@
         }
       }
 
-      // Load cabs
       async function loadCabs() {
         try {
           showLoading("Loading cabs...");
@@ -3284,9 +3216,7 @@
             allCabs = response.data;
             const tbody = document.getElementById("cabsTable");
             tbody.innerHTML = "";
-
             response.data.forEach((cab) => {
-              const row = document.createElement("tr");
               let isAvailable = false;
               if (typeof cab.Available === "boolean") {
                 isAvailable = cab.Available;
@@ -3297,14 +3227,16 @@
               } else if (typeof cab.Available === "number") {
                 isAvailable = cab.Available === 1;
               }
-
               const statusBadge = isAvailable
                 ? '<span class="badge bg-success">Available</span>'
                 : '<span class="badge bg-danger">Unavailable</span>';
 
+              const carModel = cab["Car Model"] || "N/A";
+
+              const row = document.createElement("tr");
               row.innerHTML = `
               <td>${cab["License Plate"]}</td>
-              <td>${cab["Car Model"]}</td>
+              <td>${carModel}</td>
               <td>${cab["Driver Name"]}</td>
               <td>${cab["Driver Phone"]}</td>
               <td>${statusBadge}</td>
@@ -3325,18 +3257,14 @@
         }
       }
 
-      // Delete employee functionality
       async function deleteEmployee(employeeId) {
-        if (!confirm("Are you sure you want to delete this employee?")) {
-          return;
-        }
-
+        if (!confirm("Are you sure you want to delete this employee?")) return;
         try {
           showLoading("Deleting employee...");
           const result = await api.deleteEmployee(employeeId);
           if (result.success) {
             showAlert("Employee deleted successfully!", "success");
-            loadEmployees(); // Reload employee list
+            loadEmployees();
           } else {
             showAlert("Failed to delete employee: " + result.message, "error");
           }
@@ -3347,18 +3275,14 @@
         }
       }
 
-      // Delete cab functionality
       async function deleteCab(cabId) {
-        if (!confirm("Are you sure you want to delete this cab?")) {
-          return;
-        }
-
+        if (!confirm("Are you sure you want to delete this cab?")) return;
         try {
           showLoading("Deleting cab...");
           const result = await api.deleteCab(cabId);
           if (result.success) {
             showAlert("Cab deleted successfully!", "success");
-            loadCabs(); // Reload cab list
+            loadCabs();
           } else {
             showAlert("Failed to delete cab: " + result.message, "error");
           }
@@ -3369,29 +3293,24 @@
         }
       }
 
-      // Edit employee functionality
       function editEmployee(employeeId) {
         const employee = allEmployees.find((e) => e.ID === employeeId);
         if (!employee) {
           showAlert("Employee not found", "error");
           return;
         }
-
         currentEmployeeForEdit = employee;
-
         document.getElementById("editEmpId").value = employee.ID;
         document.getElementById("editEmpName").value = employee.Name;
         document.getElementById("editEmpDepartment").value =
           employee.Department;
         document.getElementById("editEmpPhone").value = employee.Phone;
         document.getElementById("editEmpEmail").value = employee.Email;
-
         const modal = new bootstrap.Modal(
           document.getElementById("editEmployeeModal")
         );
         modal.show();
       }
-
       async function saveEmployeeEdit() {
         if (!currentEmployeeForEdit) return;
 
@@ -3424,7 +3343,10 @@
             modal.hide();
             loadEmployees(); // Reload employees
           } else {
-            showAlert("Failed to update employee: " + result.message, "error");
+            showAlert(
+              "Failed to update employee: " + (result.message || ""),
+              "error"
+            );
           }
         } catch (error) {
           showAlert("Failed to update employee: " + error.message, "error");
@@ -3433,7 +3355,7 @@
         }
       }
 
-      // Add employee with email validation
+      // Add employee with inline validation and eye button already in form
       async function addEmployee() {
         const form = document.getElementById("addEmployeeForm");
         const formData = new FormData(form);
@@ -3484,7 +3406,10 @@
             form.reset();
             loadEmployees();
           } else {
-            showAlert("Failed to add employee: " + result.message, "error");
+            showAlert(
+              "Failed to add employee: " + (result.message || ""),
+              "error"
+            );
           }
         } catch (error) {
           showAlert("Failed to add employee: " + error.message, "error");
@@ -3493,7 +3418,7 @@
         }
       }
 
-      // Add cab with email validation
+      // Add cab with correct Car Model persistence
       async function addCab() {
         const form = document.getElementById("addCabForm");
         const formData = new FormData(form);
@@ -3536,7 +3461,7 @@
           driverName: formData.get("driverName"),
           driverPhone: formData.get("driverPhone"),
           driverEmail: formData.get("driverEmail"),
-          carModel: formData.get("carModel"),
+          carModel: formData.get("carModel"), // ensure field name is carModel
           password: formData.get("password") || "driver123",
           available: formData.get("available") ? "true" : "false",
         };
@@ -3549,7 +3474,7 @@
             form.reset();
             loadCabs();
           } else {
-            showAlert("Failed to add cab: " + result.message, "error");
+            showAlert("Failed to add cab: " + (result.message || ""), "error");
           }
         } catch (error) {
           showAlert("Failed to add cab: " + error.message, "error");
@@ -3558,7 +3483,46 @@
         }
       }
 
-      // Edit cab functionality
+      function editEmployee(employeeId) {
+        const employee = allEmployees.find((e) => e.ID === employeeId);
+        if (!employee) {
+          showAlert("Employee not found", "error");
+          return;
+        }
+        currentEmployeeForEdit = employee;
+        document.getElementById("editEmpId").value = employee.ID;
+        document.getElementById("editEmpName").value = employee.Name;
+        document.getElementById("editEmpDepartment").value =
+          employee.Department;
+        document.getElementById("editEmpPhone").value = employee.Phone;
+        document.getElementById("editEmpEmail").value = employee.Email;
+        const modal = new bootstrap.Modal(
+          document.getElementById("editEmployeeModal")
+        );
+        modal.show();
+      }
+
+      async function deleteEmployee(employeeId) {
+        if (!confirm("Are you sure you want to delete this employee?")) return;
+        try {
+          showLoading("Deleting employee...");
+          const result = await api.deleteEmployee(employeeId);
+          if (result.success) {
+            showAlert("Employee deleted successfully!", "success");
+            loadEmployees();
+          } else {
+            showAlert(
+              "Failed to delete employee: " + (result.message || ""),
+              "error"
+            );
+          }
+        } catch (error) {
+          showAlert("Failed to delete employee: " + error.message, "error");
+        } finally {
+          hideLoading();
+        }
+      }
+
       function editCab(cabId) {
         const cab = allCabs.find((c) => c.ID === cabId);
         if (!cab) {
@@ -3568,13 +3532,15 @@
 
         currentCabForEdit = cab;
 
-        document.getElementById("editCabPlate").value = cab["License Plate"];
-        document.getElementById("editCabDriverName").value = cab["Driver Name"];
+        document.getElementById("editCabPlate").value =
+          cab["License Plate"] || "";
+        document.getElementById("editCabDriverName").value =
+          cab["Driver Name"] || "";
         document.getElementById("editCabDriverPhone").value =
-          cab["Driver Phone"];
+          cab["Driver Phone"] || "";
         document.getElementById("editCabDriverEmail").value =
-          cab["Driver Email"];
-        document.getElementById("editCabModel").value = cab["Car Model"];
+          cab["Driver Email"] || "";
+        document.getElementById("editCabModel").value = cab["Car Model"] || "";
 
         let isAvailable = false;
         if (typeof cab.Available === "boolean") {
@@ -3617,9 +3583,12 @@
               document.getElementById("editCabModal")
             );
             modal.hide();
-            loadCabs(); // Reload cabs
+            loadCabs();
           } else {
-            showAlert("Failed to update cab: " + result.message, "error");
+            showAlert(
+              "Failed to update cab: " + (result.message || ""),
+              "error"
+            );
           }
         } catch (error) {
           showAlert("Failed to update cab: " + error.message, "error");
@@ -3628,7 +3597,27 @@
         }
       }
 
-      // Validation functions
+      async function deleteCab(cabId) {
+        if (!confirm("Are you sure you want to delete this cab?")) return;
+        try {
+          showLoading("Deleting cab...");
+          const result = await api.deleteCab(cabId);
+          if (result.success) {
+            showAlert("Cab deleted successfully!", "success");
+            loadCabs();
+          } else {
+            showAlert(
+              "Failed to delete cab: " + (result.message || ""),
+              "error"
+            );
+          }
+        } catch (error) {
+          showAlert("Failed to delete cab: " + error.message, "error");
+        } finally {
+          hideLoading();
+        }
+      }
+
       function validatePhone(phone) {
         return /^[0-9]{10}$/.test(phone);
       }
@@ -3637,7 +3626,7 @@
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
       }
 
-      // Edit booking functionality
+      // Edit booking
       function editBooking(requestId) {
         const booking = allBookings.find((b) => b["Request ID"] === requestId);
         if (!booking) {
@@ -3647,7 +3636,6 @@
 
         currentBookingForEdit = booking;
 
-        // Convert date to proper format for input
         const dateObj = new Date(booking.Date);
         const formattedDate =
           dateObj.getFullYear() +
@@ -3660,8 +3648,9 @@
         document.getElementById("editTime").value = formatTimeForInput(
           booking.Time
         );
-        document.getElementById("editDestination").value = booking.Destination;
-        document.getElementById("editPurpose").value = booking.Purpose;
+        document.getElementById("editDestination").value =
+          booking.Destination || "";
+        document.getElementById("editPurpose").value = booking.Purpose || "";
 
         const modal = new bootstrap.Modal(
           document.getElementById("editBookingModal")
@@ -3669,7 +3658,6 @@
         modal.show();
       }
 
-      // Save booking edit
       async function saveBookingEdit() {
         if (!currentBookingForEdit) return;
 
@@ -3703,7 +3691,6 @@
             );
             modal.hide();
 
-            // Update the booking in local array to reflect changes immediately
             const bookingIndex = allBookings.findIndex(
               (b) => b["Request ID"] === editData.requestId
             );
@@ -3714,9 +3701,12 @@
               allBookings[bookingIndex].Purpose = editData.purpose;
             }
 
-            loadReceptionBookings(); // Reload bookings to show updated data
+            loadReceptionBookings();
           } else {
-            showAlert("Failed to update booking: " + result.message, "error");
+            showAlert(
+              "Failed to update booking: " + (result.message || ""),
+              "error"
+            );
           }
         } catch (error) {
           showAlert("Failed to update booking: " + error.message, "error");
@@ -3725,7 +3715,6 @@
         }
       }
 
-      // Approve booking functionality
       async function approveBooking(requestId) {
         const booking = allBookings.find((b) => b["Request ID"] === requestId);
         if (!booking) {
@@ -3735,25 +3724,21 @@
 
         currentBookingForAssignment = booking;
 
-        // Show assignment info
         document.getElementById("assignmentRequestInfo").innerHTML = `
-        <strong>Booking Details:</strong><br>
-        Employee: ${booking["Employee Name"]}<br>
-        Date: ${formatDateIST(booking.Date)}<br>
-        Time: ${formatTimeOnly(booking.Time)}<br>
-        Destination: ${booking.Destination}
-      `;
+    <strong>Booking Details:</strong><br>
+    Employee: ${booking["Employee Name"]}<br>
+    Date: ${formatDateIST(booking.Date)}<br>
+    Time: ${formatTimeOnly(booking.Time)}<br>
+    Destination: ${booking.Destination}
+  `;
 
-        // Set default pickup time to booking time
         document.getElementById("assignPickupTime").value = formatTimeForInput(
           booking.Time
         );
 
-        // Load available cabs
         try {
           showLoading("Loading available cabs...");
 
-          // Get all cabs first
           const cabsResponse = await api.getCabs();
           if (cabsResponse.success) {
             allCabs = cabsResponse.data;
@@ -3762,7 +3747,6 @@
           const cabSelect = document.getElementById("assignCabSelect");
           cabSelect.innerHTML = '<option value="">Select a cab</option>';
 
-          // Filter available cabs
           const availableCabs = allCabs.filter((cab) => {
             let isAvailable = false;
             if (typeof cab.Available === "boolean") {
@@ -3795,14 +3779,12 @@
           hideLoading();
         }
 
-        // Show modal
         const modal = new bootstrap.Modal(
           document.getElementById("cabAssignmentModal")
         );
         modal.show();
       }
 
-      // Confirm cab assignment
       async function confirmCabAssignment() {
         if (!currentBookingForAssignment) return;
 
@@ -3820,7 +3802,6 @@
           return;
         }
 
-        // Find cab details from current cabs array
         const selectedCab = allCabs.find((c) => c.ID === cabId);
         if (!selectedCab) {
           showAlert("Selected cab not found in current data", "error");
@@ -3848,15 +3829,17 @@
               "success"
             );
           } else {
-            showAlert("Failed to approve booking: " + result.message, "error");
+            showAlert(
+              "Failed to approve booking: " + (result.message || ""),
+              "error"
+            );
           }
-
           const modal = bootstrap.Modal.getInstance(
             document.getElementById("cabAssignmentModal")
           );
           modal.hide();
-          loadReceptionBookings(); // Reload bookings
-          loadReceptionDashboard(); // Update dashboard stats
+          loadReceptionBookings();
+          loadReceptionDashboard();
         } catch (error) {
           showAlert("Failed to approve booking: " + error.message, "error");
           const modal = bootstrap.Modal.getInstance(
@@ -3868,7 +3851,6 @@
         }
       }
 
-      // Reject booking functionality
       async function rejectBooking(requestId) {
         const reason = prompt("Please enter reason for rejection:");
         if (!reason) return;
@@ -3885,10 +3867,13 @@
           if (result.success) {
             showAlert("Booking rejected successfully!", "success");
           } else {
-            showAlert("Failed to reject booking: " + result.message, "error");
+            showAlert(
+              "Failed to reject booking: " + (result.message || ""),
+              "error"
+            );
           }
-          loadReceptionBookings(); // Reload bookings
-          loadReceptionDashboard(); // Update dashboard stats
+          loadReceptionBookings();
+          loadReceptionDashboard();
         } catch (error) {
           showAlert("Failed to reject booking: " + error.message, "error");
         } finally {
@@ -3896,7 +3881,7 @@
         }
       }
 
-      // Chart functions
+      // Charts (same behavior; reusing your existing implementations)
       function toggleReceptionChart(type) {
         currentReceptionChartType = type;
         document
@@ -3906,7 +3891,6 @@
         updateReceptionCharts(allBookings);
       }
 
-      // FIXED: Employee chart functions
       function toggleEmployeeChart(type) {
         currentEmployeeChartType = type;
         document
@@ -3916,7 +3900,6 @@
         updateEmployeeCharts(employeeBookings);
       }
 
-      // FIXED: Driver chart functions
       function toggleDriverChart(type) {
         currentDriverChartType = type;
         document
@@ -3926,6 +3909,7 @@
         updateDriverCharts(driverBookings);
       }
 
+      // Reception charts
       function updateReceptionCharts(bookings) {
         const ctx = document.getElementById("receptionChart");
         if (!ctx) return;
@@ -3934,15 +3918,12 @@
           receptionChartInstance = null;
         }
 
-        // Process data for daily view
         const dailyData = {};
         bookings.forEach((b) => {
           try {
             const date = formatDateIST(b.Date);
             dailyData[date] = (dailyData[date] || 0) + 1;
-          } catch (e) {
-            console.warn("Invalid date:", b.Date);
-          }
+          } catch (e) {}
         });
 
         const sortedDates = Object.keys(dailyData).sort((a, b) => {
@@ -3954,7 +3935,7 @@
           );
         });
 
-        const labels = sortedDates.slice(-7); // Last 7 days
+        const labels = sortedDates.slice(-7);
         const data = labels.map((l) => dailyData[l] || 0);
 
         const isDark = document.body.getAttribute("data-theme") === "dark";
@@ -3988,18 +3969,14 @@
           },
           options: {
             responsive: true,
-            plugins: {
-              legend: {
-                labels: { color: textColor },
-              },
-            },
+            plugins: { legend: { labels: { color: textColor } } },
             scales:
               currentReceptionChartType === "doughnut"
                 ? {}
                 : {
                     y: {
                       beginAtZero: true,
-                      ticks: { color: textColor },
+                      ticks: { color: textColor, stepSize: 1, precision: 0 },
                       grid: { display: false },
                     },
                     x: {
@@ -4013,7 +3990,7 @@
         receptionChartInstance = new Chart(ctx, chartConfig);
       }
 
-      // FIXED: Employee charts
+      // Employee charts
       function updateEmployeeCharts(bookings) {
         const ctx = document.getElementById("employeeChart");
         if (!ctx) return;
@@ -4022,15 +3999,12 @@
           employeeChartInstance = null;
         }
 
-        // Process data for daily view
         const dailyData = {};
         bookings.forEach((b) => {
           try {
             const date = formatDateIST(b.Date);
             dailyData[date] = (dailyData[date] || 0) + 1;
-          } catch (e) {
-            console.warn("Invalid date:", b.Date);
-          }
+          } catch (e) {}
         });
 
         const sortedDates = Object.keys(dailyData).sort((a, b) => {
@@ -4042,7 +4016,7 @@
           );
         });
 
-        const labels = sortedDates.slice(-7); // Last 7 days
+        const labels = sortedDates.slice(-7);
         const data = labels.map((l) => dailyData[l] || 0);
 
         const isDark = document.body.getAttribute("data-theme") === "dark";
@@ -4076,18 +4050,14 @@
           },
           options: {
             responsive: true,
-            plugins: {
-              legend: {
-                labels: { color: textColor },
-              },
-            },
+            plugins: { legend: { labels: { color: textColor } } },
             scales:
               currentEmployeeChartType === "doughnut"
                 ? {}
                 : {
                     y: {
                       beginAtZero: true,
-                      ticks: { color: textColor },
+                      ticks: { color: textColor, stepSize: 1, precision: 0 },
                       grid: { display: false },
                     },
                     x: {
@@ -4101,7 +4071,7 @@
         employeeChartInstance = new Chart(ctx, chartConfig);
       }
 
-      // FIXED: Driver charts
+      // Driver charts
       function updateDriverCharts(bookings) {
         const ctx = document.getElementById("driverChart");
         if (!ctx) return;
@@ -4110,15 +4080,12 @@
           driverChartInstance = null;
         }
 
-        // Process data for daily view
         const dailyData = {};
         bookings.forEach((b) => {
           try {
             const date = formatDateIST(b.Date);
             dailyData[date] = (dailyData[date] || 0) + 1;
-          } catch (e) {
-            console.warn("Invalid date:", b.Date);
-          }
+          } catch (e) {}
         });
 
         const sortedDates = Object.keys(dailyData).sort((a, b) => {
@@ -4130,7 +4097,7 @@
           );
         });
 
-        const labels = sortedDates.slice(-7); // Last 7 days
+        const labels = sortedDates.slice(-7);
         const data = labels.map((l) => dailyData[l] || 0);
 
         const isDark = document.body.getAttribute("data-theme") === "dark";
@@ -4164,18 +4131,14 @@
           },
           options: {
             responsive: true,
-            plugins: {
-              legend: {
-                labels: { color: textColor },
-              },
-            },
+            plugins: { legend: { labels: { color: textColor } } },
             scales:
               currentDriverChartType === "doughnut"
                 ? {}
                 : {
                     y: {
                       beginAtZero: true,
-                      ticks: { color: textColor },
+                      ticks: { color: textColor, stepSize: 1, precision: 0 },
                       grid: { display: false },
                     },
                     x: {
@@ -4195,19 +4158,16 @@
         if (driverChartInstance) updateDriverCharts(driverBookings);
       }
 
-      // Calendar functions for reception
+      // Calendar and filters (unchanged except safe guards)
       function showDashboardCalendar() {
         const calendarFilter = document.getElementById(
           "dashboardCalendarFilter"
         );
-        if (
+        calendarFilter.style.display =
           calendarFilter.style.display === "none" ||
           !calendarFilter.style.display
-        ) {
-          calendarFilter.style.display = "flex";
-        } else {
-          calendarFilter.style.display = "none";
-        }
+            ? "flex"
+            : "none";
       }
 
       function filterDashboardData() {
@@ -4242,19 +4202,15 @@
         showAlert("Filter cleared - showing all bookings", "info");
       }
 
-      // FIXED: Employee dashboard calendar functions
       function showEmployeeDashboardCalendar() {
         const calendarFilter = document.getElementById(
           "employeeDashboardCalendarFilter"
         );
-        if (
+        calendarFilter.style.display =
           calendarFilter.style.display === "none" ||
           !calendarFilter.style.display
-        ) {
-          calendarFilter.style.display = "flex";
-        } else {
-          calendarFilter.style.display = "none";
-        }
+            ? "flex"
+            : "none";
       }
 
       function filterEmployeeDashboardData() {
@@ -4290,19 +4246,15 @@
         showAlert("Filter cleared - showing all bookings", "info");
       }
 
-      // FIXED: Driver dashboard calendar functions
       function showDriverDashboardCalendar() {
         const calendarFilter = document.getElementById(
           "driverDashboardCalendarFilter"
         );
-        if (
+        calendarFilter.style.display =
           calendarFilter.style.display === "none" ||
           !calendarFilter.style.display
-        ) {
-          calendarFilter.style.display = "flex";
-        } else {
-          calendarFilter.style.display = "none";
-        }
+            ? "flex"
+            : "none";
       }
 
       function filterDriverDashboardData() {
@@ -4337,7 +4289,6 @@
         showAlert("Filter cleared - showing all trips", "info");
       }
 
-      // FIXED: Trip history filter functions
       function filterTripHistory() {
         const selectedDate = document.getElementById(
           "tripHistoryDateFilter"
@@ -4400,11 +4351,9 @@
         );
       }
 
-      // Enhanced calendar with table generation for selected dates
       function renderCalendar(gridId, monthId, bookings, type) {
         const grid = document.getElementById(gridId);
         const monthEl = document.getElementById(monthId);
-
         if (!grid || !monthEl) return;
 
         const year = currentCalendarDate.getFullYear();
@@ -4420,7 +4369,6 @@
 
         grid.innerHTML = "";
 
-        // Day headers
         const dayHeaders = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
         dayHeaders.forEach((day) => {
           const dayEl = document.createElement("div");
@@ -4432,20 +4380,17 @@
           grid.appendChild(dayEl);
         });
 
-        // Empty cells for days before month starts
         for (let i = 0; i < firstDay; i++) {
           const emptyEl = document.createElement("div");
           emptyEl.className = "calendar-day";
           grid.appendChild(emptyEl);
         }
 
-        // Days of the month
         for (let day = 1; day <= daysInMonth; day++) {
           const dayEl = document.createElement("div");
           dayEl.className = "calendar-day";
           dayEl.textContent = day;
 
-          // Check if this day has bookings
           const dateStr = `${year}-${(month + 1)
             .toString()
             .padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
@@ -4462,16 +4407,12 @@
             dayEl.title = `${dayBookings.length} booking(s) on this day`;
           }
 
-          // Add click event to show filtered table below calendar
           dayEl.onclick = function () {
-            // Remove previous selection
             document
               .querySelectorAll(`#${gridId} .calendar-day`)
               .forEach((d) => d.classList.remove("selected"));
-            // Add selection to clicked day
             dayEl.classList.add("selected");
 
-            // Filter bookings for selected date
             const selectedDateStr = `${year}-${(month + 1)
               .toString()
               .padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
@@ -4486,7 +4427,6 @@
               }
             });
 
-            // Show filtered table below calendar
             const tableId =
               type === "booking"
                 ? "bookingCalendarTable"
@@ -4500,50 +4440,47 @@
             const tableBody = document.getElementById(tableBodyId);
 
             if (calendarTable && tableBody) {
-              // Clear existing table content
               tableBody.innerHTML = "";
-
-              // Populate table with filtered bookings
               filteredBookings.forEach((booking) => {
                 const row = document.createElement("tr");
                 const statusBadge = getStatusBadge(booking.Status);
-
                 const bookingDate = formatDateIST(booking.Date);
                 const bookingTime = formatTimeOnly(booking.Time);
-                // FIXED: Auto-fill timestamps for calendar views
-                const requestedOn = booking["Requested DateTime"]
-                  ? formatDateTimeIST(booking["Requested DateTime"])
-                  : formatDateTimeIST(new Date());
+                let requestedOn = "-";
+                if (booking["Requested DateTime"]) {
+                  requestedOn = formatDateTimeIST(
+                    booking["Requested DateTime"]
+                  );
+                } else if (booking["Created Date"]) {
+                  requestedOn = formatDateTimeIST(booking["Created Date"]);
+                }
                 const approvedOn = booking["Approved DateTime"]
                   ? formatDateTimeIST(booking["Approved DateTime"])
                   : "-";
 
                 row.innerHTML = `
-                <td>${booking["Request ID"]}</td>
-                <td>${booking["Employee Name"]}</td>
-                <td>${bookingDate}</td>
-                <td>${bookingTime}</td>
-                <td>${booking.Destination}</td>
-                <td>${statusBadge}</td>
-                <td>${requestedOn}</td>
-                <td>${approvedOn}</td>
-                <td>
-                  ${
-                    booking.Status === "Pending" && type === "booking"
-                      ? `<button class="btn btn-sm btn-success me-1" onclick="approveBooking('${booking["Request ID"]}')">Approve</button>
-                     <button class="btn btn-sm btn-danger me-1" onclick="rejectBooking('${booking["Request ID"]}')">Reject</button>
-                     <button class="btn btn-sm btn-primary" onclick="editBooking('${booking["Request ID"]}')">Edit</button>`
-                      : `<button class="btn btn-sm btn-primary" onclick="editBooking('${booking["Request ID"]}')">Edit</button>`
-                  }
-                </td>
-              `;
+            <td>${booking["Request ID"]}</td>
+            <td>${booking["Employee Name"]}</td>
+            <td>${bookingDate}</td>
+            <td>${bookingTime}</td>
+            <td>${booking.Destination}</td>
+            <td>${statusBadge}</td>
+            <td>${requestedOn}</td>
+            <td>${approvedOn}</td>
+            <td>
+              ${
+                booking.Status === "Pending" && type === "booking"
+                  ? `<button class="btn btn-sm btn-success me-1" onclick="approveBooking('${booking["Request ID"]}')">Approve</button>
+                 <button class="btn btn-sm btn-danger me-1" onclick="rejectBooking('${booking["Request ID"]}')">Reject</button>
+                 <button class="btn btn-sm btn-primary" onclick="editBooking('${booking["Request ID"]}')">Edit</button>`
+                  : `<button class="btn btn-sm btn-primary" onclick="editBooking('${booking["Request ID"]}')">Edit</button>`
+              }
+            </td>
+          `;
                 tableBody.appendChild(row);
               });
 
-              // Show the filtered table
               calendarTable.style.display = "block";
-
-              // Update table title
               const displayDate = new Date(selectedDateStr).toLocaleDateString(
                 "en-GB"
               );
@@ -4553,10 +4490,7 @@
               }
             }
 
-            // Store selected date for reference
             selectedCalendarDate = selectedDateStr;
-
-            // Show alert with filter info
             const displayDate = new Date(selectedDateStr).toLocaleDateString(
               "en-GB"
             );
@@ -4573,22 +4507,20 @@
       function previousBookingMonth() {
         currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
         renderBookingCalendar();
-        // Hide table when month changes
         document.getElementById("bookingCalendarTable").style.display = "none";
       }
 
       function nextBookingMonth() {
         currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
         renderBookingCalendar();
-        // Hide table when month changes
         document.getElementById("bookingCalendarTable").style.display = "none";
       }
 
-      // Utility functions for date/time formatting (DD/MM/YYYY and HH:MM IST)
+      // Utility functions for date/time formatting
       function formatDateIST(date) {
         if (!date) return "";
         try {
-          return new Date(date).toLocaleDateString("en-GB"); // DD/MM/YYYY format
+          return new Date(date).toLocaleDateString("en-GB");
         } catch (e) {
           return date;
         }
@@ -4596,8 +4528,6 @@
 
       function formatTimeOnly(timeValue) {
         if (!timeValue) return "";
-
-        // Handle problematic timestamps like "1899-12-29T19:28:50.000Z"
         if (typeof timeValue === "string" && timeValue.includes("T")) {
           try {
             const date = new Date(timeValue);
@@ -4608,20 +4538,15 @@
             return timeValue;
           }
         }
-
-        // If already in HH:MM or HH:MM:SS format
         if (typeof timeValue === "string" && timeValue.includes(":")) {
           const parts = timeValue.split(":");
           return `${parts[0].padStart(2, "0")}:${parts[1].padStart(2, "0")}`;
         }
-
         return timeValue.toString();
       }
 
       function formatTimeForInput(timeValue) {
         if (!timeValue) return "";
-
-        // Handle problematic timestamps
         if (typeof timeValue === "string" && timeValue.includes("T")) {
           try {
             const date = new Date(timeValue);
@@ -4632,13 +4557,10 @@
             return "";
           }
         }
-
-        // If already in HH:MM format
         if (typeof timeValue === "string" && timeValue.includes(":")) {
           const parts = timeValue.split(":");
           return `${parts[0].padStart(2, "0")}:${parts[1].padStart(2, "0")}`;
         }
-
         return "";
       }
 
@@ -4646,7 +4568,7 @@
         if (!dateTime || dateTime === "" || dateTime === "-") return "-";
         try {
           const date = new Date(dateTime);
-          const dateStr = date.toLocaleDateString("en-GB"); // DD/MM/YYYY
+          const dateStr = date.toLocaleDateString("en-GB");
           const hours = date.getHours().toString().padStart(2, "0");
           const minutes = date.getMinutes().toString().padStart(2, "0");
           return `${dateStr} ${hours}:${minutes}`;
@@ -4695,25 +4617,303 @@
         }, 5000);
       }
 
-      // Add input validation listeners
+      // Data loading for Reception (bookings/employees/cabs)
+      async function loadReceptionDashboard() {
+        try {
+          showLoading("Loading reception dashboard...");
+          const response = await api.getAllBookings();
+          if (response.success) {
+            allBookings = response.data;
+            updateReceptionDashboard(response.data);
+            updateReceptionCharts(response.data);
+          } else {
+            showAlert("Failed to load dashboard data", "error");
+          }
+        } catch (error) {
+          showAlert(
+            "Failed to load reception dashboard: " + error.message,
+            "error"
+          );
+        } finally {
+          hideLoading();
+        }
+      }
+
+      function updateReceptionDashboard(bookings) {
+        const total = bookings.length;
+        const pending = bookings.filter((b) => b.Status === "Pending").length;
+        const approved = bookings.filter((b) => b.Status === "Approved").length;
+        const rejected = bookings.filter((b) => b.Status === "Rejected").length;
+
+        document.getElementById("totalBookings").textContent = total;
+        document.getElementById("pendingBookings").textContent = pending;
+        document.getElementById("approvedBookings").textContent = approved;
+        document.getElementById("rejectedBookings").textContent = rejected;
+      }
+
+      async function loadReceptionBookings() {
+        try {
+          showLoading("Loading bookings...");
+          const response = await api.getAllBookings();
+          if (response.success) {
+            allBookings = response.data;
+            displayBookings(allBookings);
+          } else {
+            showAlert("Failed to load bookings", "error");
+          }
+        } catch (error) {
+          showAlert("Failed to load bookings: " + error.message, "error");
+        } finally {
+          hideLoading();
+        }
+      }
+
+      function displayBookings(bookings) {
+        const tbody = document.getElementById("bookingsTable");
+        tbody.innerHTML = "";
+
+        bookings.forEach((booking) => {
+          const row = document.createElement("tr");
+          const statusBadge = getStatusBadge(booking.Status);
+
+          const bookingDate = formatDateIST(booking.Date);
+          const bookingTime = formatTimeOnly(booking.Time);
+
+          let requestedOn = "-";
+          if (booking["Requested DateTime"]) {
+            requestedOn = formatDateTimeIST(booking["Requested DateTime"]);
+          } else if (booking["Created Date"]) {
+            requestedOn = formatDateTimeIST(booking["Created Date"]);
+          }
+
+          const approvedOn = booking["Approved DateTime"]
+            ? formatDateTimeIST(booking["Approved DateTime"])
+            : "-";
+
+          row.innerHTML = `
+      <td>${booking["Request ID"]}</td>
+      <td>${booking["Employee Name"]}</td>
+      <td>${bookingDate}</td>
+      <td>${bookingTime}</td>
+      <td>${booking.Destination}</td>
+      <td>${statusBadge}</td>
+      <td>${requestedOn}</td>
+      <td>${approvedOn}</td>
+      <td>
+        ${
+          booking.Status === "Pending"
+            ? `<button class="btn btn-sm btn-success me-1" onclick="approveBooking('${booking["Request ID"]}')">Approve</button>
+           <button class="btn btn-sm btn-danger me-1" onclick="rejectBooking('${booking["Request ID"]}')">Reject</button>
+           <button class="btn btn-sm btn-primary" onclick="editBooking('${booking["Request ID"]}')">Edit</button>`
+            : `<button class="btn btn-sm btn-primary" onclick="editBooking('${booking["Request ID"]}')">Edit</button>`
+        }
+      </td>
+    `;
+          tbody.appendChild(row);
+        });
+      }
+
+      async function loadEmployees() {
+        try {
+          showLoading("Loading employees...");
+          const response = await api.getEmployees();
+          if (response.success) {
+            allEmployees = response.data;
+            const tbody = document.getElementById("employeesTable");
+            tbody.innerHTML = "";
+
+            response.data.forEach((employee) => {
+              const row = document.createElement("tr");
+              row.innerHTML = `
+          <td>${employee.ID}</td>
+          <td>${employee.Name}</td>
+          <td>${employee.Department}</td>
+          <td>${employee.Phone}</td>
+          <td>${employee.Email}</td>
+          <td>
+            <button class="btn btn-sm btn-primary me-1" onclick="editEmployee('${employee.ID}')">Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteEmployee('${employee.ID}')">Delete</button>
+          </td>
+        `;
+              tbody.appendChild(row);
+            });
+          } else {
+            showAlert("Failed to load employees", "error");
+          }
+        } catch (error) {
+          showAlert("Failed to load employees: " + error.message, "error");
+        } finally {
+          hideLoading();
+        }
+      }
+
+      async function loadCabs() {
+        try {
+          showLoading("Loading cabs...");
+          const response = await api.getCabs();
+          if (response.success) {
+            allCabs = response.data;
+            const tbody = document.getElementById("cabsTable");
+            tbody.innerHTML = "";
+
+            response.data.forEach((cab) => {
+              let isAvailable = false;
+              if (typeof cab.Available === "boolean") {
+                isAvailable = cab.Available;
+              } else if (typeof cab.Available === "string") {
+                isAvailable =
+                  cab.Available.toLowerCase() === "true" ||
+                  cab.Available === "1";
+              } else if (typeof cab.Available === "number") {
+                isAvailable = cab.Available === 1;
+              }
+
+              const statusBadge = isAvailable
+                ? '<span class="badge bg-success">Available</span>'
+                : '<span class="badge bg-danger">Unavailable</span>';
+
+              // Ensure Model column shows the saved Car Model
+              const modelText = cab["Car Model"] || "";
+
+              const row = document.createElement("tr");
+              row.innerHTML = `
+          <td>${cab["License Plate"]}</td>
+          <td>${modelText}</td>
+          <td>${cab["Driver Name"]}</td>
+          <td>${cab["Driver Phone"]}</td>
+          <td>${statusBadge}</td>
+          <td>
+            <button class="btn btn-sm btn-primary me-1" onclick="editCab('${cab.ID}')">Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteCab('${cab.ID}')">Delete</button>
+          </td>
+        `;
+              tbody.appendChild(row);
+            });
+          } else {
+            showAlert("Failed to load cabs", "error");
+          }
+        } catch (error) {
+          showAlert("Failed to load cabs: " + error.message, "error");
+        } finally {
+          hideLoading();
+        }
+      }
+
+      // Employee portal booking submit continuation from earlier
+      async function submitBookingRequest() {
+        if (!currentEmployee) return;
+
+        const date = document.getElementById("bookingDate").value;
+        const time = document.getElementById("bookingTime").value;
+        const destination = document
+          .getElementById("bookingDestination")
+          .value.trim();
+        const purpose = document.getElementById("bookingPurpose").value.trim();
+        const preferredCab = document.getElementById("preferredCab").value;
+
+        if (!date || !time || !destination || !purpose) {
+          showAlert("Please fill all required fields", "error");
+          return;
+        }
+
+        const selectedDate = new Date(date);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        if (selectedDate < today) {
+          showAlert("Cannot book for past dates", "error");
+          return;
+        }
+
+        const bookingData = {
+          employeeId: currentEmployee.id,
+          employeeName: currentEmployee.name,
+          date: date,
+          time: time,
+          destination: destination,
+          purpose: purpose,
+          preferredCab: preferredCab,
+        };
+
+        try {
+          showLoading("Submitting booking request...");
+          const result = await api.createBooking(bookingData);
+          if (result.success) {
+            showAlert("Booking request submitted successfully!", "success");
+            document.getElementById("newBookingForm").reset();
+            loadEmployeeDashboard();
+            loadAvailableCabsForBooking();
+          } else {
+            showAlert("Failed to submit booking request", "error");
+          }
+        } catch (error) {
+          showAlert(
+            "Failed to submit booking request: " + error.message,
+            "error"
+          );
+        } finally {
+          hideLoading();
+        }
+      }
+
+      // Cancel booking modal + confirm
+      function showCancelBookingModal(requestId) {
+        currentBookingForCancel = requestId;
+        document.getElementById("cancelReason").value = "";
+        const modal = new bootstrap.Modal(
+          document.getElementById("cancelBookingModal")
+        );
+        modal.show();
+      }
+
+      async function confirmCancelBooking() {
+        if (!currentBookingForCancel) return;
+
+        const reason = document.getElementById("cancelReason").value.trim();
+        if (!reason) {
+          showAlert("Please provide a reason for cancellation", "error");
+          return;
+        }
+
+        try {
+          showLoading("Cancelling booking...");
+          const result = await api.updateBookingStatus({
+            requestId: currentBookingForCancel,
+            status: "Cancelled",
+            notes: `Cancelled by employee: ${reason}`,
+          });
+
+          if (result.success) {
+            showAlert("Booking cancelled successfully!", "success");
+            loadEmployeeDashboard();
+            const modal = bootstrap.Modal.getInstance(
+              document.getElementById("cancelBookingModal")
+            );
+            modal.hide();
+          } else {
+            showAlert(
+              "Failed to cancel booking: " + (result.message || ""),
+              "error"
+            );
+          }
+        } catch (error) {
+          showAlert("Failed to cancel booking: " + error.message, "error");
+        } finally {
+          hideLoading();
+        }
+      }
+
+      // Init listeners
       document.addEventListener("DOMContentLoaded", function () {
         initializeTheme();
 
-        // Phone validation
         const phoneInputs = document.querySelectorAll(
           '[name="phone"], [name="driverPhone"]'
         );
         phoneInputs.forEach((input) => {
           input.addEventListener("input", function (e) {
-            // Allow only numbers
             e.target.value = e.target.value.replace(/[^0-9]/g, "");
-
-            // Limit to 10 digits
-            if (e.target.value.length > 10) {
+            if (e.target.value.length > 10)
               e.target.value = e.target.value.slice(0, 10);
-            }
-
-            // Remove error styling if valid
             if (validatePhone(e.target.value)) {
               e.target.classList.remove("phone-error");
               const errorMsg =
@@ -4723,7 +4923,6 @@
           });
         });
 
-        // Email validation
         const emailInputs = document.querySelectorAll(
           '[name="email"], [name="driverEmail"]'
         );
