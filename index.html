@@ -302,6 +302,7 @@
       .main-container {
         min-height: 100vh;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         padding: 20px;
@@ -758,6 +759,14 @@
         font-size: 0.875rem;
         margin-top: 5px;
       }
+
+      .app-footer {
+        color: #ffffff;
+        text-align: center;
+        padding: 20px;
+        margin-top: auto;
+        font-size: 0.9rem;
+      }
     </style>
   </head>
   <body>
@@ -797,6 +806,7 @@
         <div class="portal-header">
           <h1><i class="fas fa-car"></i> Cab Booking System</h1>
           <p>Choose your portal to continue</p>
+          <p></p>
         </div>
         <div class="portal-options">
           <div class="row">
@@ -836,6 +846,7 @@
           </div>
         </div>
       </div>
+      <div class="app-footer">Made by Ali Imran wtih 🧡 for UNICEF Lucknow</div>
     </div>
 
     <!-- Employee Login -->
@@ -898,6 +909,7 @@
           </form>
         </div>
       </div>
+      <div class="app-footer">Made by Ali Imran for UNICEF Lucknow</div>
     </div>
 
     <!-- Driver Portal -->
@@ -927,7 +939,7 @@
                     type="password"
                     class="form-control"
                     id="driverPassword"
-                    placeholder="Default: driver123"
+                    placeholder="Enter password"
                     required
                   />
                   <button
@@ -958,6 +970,7 @@
             </form>
           </div>
         </div>
+        <div class="app-footer">Made by Ali Imran for UNICEF Lucknow</div>
       </div>
 
       <div id="driverDashboard" style="display: none">
@@ -1250,6 +1263,7 @@
             </form>
           </div>
         </div>
+        <div class="app-footer">Made by Ali Imran for UNICEF Lucknow</div>
       </div>
 
       <div id="receptionDashboard" style="display: none">
@@ -1489,13 +1503,12 @@
                         <h4>Add New Employee</h4>
                         <form id="addEmployeeForm" onsubmit="return false;">
                           <div class="mb-3">
-                            <label class="form-label">Employee ID *</label>
+                            <label class="form-label">Employee ID</label>
                             <input
                               type="text"
                               class="form-control"
                               name="employeeId"
                               placeholder="e.g., EMP005"
-                              required
                             />
                           </div>
                           <div class="mb-3">
@@ -1508,18 +1521,30 @@
                             />
                           </div>
                           <div class="mb-3">
-                            <label class="form-label">Department *</label>
+                            <label class="form-label">Section *</label>
                             <select
                               class="form-control"
                               name="department"
                               required
                             >
-                              <option value="">Select Department</option>
-                              <option value="IT">IT</option>
-                              <option value="HR">HR</option>
-                              <option value="Finance">Finance</option>
-                              <option value="Marketing">Marketing</option>
+                              <option value="">Select Section</option>
+                              <option value="Communication">
+                                Communication
+                              </option>
+                              <option value="SBC">SBC</option>
+                              <option value="SPSP">SPSP</option>
+                              <option value="Education">Education</option>
+                              <option value="Health">Health</option>
+                              <option value="Nutrition">Nutrition</option>
+                              <option value="Child Protection">
+                                Child Protection
+                              </option>
+                              <option value="Ancillary">Ancillary</option>
+                              <option value="Reception">Reception</option>
                               <option value="Operations">Operations</option>
+                              <option value="WASH">WASH</option>
+                              <option value="M4R">M4R</option>
+                              <option value="Management">Management</option>
                             </select>
                           </div>
                           <div class="mb-3">
@@ -1567,7 +1592,6 @@
                                 class="form-control"
                                 name="password"
                                 id="addEmpPassword"
-                                placeholder="Default: default123"
                               />
                               <button
                                 type="button"
@@ -1600,7 +1624,7 @@
                               <tr>
                                 <th>ID</th>
                                 <th>Name</th>
-                                <th>Department</th>
+                                <th>Section</th>
                                 <th>Phone</th>
                                 <th>Email</th>
                                 <th>Actions</th>
@@ -1697,7 +1721,6 @@
                                 class="form-control"
                                 name="password"
                                 id="addCabPassword"
-                                placeholder="Default: driver123"
                               />
                               <button
                                 type="button"
@@ -1802,7 +1825,7 @@
                     <div class="row">
                       <div class="col-md-6">
                         <div class="mb-3">
-                          <label class="form-label">Date (DD/MM/YYYY) *</label>
+                          <label class="form-label">Date *</label>
                           <input
                             type="date"
                             class="form-control"
@@ -1990,7 +2013,7 @@
           </div>
           <div class="modal-body">
             <div class="mb-3">
-              <label class="form-label">Date (DD/MM/YYYY) *</label>
+              <label class="form-label">Date *</label>
               <input type="date" class="form-control" id="editDate" required />
             </div>
             <div class="mb-3">
@@ -2103,13 +2126,21 @@
               <input type="text" class="form-control" id="editEmpName" />
             </div>
             <div class="mb-3">
-              <label class="form-label">Department</label>
+              <label class="form-label">Section</label>
               <select class="form-control" id="editEmpDepartment">
-                <option value="IT">IT</option>
-                <option value="HR">HR</option>
-                <option value="Finance">Finance</option>
-                <option value="Marketing">Marketing</option>
+                <option value="Communication">Communication</option>
+                <option value="SBC">SBC</option>
+                <option value="SPSP">SPSP</option>
+                <option value="Education">Education</option>
+                <option value="Health">Health</option>
+                <option value="Nutrition">Nutrition</option>
+                <option value="Child Protection">Child Protection</option>
+                <option value="Ancillary">Ancillary</option>
+                <option value="Reception">Reception</option>
                 <option value="Operations">Operations</option>
+                <option value="WASH">WASH</option>
+                <option value="M4R">M4R</option>
+                <option value="Management">Management</option>
               </select>
             </div>
             <div class="mb-3">
@@ -2141,6 +2172,57 @@
               onclick="saveEmployeeEdit()"
             >
               Save Changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cab Assignment Modal -->
+    <div class="modal fade" id="cabAssignmentModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Assign Cab to Booking</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div id="assignmentRequestInfo" class="mb-3"></div>
+            <div class="mb-3">
+              <label class="form-label">Available Cabs</label>
+              <select id="assignCabSelect" class="form-control"></select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Pickup Time (HH:MM IST)</label>
+              <input type="time" id="assignPickupTime" class="form-control" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Notes for Driver (Optional)</label>
+              <textarea
+                id="assignNotes"
+                class="form-control"
+                rows="2"
+              ></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="confirmCabAssignment()"
+            >
+              Confirm Assignment
             </button>
           </div>
         </div>
@@ -2219,7 +2301,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
       const GAS_BASE =
-        "https://script.google.com/macros/s/AKfycbzYgozslrOFGv4vno3wKRlNN2EmLp11HbdMw9UlgfWIA80D6G8SxrmR3YVH0EwbSSRLRw/exec";
+        "https://script.google.com/macros/s/AKfycbz2iDhaS6X6SygLX8F9ksMc4B6EMqRmbcJK3V1aJae4IiaGZKS_mTAXtrDWYwIluHCRGw/exec";
       let currentEmployee = null;
       let currentDriver = null;
       let employeeChartInstance = null;
@@ -2558,7 +2640,7 @@
             showEmployeePortal();
             showAlert(`Welcome ${res.employee.name}!`, "success");
           } else {
-            showAlert("Invalid credentials", "error");
+            showAlert(res.message || "Invalid credentials", "error");
           }
         } catch (e) {
           showAlert("Login failed: " + e.message, "error");
@@ -2586,7 +2668,7 @@
             showAlert(`Welcome ${res.driver.name}!`, "success");
             loadDriverDashboard();
           } else {
-            showAlert("Invalid credentials", "error");
+            showAlert(res.message || "Invalid credentials", "error");
           }
         } catch (e) {
           showAlert("Login failed: " + e.message, "error");
@@ -2612,7 +2694,7 @@
             loadReceptionDashboard();
             showAlert("Login successful!", "success");
           } else {
-            showAlert("Invalid credentials", "error");
+            showAlert(response.message || "Invalid credentials", "error");
           }
         } catch (error) {
           showAlert("Login failed: " + error.message, "error");
@@ -2899,7 +2981,6 @@
           const result = await api.updateBookingStatus({
             requestId: requestId,
             status: "Completed",
-            completedAt: new Date().toISOString(),
           });
           if (result.success) {
             showAlert("Trip marked as completed!", "success");
@@ -2957,17 +3038,9 @@
           const statusBadge = getStatusBadge(booking.Status);
           const bookingDate = formatDateIST(booking.Date);
           const bookingTime = formatTimeOnly(booking.Time);
-          let requestedOn = "-";
-          if (booking["Requested DateTime"]) {
-            requestedOn = formatDateTimeIST(booking["Requested DateTime"]);
-          } else if (booking["Created Date"]) {
-            requestedOn = formatDateTimeIST(booking["Created Date"]);
-          } else {
-            requestedOn = formatDateTimeIST(new Date());
-          }
-          const approvedOn = booking["Approved DateTime"]
-            ? formatDateTimeIST(booking["Approved DateTime"])
-            : "-";
+          const requestedOn = formatDateTimeIST(booking["Requested on"]) || "-";
+          const approvedOn = formatDateTimeIST(booking["Approved on"]) || "-";
+
           row.innerHTML = `
           <td>${booking["Request ID"]}</td>
           <td>${bookingDate}</td>
@@ -3005,14 +3078,6 @@
           return;
         }
 
-        const selectedDate = new Date(date);
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        if (selectedDate < today) {
-          showAlert("Cannot book for past dates", "error");
-          return;
-        }
-
         const bookingData = {
           employeeId: currentEmployee.id,
           employeeName: currentEmployee.name,
@@ -3031,6 +3096,7 @@
             document.getElementById("newBookingForm").reset();
             loadEmployeeDashboard();
             loadAvailableCabsForBooking();
+            initializeBookingDateTime();
           } else {
             showAlert("Failed to submit booking request", "error");
           }
@@ -3065,7 +3131,7 @@
           const result = await api.updateBookingStatus({
             requestId: currentBookingForCancel,
             status: "Cancelled",
-            notes: `Cancelled by employee: ${reason}`,
+            notes: reason,
           });
           if (result.success) {
             showAlert("Booking cancelled successfully!", "success");
@@ -3142,15 +3208,8 @@
           const statusBadge = getStatusBadge(booking.Status);
           const bookingDate = formatDateIST(booking.Date);
           const bookingTime = formatTimeOnly(booking.Time);
-          let requestedOn = "-";
-          if (booking["Requested DateTime"]) {
-            requestedOn = formatDateTimeIST(booking["Requested DateTime"]);
-          } else if (booking["Created Date"]) {
-            requestedOn = formatDateTimeIST(booking["Created Date"]);
-          }
-          const approvedOn = booking["Approved DateTime"]
-            ? formatDateTimeIST(booking["Approved DateTime"])
-            : "-";
+          const requestedOn = formatDateTimeIST(booking["Requested on"]) || "-";
+          const approvedOn = formatDateTimeIST(booking["Approved on"]) || "-";
 
           row.innerHTML = `
           <td>${booking["Request ID"]}</td>
@@ -3188,7 +3247,7 @@
               row.innerHTML = `
               <td>${employee.ID}</td>
               <td>${employee.Name}</td>
-              <td>${employee.Department}</td>
+              <td>${employee.Section}</td>
               <td>${employee.Phone}</td>
               <td>${employee.Email}</td>
               <td>
@@ -3217,19 +3276,10 @@
             const tbody = document.getElementById("cabsTable");
             tbody.innerHTML = "";
             response.data.forEach((cab) => {
-              let isAvailable = false;
-              if (typeof cab.Available === "boolean") {
-                isAvailable = cab.Available;
-              } else if (typeof cab.Available === "string") {
-                isAvailable =
-                  cab.Available.toLowerCase() === "true" ||
-                  cab.Available === "1";
-              } else if (typeof cab.Available === "number") {
-                isAvailable = cab.Available === 1;
-              }
-              const statusBadge = isAvailable
-                ? '<span class="badge bg-success">Available</span>'
-                : '<span class="badge bg-danger">Unavailable</span>';
+              const statusBadge =
+                String(cab.Available).toLowerCase() === "true"
+                  ? '<span class="badge bg-success">Available</span>'
+                  : '<span class="badge bg-danger">Unavailable</span>';
 
               const carModel = cab["Car Model"] || "N/A";
 
@@ -3302,8 +3352,7 @@
         currentEmployeeForEdit = employee;
         document.getElementById("editEmpId").value = employee.ID;
         document.getElementById("editEmpName").value = employee.Name;
-        document.getElementById("editEmpDepartment").value =
-          employee.Department;
+        document.getElementById("editEmpDepartment").value = employee.Section;
         document.getElementById("editEmpPhone").value = employee.Phone;
         document.getElementById("editEmpEmail").value = employee.Email;
         const modal = new bootstrap.Modal(
@@ -3341,7 +3390,7 @@
               document.getElementById("editEmployeeModal")
             );
             modal.hide();
-            loadEmployees(); // Reload employees
+            loadEmployees();
           } else {
             showAlert(
               "Failed to update employee: " + (result.message || ""),
@@ -3355,15 +3404,12 @@
         }
       }
 
-      // Add employee with inline validation and eye button already in form
       async function addEmployee() {
         const form = document.getElementById("addEmployeeForm");
         const formData = new FormData(form);
-
         const phone = formData.get("phone");
         const email = formData.get("email");
 
-        // Reset previous error states
         document
           .querySelector('[name="phone"]')
           .classList.remove("phone-error");
@@ -3374,19 +3420,16 @@
         document.getElementById("emailError").style.display = "none";
 
         let hasErrors = false;
-
         if (!validatePhone(phone)) {
           document.querySelector('[name="phone"]').classList.add("phone-error");
           document.getElementById("phoneError").style.display = "block";
           hasErrors = true;
         }
-
         if (!validateEmail(email)) {
           document.querySelector('[name="email"]').classList.add("email-error");
           document.getElementById("emailError").style.display = "block";
           hasErrors = true;
         }
-
         if (hasErrors) return;
 
         const employeeData = {
@@ -3418,15 +3461,12 @@
         }
       }
 
-      // Add cab with correct Car Model persistence
       async function addCab() {
         const form = document.getElementById("addCabForm");
         const formData = new FormData(form);
-
         const phone = formData.get("driverPhone");
         const email = formData.get("driverEmail");
 
-        // Reset previous error states
         document
           .querySelector('[name="driverPhone"]')
           .classList.remove("phone-error");
@@ -3437,7 +3477,6 @@
         document.getElementById("cabEmailError").style.display = "none";
 
         let hasErrors = false;
-
         if (!validatePhone(phone)) {
           document
             .querySelector('[name="driverPhone"]')
@@ -3445,7 +3484,6 @@
           document.getElementById("cabPhoneError").style.display = "block";
           hasErrors = true;
         }
-
         if (!validateEmail(email)) {
           document
             .querySelector('[name="driverEmail"]')
@@ -3453,7 +3491,6 @@
           document.getElementById("cabEmailError").style.display = "block";
           hasErrors = true;
         }
-
         if (hasErrors) return;
 
         const cabData = {
@@ -3461,7 +3498,7 @@
           driverName: formData.get("driverName"),
           driverPhone: formData.get("driverPhone"),
           driverEmail: formData.get("driverEmail"),
-          carModel: formData.get("carModel"), // ensure field name is carModel
+          carModel: formData.get("carModel"),
           password: formData.get("password") || "driver123",
           available: formData.get("available") ? "true" : "false",
         };
@@ -3483,55 +3520,13 @@
         }
       }
 
-      function editEmployee(employeeId) {
-        const employee = allEmployees.find((e) => e.ID === employeeId);
-        if (!employee) {
-          showAlert("Employee not found", "error");
-          return;
-        }
-        currentEmployeeForEdit = employee;
-        document.getElementById("editEmpId").value = employee.ID;
-        document.getElementById("editEmpName").value = employee.Name;
-        document.getElementById("editEmpDepartment").value =
-          employee.Department;
-        document.getElementById("editEmpPhone").value = employee.Phone;
-        document.getElementById("editEmpEmail").value = employee.Email;
-        const modal = new bootstrap.Modal(
-          document.getElementById("editEmployeeModal")
-        );
-        modal.show();
-      }
-
-      async function deleteEmployee(employeeId) {
-        if (!confirm("Are you sure you want to delete this employee?")) return;
-        try {
-          showLoading("Deleting employee...");
-          const result = await api.deleteEmployee(employeeId);
-          if (result.success) {
-            showAlert("Employee deleted successfully!", "success");
-            loadEmployees();
-          } else {
-            showAlert(
-              "Failed to delete employee: " + (result.message || ""),
-              "error"
-            );
-          }
-        } catch (error) {
-          showAlert("Failed to delete employee: " + error.message, "error");
-        } finally {
-          hideLoading();
-        }
-      }
-
       function editCab(cabId) {
         const cab = allCabs.find((c) => c.ID === cabId);
         if (!cab) {
           showAlert("Cab not found", "error");
           return;
         }
-
         currentCabForEdit = cab;
-
         document.getElementById("editCabPlate").value =
           cab["License Plate"] || "";
         document.getElementById("editCabDriverName").value =
@@ -3541,18 +3536,8 @@
         document.getElementById("editCabDriverEmail").value =
           cab["Driver Email"] || "";
         document.getElementById("editCabModel").value = cab["Car Model"] || "";
-
-        let isAvailable = false;
-        if (typeof cab.Available === "boolean") {
-          isAvailable = cab.Available;
-        } else if (typeof cab.Available === "string") {
-          isAvailable =
-            cab.Available.toLowerCase() === "true" || cab.Available === "1";
-        } else if (typeof cab.Available === "number") {
-          isAvailable = cab.Available === 1;
-        }
-        document.getElementById("editCabAvailable").checked = isAvailable;
-
+        document.getElementById("editCabAvailable").checked =
+          String(cab.Available).toLowerCase() === "true";
         const modal = new bootstrap.Modal(
           document.getElementById("editCabModal")
         );
@@ -3561,7 +3546,6 @@
 
       async function saveCabEdit() {
         if (!currentCabForEdit) return;
-
         const editData = {
           id: currentCabForEdit.ID,
           licensePlate: document.getElementById("editCabPlate").value,
@@ -3597,27 +3581,6 @@
         }
       }
 
-      async function deleteCab(cabId) {
-        if (!confirm("Are you sure you want to delete this cab?")) return;
-        try {
-          showLoading("Deleting cab...");
-          const result = await api.deleteCab(cabId);
-          if (result.success) {
-            showAlert("Cab deleted successfully!", "success");
-            loadCabs();
-          } else {
-            showAlert(
-              "Failed to delete cab: " + (result.message || ""),
-              "error"
-            );
-          }
-        } catch (error) {
-          showAlert("Failed to delete cab: " + error.message, "error");
-        } finally {
-          hideLoading();
-        }
-      }
-
       function validatePhone(phone) {
         return /^[0-9]{10}$/.test(phone);
       }
@@ -3626,7 +3589,6 @@
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
       }
 
-      // Edit booking
       function editBooking(requestId) {
         const booking = allBookings.find((b) => b["Request ID"] === requestId);
         if (!booking) {
@@ -3635,16 +3597,7 @@
         }
 
         currentBookingForEdit = booking;
-
-        const dateObj = new Date(booking.Date);
-        const formattedDate =
-          dateObj.getFullYear() +
-          "-" +
-          (dateObj.getMonth() + 1).toString().padStart(2, "0") +
-          "-" +
-          dateObj.getDate().toString().padStart(2, "0");
-
-        document.getElementById("editDate").value = formattedDate;
+        document.getElementById("editDate").value = booking.Date;
         document.getElementById("editTime").value = formatTimeForInput(
           booking.Time
         );
@@ -3660,7 +3613,6 @@
 
       async function saveBookingEdit() {
         if (!currentBookingForEdit) return;
-
         const date = document.getElementById("editDate").value;
         const time = document.getElementById("editTime").value;
         const destination = document
@@ -3690,17 +3642,6 @@
               document.getElementById("editBookingModal")
             );
             modal.hide();
-
-            const bookingIndex = allBookings.findIndex(
-              (b) => b["Request ID"] === editData.requestId
-            );
-            if (bookingIndex !== -1) {
-              allBookings[bookingIndex].Date = editData.date;
-              allBookings[bookingIndex].Time = editData.time;
-              allBookings[bookingIndex].Destination = editData.destination;
-              allBookings[bookingIndex].Purpose = editData.purpose;
-            }
-
             loadReceptionBookings();
           } else {
             showAlert(
@@ -3721,16 +3662,7 @@
           showAlert("Booking not found", "error");
           return;
         }
-
         currentBookingForAssignment = booking;
-
-        document.getElementById("assignmentRequestInfo").innerHTML = `
-    <strong>Booking Details:</strong><br>
-    Employee: ${booking["Employee Name"]}<br>
-    Date: ${formatDateIST(booking.Date)}<br>
-    Time: ${formatTimeOnly(booking.Time)}<br>
-    Destination: ${booking.Destination}
-  `;
 
         document.getElementById("assignPickupTime").value = formatTimeForInput(
           booking.Time
@@ -3738,27 +3670,34 @@
 
         try {
           showLoading("Loading available cabs...");
-
-          const cabsResponse = await api.getCabs();
-          if (cabsResponse.success) {
-            allCabs = cabsResponse.data;
+          if (allCabs.length === 0) {
+            const cabsResponse = await api.getCabs();
+            if (cabsResponse.success) allCabs = cabsResponse.data;
           }
+
+          let preferredCabInfo = "";
+          if (booking["Preferred Cab"]) {
+            const preferredCabDetails = allCabs.find(
+              (c) => c.ID === booking["Preferred Cab"]
+            );
+            if (preferredCabDetails) {
+              preferredCabInfo = `<br><strong>Preferred Cab:</strong> ${preferredCabDetails["Car Model"]} - ${preferredCabDetails["License Plate"]} (${preferredCabDetails["Driver Name"]})`;
+            }
+          }
+
+          document.getElementById("assignmentRequestInfo").innerHTML = `
+            <strong>Booking Details:</strong><br>
+            Employee: ${booking["Employee Name"]}<br>
+            Date: ${formatDateIST(booking.Date)}<br>
+            Time: ${formatTimeOnly(booking.Time)}<br>
+            Destination: ${booking.Destination}
+            ${preferredCabInfo}`;
 
           const cabSelect = document.getElementById("assignCabSelect");
           cabSelect.innerHTML = '<option value="">Select a cab</option>';
-
-          const availableCabs = allCabs.filter((cab) => {
-            let isAvailable = false;
-            if (typeof cab.Available === "boolean") {
-              isAvailable = cab.Available;
-            } else if (typeof cab.Available === "string") {
-              isAvailable =
-                cab.Available.toLowerCase() === "true" || cab.Available === "1";
-            } else if (typeof cab.Available === "number") {
-              isAvailable = cab.Available === 1;
-            }
-            return isAvailable;
-          });
+          const availableCabs = allCabs.filter(
+            (cab) => String(cab.Available).toLowerCase() === "true"
+          );
 
           if (availableCabs.length > 0) {
             availableCabs.forEach((cab) => {
@@ -3768,13 +3707,12 @@
               cabSelect.appendChild(option);
             });
           } else {
-            cabSelect.innerHTML =
-              '<option value="">No cabs available for this time</option>';
+            cabSelect.innerHTML = '<option value="">No cabs available</option>';
           }
         } catch (error) {
           console.error("Failed to load available cabs:", error);
-          const cabSelect = document.getElementById("assignCabSelect");
-          cabSelect.innerHTML = '<option value="">Error loading cabs</option>';
+          document.getElementById("assignCabSelect").innerHTML =
+            '<option value="">Error loading cabs</option>';
         } finally {
           hideLoading();
         }
@@ -3787,24 +3725,17 @@
 
       async function confirmCabAssignment() {
         if (!currentBookingForAssignment) return;
-
         const cabId = document.getElementById("assignCabSelect").value;
         const pickupTime = document.getElementById("assignPickupTime").value;
         const notes = document.getElementById("assignNotes").value;
 
-        if (!cabId) {
-          showAlert("Please select a cab", "error");
+        if (!cabId || !pickupTime) {
+          showAlert("Please select a cab and set a pickup time", "error");
           return;
         }
-
-        if (!pickupTime) {
-          showAlert("Please set a pickup time", "error");
-          return;
-        }
-
         const selectedCab = allCabs.find((c) => c.ID === cabId);
         if (!selectedCab) {
-          showAlert("Selected cab not found in current data", "error");
+          showAlert("Selected cab not found", "error");
           return;
         }
 
@@ -3842,10 +3773,6 @@
           loadReceptionDashboard();
         } catch (error) {
           showAlert("Failed to approve booking: " + error.message, "error");
-          const modal = bootstrap.Modal.getInstance(
-            document.getElementById("cabAssignmentModal")
-          );
-          modal.hide();
         } finally {
           hideLoading();
         }
@@ -3853,14 +3780,16 @@
 
       async function rejectBooking(requestId) {
         const reason = prompt("Please enter reason for rejection:");
-        if (!reason) return;
-
+        if (reason === null) return;
+        if (!reason) {
+          showAlert("A reason is required to reject a booking.", "error");
+          return;
+        }
         const updateData = {
           requestId: requestId,
           status: "Rejected",
           notes: reason,
         };
-
         try {
           showLoading("Rejecting booking...");
           const result = await api.updateBookingStatus(updateData);
@@ -3881,7 +3810,6 @@
         }
       }
 
-      // Charts (same behavior; reusing your existing implementations)
       function toggleReceptionChart(type) {
         currentReceptionChartType = type;
         document
@@ -3909,7 +3837,6 @@
         updateDriverCharts(driverBookings);
       }
 
-      // Reception charts
       function updateReceptionCharts(bookings) {
         const ctx = document.getElementById("receptionChart");
         if (!ctx) return;
@@ -3990,7 +3917,6 @@
         receptionChartInstance = new Chart(ctx, chartConfig);
       }
 
-      // Employee charts
       function updateEmployeeCharts(bookings) {
         const ctx = document.getElementById("employeeChart");
         if (!ctx) return;
@@ -4071,7 +3997,6 @@
         employeeChartInstance = new Chart(ctx, chartConfig);
       }
 
-      // Driver charts
       function updateDriverCharts(bookings) {
         const ctx = document.getElementById("driverChart");
         if (!ctx) return;
@@ -4158,7 +4083,6 @@
         if (driverChartInstance) updateDriverCharts(driverBookings);
       }
 
-      // Calendar and filters (unchanged except safe guards)
       function showDashboardCalendar() {
         const calendarFilter = document.getElementById(
           "dashboardCalendarFilter"
@@ -4175,15 +4099,9 @@
           "dashboardDateFilter"
         ).value;
         if (selectedDate) {
-          const filteredBookings = allBookings.filter((booking) => {
-            try {
-              const bookingDate = new Date(booking.Date);
-              const filterDate = new Date(selectedDate);
-              return bookingDate.toDateString() === filterDate.toDateString();
-            } catch (e) {
-              return false;
-            }
-          });
+          const filteredBookings = allBookings.filter(
+            (booking) => booking.Date === selectedDate
+          );
           updateReceptionCharts(filteredBookings);
           showAlert(
             `Showing ${filteredBookings.length} bookings for ${new Date(
@@ -4218,15 +4136,9 @@
           "employeeDashboardDateFilter"
         ).value;
         if (selectedDate) {
-          const filteredBookings = employeeBookings.filter((booking) => {
-            try {
-              const bookingDate = new Date(booking.Date);
-              const filterDate = new Date(selectedDate);
-              return bookingDate.toDateString() === filterDate.toDateString();
-            } catch (e) {
-              return false;
-            }
-          });
+          const filteredBookings = employeeBookings.filter(
+            (booking) => booking.Date === selectedDate
+          );
           updateEmployeeCharts(filteredBookings);
           showAlert(
             `Showing ${filteredBookings.length} bookings for ${new Date(
@@ -4262,15 +4174,9 @@
           "driverDashboardDateFilter"
         ).value;
         if (selectedDate) {
-          const filteredBookings = driverBookings.filter((booking) => {
-            try {
-              const bookingDate = new Date(booking.Date);
-              const filterDate = new Date(selectedDate);
-              return bookingDate.toDateString() === filterDate.toDateString();
-            } catch (e) {
-              return false;
-            }
-          });
+          const filteredBookings = driverBookings.filter(
+            (booking) => booking.Date === selectedDate
+          );
           updateDriverCharts(filteredBookings);
           showAlert(
             `Showing ${filteredBookings.length} trips for ${new Date(
@@ -4294,15 +4200,9 @@
           "tripHistoryDateFilter"
         ).value;
         if (selectedDate && allDriverBookings.length > 0) {
-          const filteredBookings = allDriverBookings.filter((booking) => {
-            try {
-              const bookingDate = new Date(booking.Date);
-              const filterDate = new Date(selectedDate);
-              return bookingDate.toDateString() === filterDate.toDateString();
-            } catch (e) {
-              return false;
-            }
-          });
+          const filteredBookings = allDriverBookings.filter(
+            (booking) => booking.Date === selectedDate
+          );
           displayTripHistory(filteredBookings);
           showAlert(
             `Showing ${filteredBookings.length} trips for ${new Date(
@@ -4394,13 +4294,7 @@
           const dateStr = `${year}-${(month + 1)
             .toString()
             .padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
-          const dayBookings = bookings.filter((b) => {
-            try {
-              return new Date(b.Date).toISOString().split("T")[0] === dateStr;
-            } catch (e) {
-              return false;
-            }
-          });
+          const dayBookings = bookings.filter((b) => b.Date === dateStr);
 
           if (dayBookings.length > 0) {
             dayEl.classList.add("has-booking");
@@ -4416,16 +4310,9 @@
             const selectedDateStr = `${year}-${(month + 1)
               .toString()
               .padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
-            const filteredBookings = bookings.filter((b) => {
-              try {
-                return (
-                  new Date(b.Date).toISOString().split("T")[0] ===
-                  selectedDateStr
-                );
-              } catch (e) {
-                return false;
-              }
-            });
+            const filteredBookings = bookings.filter(
+              (b) => b.Date === selectedDateStr
+            );
 
             const tableId =
               type === "booking"
@@ -4435,7 +4322,6 @@
               type === "booking"
                 ? "bookingCalendarTableBody"
                 : "analyticsCalendarTableBody";
-
             const calendarTable = document.getElementById(tableId);
             const tableBody = document.getElementById(tableBodyId);
 
@@ -4446,60 +4332,42 @@
                 const statusBadge = getStatusBadge(booking.Status);
                 const bookingDate = formatDateIST(booking.Date);
                 const bookingTime = formatTimeOnly(booking.Time);
-                let requestedOn = "-";
-                if (booking["Requested DateTime"]) {
-                  requestedOn = formatDateTimeIST(
-                    booking["Requested DateTime"]
-                  );
-                } else if (booking["Created Date"]) {
-                  requestedOn = formatDateTimeIST(booking["Created Date"]);
-                }
-                const approvedOn = booking["Approved DateTime"]
-                  ? formatDateTimeIST(booking["Approved DateTime"])
-                  : "-";
+                const requestedOn =
+                  formatDateTimeIST(booking["Requested on"]) || "-";
+                const approvedOn =
+                  formatDateTimeIST(booking["Approved on"]) || "-";
 
                 row.innerHTML = `
-            <td>${booking["Request ID"]}</td>
-            <td>${booking["Employee Name"]}</td>
-            <td>${bookingDate}</td>
-            <td>${bookingTime}</td>
-            <td>${booking.Destination}</td>
-            <td>${statusBadge}</td>
-            <td>${requestedOn}</td>
-            <td>${approvedOn}</td>
-            <td>
-              ${
-                booking.Status === "Pending" && type === "booking"
-                  ? `<button class="btn btn-sm btn-success me-1" onclick="approveBooking('${booking["Request ID"]}')">Approve</button>
-                 <button class="btn btn-sm btn-danger me-1" onclick="rejectBooking('${booking["Request ID"]}')">Reject</button>
-                 <button class="btn btn-sm btn-primary" onclick="editBooking('${booking["Request ID"]}')">Edit</button>`
-                  : `<button class="btn btn-sm btn-primary" onclick="editBooking('${booking["Request ID"]}')">Edit</button>`
-              }
-            </td>
-          `;
+                  <td>${booking["Request ID"]}</td>
+                  <td>${booking["Employee Name"]}</td>
+                  <td>${bookingDate}</td>
+                  <td>${bookingTime}</td>
+                  <td>${booking.Destination}</td>
+                  <td>${statusBadge}</td>
+                  <td>${requestedOn}</td>
+                  <td>${approvedOn}</td>
+                  <td>
+                    ${
+                      booking.Status === "Pending" && type === "booking"
+                        ? `<button class="btn btn-sm btn-success me-1" onclick="approveBooking('${booking["Request ID"]}')">Approve</button>
+                           <button class="btn btn-sm btn-danger me-1" onclick="rejectBooking('${booking["Request ID"]}')">Reject</button>
+                           <button class="btn btn-sm btn-primary" onclick="editBooking('${booking["Request ID"]}')">Edit</button>`
+                        : `<button class="btn btn-sm btn-primary" onclick="editBooking('${booking["Request ID"]}')">Edit</button>`
+                    }
+                  </td>`;
                 tableBody.appendChild(row);
               });
 
               calendarTable.style.display = "block";
-              const displayDate = new Date(selectedDateStr).toLocaleDateString(
-                "en-GB"
-              );
+              const displayDate = new Date(
+                selectedDateStr.replace(/-/g, "/")
+              ).toLocaleDateString("en-GB");
               const tableTitle = calendarTable.querySelector("h5");
               if (tableTitle) {
                 tableTitle.textContent = `Bookings for ${displayDate} (${filteredBookings.length} entries)`;
               }
             }
-
-            selectedCalendarDate = selectedDateStr;
-            const displayDate = new Date(selectedDateStr).toLocaleDateString(
-              "en-GB"
-            );
-            showAlert(
-              `Showing ${filteredBookings.length} bookings for ${displayDate}`,
-              "info"
-            );
           };
-
           grid.appendChild(dayEl);
         }
       }
@@ -4516,13 +4384,13 @@
         document.getElementById("bookingCalendarTable").style.display = "none";
       }
 
-      // Utility functions for date/time formatting
-      function formatDateIST(date) {
-        if (!date) return "";
+      function formatDateIST(dateStr) {
+        if (!dateStr) return "";
         try {
-          return new Date(date).toLocaleDateString("en-GB");
+          const [year, month, day] = dateStr.split("-");
+          return `${day}/${month}/${year}`;
         } catch (e) {
-          return date;
+          return dateStr;
         }
       }
 
@@ -4568,6 +4436,7 @@
         if (!dateTime || dateTime === "" || dateTime === "-") return "-";
         try {
           const date = new Date(dateTime);
+          if (isNaN(date)) return dateTime;
           const dateStr = date.toLocaleDateString("en-GB");
           const hours = date.getHours().toString().padStart(2, "0");
           const minutes = date.getMinutes().toString().padStart(2, "0");
@@ -4617,294 +4486,41 @@
         }, 5000);
       }
 
-      // Data loading for Reception (bookings/employees/cabs)
-      async function loadReceptionDashboard() {
-        try {
-          showLoading("Loading reception dashboard...");
-          const response = await api.getAllBookings();
-          if (response.success) {
-            allBookings = response.data;
-            updateReceptionDashboard(response.data);
-            updateReceptionCharts(response.data);
-          } else {
-            showAlert("Failed to load dashboard data", "error");
-          }
-        } catch (error) {
-          showAlert(
-            "Failed to load reception dashboard: " + error.message,
-            "error"
-          );
-        } finally {
-          hideLoading();
-        }
-      }
+      function initializeBookingDateTime() {
+        const dateInput = document.getElementById("bookingDate");
+        const timeInput = document.getElementById("bookingTime");
 
-      function updateReceptionDashboard(bookings) {
-        const total = bookings.length;
-        const pending = bookings.filter((b) => b.Status === "Pending").length;
-        const approved = bookings.filter((b) => b.Status === "Approved").length;
-        const rejected = bookings.filter((b) => b.Status === "Rejected").length;
-
-        document.getElementById("totalBookings").textContent = total;
-        document.getElementById("pendingBookings").textContent = pending;
-        document.getElementById("approvedBookings").textContent = approved;
-        document.getElementById("rejectedBookings").textContent = rejected;
-      }
-
-      async function loadReceptionBookings() {
-        try {
-          showLoading("Loading bookings...");
-          const response = await api.getAllBookings();
-          if (response.success) {
-            allBookings = response.data;
-            displayBookings(allBookings);
-          } else {
-            showAlert("Failed to load bookings", "error");
-          }
-        } catch (error) {
-          showAlert("Failed to load bookings: " + error.message, "error");
-        } finally {
-          hideLoading();
-        }
-      }
-
-      function displayBookings(bookings) {
-        const tbody = document.getElementById("bookingsTable");
-        tbody.innerHTML = "";
-
-        bookings.forEach((booking) => {
-          const row = document.createElement("tr");
-          const statusBadge = getStatusBadge(booking.Status);
-
-          const bookingDate = formatDateIST(booking.Date);
-          const bookingTime = formatTimeOnly(booking.Time);
-
-          let requestedOn = "-";
-          if (booking["Requested DateTime"]) {
-            requestedOn = formatDateTimeIST(booking["Requested DateTime"]);
-          } else if (booking["Created Date"]) {
-            requestedOn = formatDateTimeIST(booking["Created Date"]);
-          }
-
-          const approvedOn = booking["Approved DateTime"]
-            ? formatDateTimeIST(booking["Approved DateTime"])
-            : "-";
-
-          row.innerHTML = `
-      <td>${booking["Request ID"]}</td>
-      <td>${booking["Employee Name"]}</td>
-      <td>${bookingDate}</td>
-      <td>${bookingTime}</td>
-      <td>${booking.Destination}</td>
-      <td>${statusBadge}</td>
-      <td>${requestedOn}</td>
-      <td>${approvedOn}</td>
-      <td>
-        ${
-          booking.Status === "Pending"
-            ? `<button class="btn btn-sm btn-success me-1" onclick="approveBooking('${booking["Request ID"]}')">Approve</button>
-           <button class="btn btn-sm btn-danger me-1" onclick="rejectBooking('${booking["Request ID"]}')">Reject</button>
-           <button class="btn btn-sm btn-primary" onclick="editBooking('${booking["Request ID"]}')">Edit</button>`
-            : `<button class="btn btn-sm btn-primary" onclick="editBooking('${booking["Request ID"]}')">Edit</button>`
-        }
-      </td>
-    `;
-          tbody.appendChild(row);
-        });
-      }
-
-      async function loadEmployees() {
-        try {
-          showLoading("Loading employees...");
-          const response = await api.getEmployees();
-          if (response.success) {
-            allEmployees = response.data;
-            const tbody = document.getElementById("employeesTable");
-            tbody.innerHTML = "";
-
-            response.data.forEach((employee) => {
-              const row = document.createElement("tr");
-              row.innerHTML = `
-          <td>${employee.ID}</td>
-          <td>${employee.Name}</td>
-          <td>${employee.Department}</td>
-          <td>${employee.Phone}</td>
-          <td>${employee.Email}</td>
-          <td>
-            <button class="btn btn-sm btn-primary me-1" onclick="editEmployee('${employee.ID}')">Edit</button>
-            <button class="btn btn-sm btn-danger" onclick="deleteEmployee('${employee.ID}')">Delete</button>
-          </td>
-        `;
-              tbody.appendChild(row);
-            });
-          } else {
-            showAlert("Failed to load employees", "error");
-          }
-        } catch (error) {
-          showAlert("Failed to load employees: " + error.message, "error");
-        } finally {
-          hideLoading();
-        }
-      }
-
-      async function loadCabs() {
-        try {
-          showLoading("Loading cabs...");
-          const response = await api.getCabs();
-          if (response.success) {
-            allCabs = response.data;
-            const tbody = document.getElementById("cabsTable");
-            tbody.innerHTML = "";
-
-            response.data.forEach((cab) => {
-              let isAvailable = false;
-              if (typeof cab.Available === "boolean") {
-                isAvailable = cab.Available;
-              } else if (typeof cab.Available === "string") {
-                isAvailable =
-                  cab.Available.toLowerCase() === "true" ||
-                  cab.Available === "1";
-              } else if (typeof cab.Available === "number") {
-                isAvailable = cab.Available === 1;
-              }
-
-              const statusBadge = isAvailable
-                ? '<span class="badge bg-success">Available</span>'
-                : '<span class="badge bg-danger">Unavailable</span>';
-
-              // Ensure Model column shows the saved Car Model
-              const modelText = cab["Car Model"] || "";
-
-              const row = document.createElement("tr");
-              row.innerHTML = `
-          <td>${cab["License Plate"]}</td>
-          <td>${modelText}</td>
-          <td>${cab["Driver Name"]}</td>
-          <td>${cab["Driver Phone"]}</td>
-          <td>${statusBadge}</td>
-          <td>
-            <button class="btn btn-sm btn-primary me-1" onclick="editCab('${cab.ID}')">Edit</button>
-            <button class="btn btn-sm btn-danger" onclick="deleteCab('${cab.ID}')">Delete</button>
-          </td>
-        `;
-              tbody.appendChild(row);
-            });
-          } else {
-            showAlert("Failed to load cabs", "error");
-          }
-        } catch (error) {
-          showAlert("Failed to load cabs: " + error.message, "error");
-        } finally {
-          hideLoading();
-        }
-      }
-
-      // Employee portal booking submit continuation from earlier
-      async function submitBookingRequest() {
-        if (!currentEmployee) return;
-
-        const date = document.getElementById("bookingDate").value;
-        const time = document.getElementById("bookingTime").value;
-        const destination = document
-          .getElementById("bookingDestination")
-          .value.trim();
-        const purpose = document.getElementById("bookingPurpose").value.trim();
-        const preferredCab = document.getElementById("preferredCab").value;
-
-        if (!date || !time || !destination || !purpose) {
-          showAlert("Please fill all required fields", "error");
-          return;
-        }
-
-        const selectedDate = new Date(date);
         const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        if (selectedDate < today) {
-          showAlert("Cannot book for past dates", "error");
-          return;
-        }
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, "0");
+        const dd = String(today.getDate()).padStart(2, "0");
+        const todayString = `${yyyy}-${mm}-${dd}`;
 
-        const bookingData = {
-          employeeId: currentEmployee.id,
-          employeeName: currentEmployee.name,
-          date: date,
-          time: time,
-          destination: destination,
-          purpose: purpose,
-          preferredCab: preferredCab,
+        dateInput.min = todayString;
+        dateInput.value = todayString;
+
+        const updateMinTime = () => {
+          const selectedDate = dateInput.value;
+          const now = new Date();
+
+          if (selectedDate === todayString) {
+            const hours = String(now.getHours()).padStart(2, "0");
+            const minutes = String(now.getMinutes()).padStart(2, "0");
+            timeInput.min = `${hours}:${minutes}`;
+          } else {
+            timeInput.min = "";
+          }
         };
 
-        try {
-          showLoading("Submitting booking request...");
-          const result = await api.createBooking(bookingData);
-          if (result.success) {
-            showAlert("Booking request submitted successfully!", "success");
-            document.getElementById("newBookingForm").reset();
-            loadEmployeeDashboard();
-            loadAvailableCabsForBooking();
-          } else {
-            showAlert("Failed to submit booking request", "error");
-          }
-        } catch (error) {
-          showAlert(
-            "Failed to submit booking request: " + error.message,
-            "error"
-          );
-        } finally {
-          hideLoading();
-        }
+        dateInput.addEventListener("input", updateMinTime);
+
+        // Set initial time constraint
+        updateMinTime();
       }
 
-      // Cancel booking modal + confirm
-      function showCancelBookingModal(requestId) {
-        currentBookingForCancel = requestId;
-        document.getElementById("cancelReason").value = "";
-        const modal = new bootstrap.Modal(
-          document.getElementById("cancelBookingModal")
-        );
-        modal.show();
-      }
-
-      async function confirmCancelBooking() {
-        if (!currentBookingForCancel) return;
-
-        const reason = document.getElementById("cancelReason").value.trim();
-        if (!reason) {
-          showAlert("Please provide a reason for cancellation", "error");
-          return;
-        }
-
-        try {
-          showLoading("Cancelling booking...");
-          const result = await api.updateBookingStatus({
-            requestId: currentBookingForCancel,
-            status: "Cancelled",
-            notes: `Cancelled by employee: ${reason}`,
-          });
-
-          if (result.success) {
-            showAlert("Booking cancelled successfully!", "success");
-            loadEmployeeDashboard();
-            const modal = bootstrap.Modal.getInstance(
-              document.getElementById("cancelBookingModal")
-            );
-            modal.hide();
-          } else {
-            showAlert(
-              "Failed to cancel booking: " + (result.message || ""),
-              "error"
-            );
-          }
-        } catch (error) {
-          showAlert("Failed to cancel booking: " + error.message, "error");
-        } finally {
-          hideLoading();
-        }
-      }
-
-      // Init listeners
       document.addEventListener("DOMContentLoaded", function () {
         initializeTheme();
+        initializeBookingDateTime();
 
         const phoneInputs = document.querySelectorAll(
           '[name="phone"], [name="driverPhone"]'
